@@ -1,189 +1,218 @@
-\documentclass[margin,line]{resume}
+\documentclass[a4paper,11pt]{article}
 
+%A Few Useful Packages
+\usepackage{marvosym}
+\usepackage{url,parskip}     %other packages for formatting
+\RequirePackage{color,graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[big]{layaureo}                 %better formatting of the A4 page
+% an alternative to Layaureo can be ** \usepackage{fullpage} **
+\usepackage{supertabular}                 %for Grades
+\usepackage{titlesec}                    %custom \section
+
+%Setup hyperref package, and colours for links
 \usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{helvet}
+\definecolor{linkcolour}{rgb}{0,0.2,0.6}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
 
+%FONTS
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{tgtermes}
+
+%CV Sections inspired by: 
+%http://stefano.italians.nl/archives/26
+\titleformat{\section}{\large\bfseries\scshape\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{10pt}{3pt}
+%Tweak a bit the top margin
+%\addtolength{\voffset}{-1.3cm}
+
+%--------------------BEGIN DOCUMENT----------------------
 \begin{document}
 
-\name{He He \vspace*{.1in}}
+\pagestyle{empty} % non-numbered pages
 
-\begin{resume}
-\section{\sc Contact Information}
-\vspace{.05in}
-\begin{tabular}{@{}p{2.5in}p{4in}}
-Gates 254             & Phone: (301) 312-5903 \\            
-Stanford University   & E-mail: hehe@cs.stanford.edu \\         
-Stanford, CA 94305    & Website: \url{hhexiy.github.io}\\        
+%--------------------TITLE-------------
+\par{\centering
+        {\Huge He \textsc{He}
+    }\bigskip\par}
+
+%--------------------SECTIONS-----------------------------------
+%Section: Personal Data
+\section{Personal}
+
+\begin{tabular}{rl}
+    Address:   & Gates 254, Stanford University, Stanford, CA 94305 \\
+    Email:     & hehe@cs.stanford.edu \\
+	Homepage:  & \url{hhexiy.github.io}	
 \end{tabular}
 
-\section{\sc Research Interests}
-Dialogue, Simultaneous Machine Translation, Fast Inference, Imitation Learning
+\section{Research Interests}
+Natural language processing and interactive learning,
+with a focus on
+dialogue, machine simultaneous translation, imitation learning, and reinforcement learning
 
-\section{\sc Education}
-{\bf University of Maryland, College Park}, U.S.A.\\
-Ph.D. in Computer Science (Advisors: Hal Daum\'e III, Jordan Boyd-Graber) \hfill 2011--2016\\
-%\hfill GPA: 3.8/4.0\\
-M.Sc. in Computer Science \hfill 2011--2013
+%Section: Education
+\section{Education}
+\begin{tabular}{rl}    
+2011--2016 & \textbf{University of Maryland, College Park}\\
+& Ph.D. in Computer Science \\
+& Advisors: Hal Daum\'e III, Jordan Boyd-Graber \\
+& M.Sc. in Computer Science received in 2013 \\
+\\
+2007--2011 & \textbf{The Hong Kong Polytechnic University}\\
+& B.Eng. in Electronic and Information Engineering
+\end{tabular}
 
-{\bf The Hong Kong Polytechnic University}, China\\ 
-B.Eng. (Hons) in Electronic and Information Engineering (Thesis advisor: Wan-Chi Siu) \hfill 2007--2011
-% \hfill GPA: 4.0/4.0
-%Applied Mathematics Minor
+\section{Work Experience}
+\begin{tabular}{rl}    
+2016-- & \textbf{Stanford University}, Stanford, CA\\
+& Post-doc researcher \hspace{2em} Supervisor: Percy Liang \\
+\\
+Summer 2015 & {\bf Microsoft Cloud Information and Service Lab}, Redmond, WA\\
+& Research Intern \hspace{2em} Mentors: Paul Mineiro, Nikos Karampatziakis\\
+\\
+Summer 2013 & {\bf Microsoft Research}, Redmond, WA\\
+& Research Intern \hspace{2em} Mentors: Lihong Li, Jason Williams
+\end{tabular}
 
-{\bf University of Waterloo}, Canada\\
-Non-degree exchange, Department of Electrical and Computer Engineering \hfill Fall 2009
+\section{Awards and Honors}
+\begin{tabular}{rl}    
+2016 & Larry S. Davis Dissertation Award\\
+2016 & Board of Visitors Graduate Student Award, UMD\\
+2015 & Best Demonstration Award, NIPS\\
+%Tammy L. Blair Award 2nd runner-up, Fusion \hfill 2015\\
+2011--2012 & Dean's Fellowship, UMD \\
+%Best Academic Performance Award, HKPolyU \hfill 2008--2010\\
+%Dean's Honors List, HKPolyU \hfill 2008--2010\\
+2008--2010 & HSBC Scholarship \\
+2008--2010 & CMA \& Donors Scholarship\\
+%Non-local Students Scholarship (academic), HKPolyU \hfill 2007--2010\\
+\end{tabular}
 
-\section{\sc Employment}
-{\bf Stanford University}, Stanford, CA\\
-Post-doc researcher (Supervisor: Percy Liang) \hfill 2016--
-
-{\bf Microsoft Cloud Information and Service Lab}, Redmond, WA\\
-\emph{Research Intern} (Mentors: Paul Mineiro, Nikos Karampatziakis) \hfill Summer 2015\\
-Active information acquisition for sentiment analysis and object recognition 
-
-{\bf Machine Learning Group, Microsoft Research}, Redmond, WA\\
-\emph{Research Intern} (Mentors: Lihong Li, Jason Williams) \hfill Summer 2013\\
-Combining imitation learning and reinforcement learning for dialog management 
-
-\section{\sc Awards and Honors}
-Board of Visitors Graduate Student Award (awards to 2 students in the CMNS college) \hfill 2016\\
-Larry S. Davis Dissertation Award \hfill 2016\\
-Best Demonstration Award, NIPS \hfill 2015\\
-Tammy L. Blair Award 2nd runner-up, Fusion \hfill 2015\\
-Dean's Fellowship, UMD \hfill 2011--2012 \\
-Best Academic Performance Award (awards to the top 3 students), HKPolyU \hfill 2008--2010\\
-Dean's Honors List, HKPolyU \hfill 2008--2010\\
-HSBC Scholarship for Mainland Students \hfill 2008--2010\\
-CMA \& Donors Scholarship \hfill 2008--2010\\
-Non-local Students Scholarship (academic), HKPolyU \hfill 2007--2010\\
-
-\section{\sc Publications}
-{\bf\underline{Refereed conference papers}}
+\section{Publications}
+{\underline{Refereed conference papers}}
 
 {\bf He He}, Anusha Balakrishnan, Mihail Eric and Percy Liang.\\
 {\bf Learning Symmetric Collaborative Dialogue Agents with Dynamic Knowledge Graph Embeddings.}\\
-Association for Computational Linguistics (ACL), 2017
-
+Association for Computational Linguistics (ACL), 2017\\
+\\
 {\bf He He}, Jordan Boyd-Graber, Kevin Kwok and Hal Daum\'e III.\\
 {\bf Opponent Modeling in Deep Reinforcement Learning.}\\
-International Conference on Machine Learning (ICML), 2016.
-
+International Conference on Machine Learning (ICML), 2016.\\
+\\
 Kai-Wei Chang, {\bf He He}, Hal Daum\'e III, John Langford and St\'ephane Ross.\\
 {\bf A Credit Assignment Compiler for Joint Prediction.}\\
-Neural Information Processing Systems (NIPS), 2016. 
-
+Neural Information Processing Systems (NIPS), 2016.\\ 
+\\
 {\bf He He}, Jordan Boyd-Graber and Hal Daum\'e III.\\
 {\bf Interpretese vs. Translationese: The Uniqueness of Human Strategies in Simultaneous Interpretation.} (Short paper)\\
-North American Association for Computational Linguistics (NAACL), 2016.%\\[.1in]
-
+North American Association for Computational Linguistics (NAACL), 2016.\\
+\\
 Xi Chen, {\bf He He}, Larry Davis.\\
 {\bf Object Detection in 20 Questions.}\\
-IEEE Winter Conference on Applications of Computer Vision (WACV), 2016.%\\[.10in]
-
+IEEE Winter Conference on Applications of Computer Vision (WACV), 2016.\\
+\\
 {\bf He He}, Alvin Grissom II, Jordan Boyd-Graber and Hal Daum\'e III.\\
 {\bf Syntax-based Rewriting for Simultaneous Machine Translation.}\\
-Empirical Methods in Natural Language Processing (EMNLP), 2015.%\\[.10in]
-
+Empirical Methods in Natural Language Processing (EMNLP), 2015.\\
+\\
 Jordan Boyd-Graber, Mohit Iyyer, {\bf He He}, and Hal Daum\'e III.\\
 {\bf Interactive Incremental Question Answering.} (Demonstration track)\\
 Neural Information Processing Systems (NIPS), 2015. 
-\emph{Best demonstration award.}
-%{\bf \color{red} Best demonstration award}%\\[.10in]
-
+Best demonstration award.\\
+\\
 Xiangyang Liu, {\bf He He} and John Baras.\\
 {\bf Crowdsourcing with Multi-Dimensional Trust.}\\
 International Conference on Information Fusion (Fusion), 2015.
-\emph{Tammy L. Blair Award 2nd runner-up.}
-%{\bf \color{red} 2nd runner-up for the Tammy L. Blair Award}.%\\[.05in]
-
+Tammy L. Blair Award 2nd runner-up.\\
+\\
 Xiangyang Liu, {\bf He He} and John Baras.\\
 {\bf Trust-Aware Optimal Crowdsourcing With Budget Constraint.}\\
-IEEE International Conference on Communications (ICC), 2015.%\\[.05in] 
-
+IEEE International Conference on Communications (ICC), 2015.\\
+\\
 {\bf He He}, Hal Daum\'e III and Jason Eisner. \\
 {\bf Learning to Search in Branch and Bound Algorithms.}\\
-Neural Information Processing Systems (NIPS), 2014.%\\[.05in]
-
+Neural Information Processing Systems (NIPS), 2014.\\
+\\
 Alvin Grissom II, {\bf He He}, Jordan Boyd-Graber, John Morgan, and Hal Daum\'e III. \\
 {\bf Don't Until the Final Verb Wait: Reinforcement Learning for Simultaneous Machine Translation.}\\
-Empirical Methods in Natural Language Processing (EMNLP), 2014.%\\[.05in]
-
+Empirical Methods in Natural Language Processing (EMNLP), 2014.\\
+\\
 Lihong Li, {\bf He He} and Jason D. Williams. \\
 {\bf Temporal Supervised Learning for Inferring a Dialog Policy from Example Conversations.}\\
-IEEE Workshop on Spoken Language Technology (SLT), 2014.%\\[.05in]
-
+IEEE Workshop on Spoken Language Technology (SLT), 2014.\\
+\\
 {\bf He He}, Hal Daum\'e III and Jason Eisner.\\
 {\bf Dynamic Feature Selection for Dependency Parsing.}\\ 
-Empirical Methods in Natural Language Processing (EMNLP), 2013.%\\[.05in]
-
+Empirical Methods in Natural Language Processing (EMNLP), 2013.\\
+\\
 {\bf He He}, Hal Daum\'e III and Jason Eisner.\\
 {\bf Imitation Learning by Coaching.}\\ 
-Neural Information Processing Systems (NIPS), 2012.%\\[.05in]
-
+Neural Information Processing Systems (NIPS), 2012.\\
+\\
 Jordan Boyd-Graber, Brianna Satinoff, {\bf He He} and Hal Daum\'e III.\\
 {\bf Besting the Quiz Master: Crowdsourcing Incremental Classification Games.}\\
-Empirical Methods in Natural Language Processing (EMNLP), 2012.%\\[.05in]
-
+Empirical Methods in Natural Language Processing (EMNLP), 2012.\\
+\\
 {\bf He He} and Wan Chi Siu. \\
 {\bf Image Super-resolution using Gaussian Process Regression.}\\
-Computer Vision and Pattern Recognition Conference (CVPR), 2011.%\\[.05in]
-
+Computer Vision and Pattern Recognition Conference (CVPR), 2011.\\
+\\
 {\bf He He} and Ali Ghodsi. \\
 {\bf Rare Class Classification by Support Vector Machines.}\\
-International Conference on Pattern Recognition (ICPR), 2010.
-
-{\bf\underline{Workshop papers and manuscripts}}
+International Conference on Pattern Recognition (ICPR), 2010.\\
+\\
+{\underline{Workshop papers and manuscripts}}
 
 {\bf He He}, Paul Mineiro and Nikos Karampatziakis. \\
 {\bf Active Information Acquisition.}\\
-Machine Learning From and For Adaptive User Technologies: From Active Learning \& Experimentation to Optimization \& Personalization, NIPS, 2015.%\\[.05in]
-
+Machine Learning From and For Adaptive User Technologies: From Active Learning \& Experimentation to Optimization \& Personalization, NIPS, 2015.\\
+\\
 Kai-Wei Chang, {\bf He He}, Hal Daum\'e III and John Langford.\\
 {\bf Learning to Search for Dependencies.}\\
-Arxiv 1503.05615, 2015.
-
+Arxiv 1503.05615, 2015.\\
+\\
 {\bf He He}, Hal Daum\'e III and Jason Eisner.\\
 {\bf Cost-sensitive Dynamic Feature Selection.}\\
 Workshop on Inferning, ICML, 2012.
 
-\section{\sc Teaching Experience} 
-Department of Computer Science, University of Maryland, College Park\\
-\emph{Teaching Assistant}, Object-oriented Programming (CMSC 132) \hfill Fall 2011
-  
-%{\bf Department of Linguistics, University of Maryland, College Park}\\
-%  \emph{Co-instructor}, Python Crash Course at the Winter Storm Workshop \hfill Jan 2013
+\section{Teaching Experience} 
+\begin{tabular}{rl}
+Fall 2011 & University of Maryland, College Park\\
+& Teaching Assistant, Object-oriented Programming
+\end{tabular}
+%\vspace{-0em}
 
-\section{\sc Invited Talks}
-Learning Agents that Interact with Humans \hfill 2017\\
-USC ISI, Allen Institute for AI, Salesforce, SJTU, Amazon
+\section{Invited Talks}
+\begin{tabular}{rl}    
+2017 & Learning Agents that Interact with Humans \\
+& USC ISI, UC Berkeley, Allen Institute for AI, Salesforce, SJTU, Amazon\\
+\\
+2017 & Understanding Natural Language: Chat Bots and Beyond\\
+& WECode (women in computer science conference)\\
+\\
+2016 & Decision-making in Incremental Question Answering \\
+& Stanford Data Science Initiative Retreat\\
+\\
+2015 & Sequential Decision-making for Natural Language Processing\\
+& UPenn, UC Boulder, Microsoft Research\\
+\end{tabular}
 
-Understanding Natural Language: Chat Bots and Beyond \hfill 2017\\
-WECode (women in computer science conference)
-
-Decision-making in Incremental Question Answering \hfill 2016\\
-Stanford Data Science Initiative Retreat
-
-Sequential Decision-making for Natural Language Processing \hfill 2015\\
-UPenn, UC Boulder, Microsoft Research
-
-\section{\sc Professional Service}
-\emph{Reviewer,} ACL, NAACL, EMNLP, NIPS, ICML, AAAI, AISTATS\\
-\emph{Co-chair,} First Workshop for Women and Underrepresented Minorities in NLP \hfill 2017\\
-\emph{Co-chair,} ACL Student Research Workshop \hfill 2016\\
-\emph{Organizing Committee,} NAACL Workshop on Human-computer Question Answering \hfill 2016\\
+\section{Service}
+{Reviewer:} ACL, NAACL, EMNLP, NIPS, ICML, AAAI, AISTATS\\
+{Co-chair,} First Workshop for Women and Underrepresented Minorities in NLP, ACL 2017\\
+{Co-chair,} Student Research Workshop, ACL 2016\\
+{Organizing Committee,} Workshop on Human-computer Question Answering, NAACL 2016\\
 %With Jordan Boyd-Graber, Mohit Iyyer and Hal Daum\'e III.
-\emph{Organizing Committee,} NAACL Tutorial on Learning to Search for Structured Prediction \hfill 2015\\
+{Organizing Committee,} Tutorial on Learning to Search for Structured Prediction, NAACL 2015\\
 %With Hal Daum\'e III, John Lanford, Kai-Wei Chang and Sudha Rao.
-\emph{Organizing Committee,} Mid-Atlantic Student Colloquium on Speech, Language and Learning \hfill 2015\\
+{Organizing Committee,} Mid-Atlantic Student Colloquium on Speech, Language and Learning, 2015\\
 %With Mossaab Bagdouri, Shuoyang Ding and Nanyun Peng, advised by Hal Daum\'e III and Mark Dredze.
-\emph{Contributor,} Challenge Problem on NLP for DARPA Program Probabilistic Programming for\\
-Advancing Machine Learning \hfill 2015\\
-%With Galois, Inc. and Tom Dietterich.
+{Contributor,} Challenge Problem on NLP for DARPA Program Probabilistic Programming for\\
+Advancing Machine Learning, 2015\\
 
-\end{resume}
+
+
 \end{document}
-
-
-
 
