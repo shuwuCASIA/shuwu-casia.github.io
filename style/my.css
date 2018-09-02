@@ -1,6 +1,6 @@
 div#wrapper {
 	margin: auto;
-	width: 800px;
+	width: 900px;
 }
 
 * {
@@ -30,8 +30,7 @@ hr {
 }
 
 div#header {
-	width: 800px;
-	height: 300px;
+	height: 260px;
 	font-family: Helvetica, Verdana, Geneva, Arial, sans-serif;
 	font-size: 12pt;
 	background-color: #ffffff;
@@ -89,9 +88,8 @@ div#content {
 	color: #000000;
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12pt;
-  line-height: 120%;
-  padding: 0;
-	width: 800px;
+    line-height: 120%;
+    padding: 0;
 }
 
 div.section{
