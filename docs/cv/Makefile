@@ -1,4 +1,4 @@
-default: cv-full.pdf
+default: cv-full.pdf cv-full.tex
 
 cv-full.pdf: cv-full.tex conference.tex
 	pdflatex cv-full.tex
