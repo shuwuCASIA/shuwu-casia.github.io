@@ -17,7 +17,6 @@ p {
 }
 
 a {
-	color: #118c4e;
 	text-decoration: none;
 }
 
@@ -94,7 +93,7 @@ div#content {
 
 div.section{
 	float: none;
-	margin: 2em;
+	margin: 2em 2em 2em 2em;
 }
 
 div.abstract {
