@@ -1,0 +1,11 @@
+
+Lecture notes
+=============
+
+.. toctree::
+   :maxdepth: 2
+   :numbered:
+
+   overview
+   basic_ml
+   text_classification
