@@ -179,6 +179,9 @@ or negative.</p>
 <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">IMDB</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;data/imdb&#39;</span><span class="p">,</span> <span class="n">segment</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Downloading</span> <span class="n">data</span><span class="o">/</span><span class="n">imdb</span><span class="o">/</span><span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kn">from</span> <span class="nn">https</span><span class="p">:</span><span class="o">//</span><span class="n">apache</span><span class="o">-</span><span class="n">mxnet</span><span class="o">.</span><span class="n">s3</span><span class="o">-</span><span class="n">accelerate</span><span class="o">.</span><span class="n">dualstack</span><span class="o">.</span><span class="n">amazonaws</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gluon</span><span class="o">/</span><span class="n">dataset</span><span class="o">/</span><span class="n">imdb</span><span class="o">/</span><span class="n">train</span><span class="o">.</span><span class="n">json</span><span class="o">...</span>
+</pre></div>
+</div>
 <div class="section" id="an-intuitive-approach">
 <h2><span class="section-number">3.1. </span>An intuitive approach<a class="headerlink" href="#an-intuitive-approach" title="Permalink to this headline">¶</a></h2>
 <p>Let’s pretend for a second that we don’t know anything about ML or NLP.
@@ -215,7 +218,7 @@ efficiency we randomly sample a subset.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">mini_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">mini_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">20</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span> <span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;first&#39;</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;lorna&#39;</span><span class="p">,</span> <span class="s1">&#39;doone&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;about&#39;</span><span class="p">,</span> <span class="s1">&#39;20&#39;</span><span class="p">,</span> <span class="s1">&#39;years&#39;</span><span class="p">,</span> <span class="s1">&#39;ago&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;absolutely&#39;</span><span class="p">,</span> <span class="s1">&#39;loved&#39;</span><span class="p">,</span> <span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;!&#39;</span><span class="p">,</span> <span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;classic&#39;</span><span class="p">]</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span> <span class="p">[</span><span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="s1">&#39;film&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;another&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;director&#39;</span><span class="p">,</span> <span class="s1">&#39;tim&#39;</span><span class="p">,</span> <span class="s1">&#39;burton&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;s&quot;</span><span class="p">,</span> <span class="s1">&#39;attempts&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="s1">&#39;capitalize&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;familiar&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="s1">&#39;bring&#39;</span><span class="p">,</span> <span class="s1">&#39;his&#39;</span><span class="p">,</span> <span class="s1">&#39;`&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
@@ -224,7 +227,7 @@ efficiency we randomly sample a subset.</p>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pos_tokens</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">neg_tokens</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">130715</span> <span class="mi">136716</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">137559</span> <span class="mi">129713</span>
 </pre></div>
 </div>
 <p>Now we can check the counts of a word in positive and negative examples.</p>
@@ -233,8 +236,8 @@ efficiency we randomly sample a subset.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">neg_tokens</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">token</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">47</span>
-<span class="mi">14</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">58</span>
+<span class="mi">15</span>
 </pre></div>
 </div>
 <p>So a simple heuristic approach is to count the frequency of occurence of
@@ -400,7 +403,7 @@ need to build the vocabulary.</p>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">19498</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">19933</span>
 </pre></div>
 </div>
 <p>Convert an example to BoW vector representation:</p>
@@ -415,9 +418,9 @@ need to build the vocabulary.</p>
 <span class="nb">print</span><span class="p">([(</span><span class="n">vocab</span><span class="o">.</span><span class="n">idx_to_token</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">feature</span> <span class="n">vector</span> <span class="n">size</span><span class="p">:</span> <span class="p">(</span><span class="mi">19498</span><span class="p">,)</span>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">feature</span> <span class="n">vector</span> <span class="n">size</span><span class="p">:</span> <span class="p">(</span><span class="mi">19933</span><span class="p">,)</span>
 <span class="n">top</span> <span class="n">word</span> <span class="n">counts</span><span class="p">:</span>
-<span class="p">[(</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;was&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="p">[(</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="mi">38</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="mi">26</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">26</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;that&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)]</span>
 </pre></div>
 </div>
 <p><strong>Side note.</strong> Note that here the feature vector is different from the
@@ -458,12 +461,14 @@ allows for rich features using the feature extractor <span class="math notransla
 0 &amp; \text{otherwise}
 \end{cases} ,\end{split}\]</div>
 <p>so on and so forth.</p>
-<p>In practice, we may have a huge number of features (e.g. all n-grams in
-a corpus). However, for NLP problems the features are often sparse,
-meaning that we only have a handful of non-zero features. Thus it’s
-common to represent the feature value as a string and hash it to
-integers (feature index),
-e.g. <span class="math notranslate nohighlight">\(\text{hash}(\text{&quot;w=happy&quot;}) = 1\)</span>.</p>
+<p><strong>Side note.</strong> In practice, we may have a huge number of features
+(e.g. all n-grams in a corpus). However, for NLP problems the features
+are often sparse, meaning that we only have a handful of non-zero
+features. Thus it’s common to represent the feature value as a string
+and hash it to integers (feature index),
+e.g. <span class="math notranslate nohighlight">\(\text{hash}(\text{&quot;w=happy&quot;}) = 1\)</span>. See
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.FeatureHasher.html#sklearn.feature_extraction.FeatureHasher">FeatureHasher</a>
+from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>.</p>
 </div>
 <div class="section" id="additional-readings">
 <h2><span class="section-number">3.7. </span>Additional readings<a class="headerlink" href="#additional-readings" title="Permalink to this headline">¶</a></h2>

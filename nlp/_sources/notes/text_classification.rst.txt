@@ -22,6 +22,13 @@ We will use the IMDB movie review dataset as our running example.
     npx.set_np()
     train_dataset = nlp.data.IMDB(root='data/imdb', segment='train')
 
+
+.. parsed-literal::
+    :class: output
+
+    Downloading data/imdb/train.json from https://apache-mxnet.s3-accelerate.dualstack.amazonaws.com/gluon/dataset/imdb/train.json...
+
+
 An intuitive approach
 ---------------------
 
@@ -75,7 +82,7 @@ efficiency we randomly sample a subset.
 .. parsed-literal::
     :class: output
 
-    0 ['i', 'first', 'read', '"', 'lorna', 'doone', '"', 'about', '20', 'years', 'ago', 'and', 'absolutely', 'loved', 'it', '!', 'it', 'is', 'a', 'classic']
+    0 ['this', 'film', 'is', 'another', 'of', 'director', 'tim', 'burton', "'s", 'attempts', 'to', 'capitalize', 'on', 'a', 'familiar', 'title', 'to', 'bring', 'his', '`']
 
 
 .. code:: python
@@ -89,7 +96,7 @@ efficiency we randomly sample a subset.
 .. parsed-literal::
     :class: output
 
-    130715 136716
+    137559 129713
 
 
 Now we can check the counts of a word in positive and negative examples.
@@ -104,8 +111,8 @@ Now we can check the counts of a word in positive and negative examples.
 .. parsed-literal::
     :class: output
 
-    47
-    14
+    58
+    15
 
 
 So a simple heuristic approach is to count the frequency of occurence of
@@ -341,7 +348,7 @@ need to build the vocabulary.
 .. parsed-literal::
     :class: output
 
-    19498
+    19933
 
 
 Convert an example to BoW vector representation:
@@ -362,9 +369,9 @@ Convert an example to BoW vector representation:
 .. parsed-literal::
     :class: output
 
-    feature vector size: (19498,)
+    feature vector size: (19933,)
     top word counts:
-    [('the', 12), ('and', 6), ('was', 6), ('!', 6), ('of', 5), ('?', 4), ('.', 3), ('a', 3), ('to', 3), ('in', 3)]
+    [('the', 38), ('.', 37), ('is', 30), (',', 26), ('a', 26), ('to', 19), ('and', 16), ('of', 15), ('it', 13), ('that', 12)]
 
 
 **Side note.** Note that here the feature vector is different from the
@@ -413,12 +420,14 @@ For example, we can define the following functions given an input
 
 so on and so forth.
 
-In practice, we may have a huge number of features (e.g. all n-grams in
-a corpus). However, for NLP problems the features are often sparse,
-meaning that we only have a handful of non-zero features. Thus it’s
-common to represent the feature value as a string and hash it to
-integers (feature index),
-e.g. :math:`\text{hash}(\text{"w=happy"}) = 1`.
+**Side note.** In practice, we may have a huge number of features
+(e.g. all n-grams in a corpus). However, for NLP problems the features
+are often sparse, meaning that we only have a handful of non-zero
+features. Thus it’s common to represent the feature value as a string
+and hash it to integers (feature index),
+e.g. :math:`\text{hash}(\text{"w=happy"}) = 1`. See
+`FeatureHasher <https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.FeatureHasher.html#sklearn.feature_extraction.FeatureHasher>`__
+from ``sklearn``.
 
 Additional readings
 -------------------
