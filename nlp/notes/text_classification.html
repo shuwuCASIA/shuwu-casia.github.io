@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>3. Text classification &#8212; Natural Language Processing 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/nyu-logo.jpg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Distributed word representations" href="distributed_representation.html" />
+    <link rel="prev" title="2. Basic machine learning" href="basic_ml.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html">Lecture notes</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">3. </span>Text classification</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/notes/text_classification.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://www.gradescope.com/courses/148490">
+                  <i class="fas fa-book-open"></i>
+                  Gradescope
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://piazza.com/class/kcqpkn4c8uj4fz">
+                  <i class="fas fa-comments"></i>
+                  Piazza
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://newclasses.nyu.edu/portal/site/e0d2a062-6a1d-4eec-9f35-6ccce6b4358d">
+                  <i class="fas fa-school"></i>
+                  NYUClasses
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_ml.html">2. Basic machine learning</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Text classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributed_representation.html">4. Distributed word representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language_models.html">5. Language models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_labeling.html">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_ml.html">2. Basic machine learning</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Text classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributed_representation.html">4. Distributed word representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language_models.html">5. Language models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_labeling.html">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <div class="section" id="text-classification">
+<h1><span class="section-number">3. </span>Text classification<a class="headerlink" href="#text-classification" title="Permalink to this headline">¶</a></h1>
+<p>We will start our journey with a simple NLP problem, text
+classification. You might have already gone through the core techniques
+if you have taken an ML course, however, we hope to provide some new
+insights from the NLP perspective.</p>
+<p>Let’s consider the binary sentiment classification task. Our input is a
+document (e.g. a review), and we want to predict whether it is positive
+or negative.</p>
+<p>We will use the IMDB movie review dataset as our running example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">d2l</span> <span class="kn">import</span> <span class="n">mxnet</span> <span class="k">as</span> <span class="n">d2l</span>
+<span class="kn">from</span> <span class="nn">mxnet</span> <span class="kn">import</span> <span class="n">gluon</span><span class="p">,</span> <span class="n">np</span><span class="p">,</span> <span class="n">npx</span>
+<span class="kn">import</span> <span class="nn">gluonnlp</span> <span class="k">as</span> <span class="nn">nlp</span>
+<span class="n">npx</span><span class="o">.</span><span class="n">set_np</span><span class="p">()</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">IMDB</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;data/imdb&#39;</span><span class="p">,</span> <span class="n">segment</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="an-intuitive-approach">
+<h2><span class="section-number">3.1. </span>An intuitive approach<a class="headerlink" href="#an-intuitive-approach" title="Permalink to this headline">¶</a></h2>
+<p>Let’s pretend for a second that we don’t know anything about ML or NLP.
+How should we approach this problem? Let’s take a look at the data to
+have a better sense of the problem.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;# training examples:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;labels:&#39;</span><span class="p">,</span> <span class="nb">set</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">]))</span>
+</pre></div>
+</div>
+<pre class="output literal-block"># training examples: 25000
+['Bromwell High is a cartoon comedy. It ran at the same time as some other programs about school life, such as &quot;Teachers&quot;. My 35 years in the teaching profession lead me to believe that Bromwell High's satire is much closer to reality than is &quot;Teachers&quot;. The scramble to survive financially, the insightful students who can see right through their pathetic teachers' pomp, the pettiness of the whole situation, all remind me of the schools I knew and their students. When I saw the episode in which a student repeatedly tried to burn down the school, I immediately recalled ......... at .......... High. A classic line: INSPECTOR: I'm here to sack one of your teachers. STUDENT: Welcome to Bromwell High. I expect that many adults of my age think that Bromwell High is far fetched. What a pity that it isn't!', 9]
+labels: {1, 2, 3, 4, 7, 8, 9, 10}</pre>
+<p>While the review itself can be quite complex, we don’t really need to
+understand everything in it. To separate positive and negative reviews,
+we might be able to just look at individual words. Intuitively, we
+expect to see more nice words in positive reviews such as “fantastic”
+and “wonderful”. Let’s test our intuition against the data.</p>
+<p>Before we start to play with the data, we need to <strong>tokenize</strong> the text,
+i.e. separating the string into a list of <strong>tokens</strong>. The definition of
+a token can be language- and task-dependent. One common choise is to
+split the string into words. For example, we can use a simple regex to
+tokenize English text, however, it doesn’t work for Chinese which
+doesn’t have word boundary markers such as spaces. Similarly, in German
+there is no spaces in compound nouns, which can get long. A more general
+solution is to discard the notion of words and tokenize by subwords
+strings, e.g. characters (n-grams) or byte pair encoding. For more
+information on tokenization, read [JM 2.4.2]. In most cases we can use
+existing tokenizers in text processing libraries such as NLTK or SpaCy.</p>
+<p>Let’s tokenize the data and map the ratings to binary labels. Also, for
+efficiency we randomly sample a subset.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">SpacyTokenizer</span><span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">)</span>
+<span class="n">preprocess</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">d</span> <span class="p">:</span> <span class="p">(</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()),</span> <span class="mi">1</span> <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">mini_dataset</span> <span class="o">=</span> <span class="p">[</span><span class="n">preprocess</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1000</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mini_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">mini_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">20</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span> <span class="p">[</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;1993&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;visitors&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;was&#39;</span><span class="p">,</span> <span class="s1">&#39;an&#39;</span><span class="p">,</span> <span class="s1">&#39;enormous&#39;</span><span class="p">,</span> <span class="s1">&#39;hit&#39;</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;france&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;so&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;sequence&#39;</span><span class="p">,</span> <span class="s1">&#39;was&#39;</span><span class="p">,</span> <span class="s1">&#39;inevitable&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="n">pos_tokens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">mini_dataset</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]))</span>
+<span class="n">neg_tokens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">mini_dataset</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pos_tokens</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">neg_tokens</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">134122</span> <span class="mi">141254</span>
+</pre></div>
+</div>
+<p>Now we can check the counts of a word in positive and negative examples.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">token</span> <span class="o">=</span> <span class="s1">&#39;wonderful&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pos_tokens</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">token</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">neg_tokens</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">token</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">49</span>
+<span class="mi">13</span>
+</pre></div>
+</div>
+<p>So a simple heuristic approach is to count the frequency of occurence of
+each word in positive and negative examples, and classifiy an example as
+positive if it contains more words of high-frequency in the positive
+examples. <strong>The key takeaway</strong> is that we can do a reasonable job
+classifying the text based on individual words without understanding its
+meaning.</p>
+</div>
+<div class="section" id="naive-bayes-model">
+<span id="sec-nb"></span><h2><span class="section-number">3.2. </span>Naive Bayes model<a class="headerlink" href="#naive-bayes-model" title="Permalink to this headline">¶</a></h2>
+<p>Now, let’s take a more principled approach, following the key steps we
+talked about last time: design a model, specify a loss function, and
+minimize the average loss.</p>
+<p>Consider a probabilistic model for binary classification:</p>
+<div class="math notranslate nohighlight" id="equation-notes-text-classification-0">
+<span class="eqno">(3.2.1)<a class="headerlink" href="#equation-notes-text-classification-0" title="Permalink to this equation">¶</a></span>\[\begin{split}f_w(x) = \begin{cases}
+1 &amp; \text{if $p_w(y\mid x) &gt; 0.5$} \\
+0 &amp; \text{otherwise}
+\end{cases} .\end{split}\]</div>
+<p>How do we parameterize <span class="math notranslate nohighlight">\(p_w(y\mid x)\)</span>? Recall the Bayes rule from
+probability:</p>
+<div class="math notranslate nohighlight" id="equation-notes-text-classification-1">
+<span class="eqno">(3.2.2)<a class="headerlink" href="#equation-notes-text-classification-1" title="Permalink to this equation">¶</a></span>\[p(y\mid x) = \frac{p(x\mid y) p(y)}{p(x)}
+= \frac{p(x\mid y) p(y)}{\sum_{y\in\mathcal{Y}}p(x\mid y) p(y)} .\]</div>
+<p>Given that <span class="math notranslate nohighlight">\(y\)</span> is binary, it’s reasonable to model it as a
+Bernoulli random variable. For more than two classes, we can use a
+categorical distribution.</p>
+<p>What about <span class="math notranslate nohighlight">\(p(x\mid y)\)</span>? Note that it’s the joint probability of
+all words in the sentence <span class="math notranslate nohighlight">\(x\)</span>:
+<span class="math notranslate nohighlight">\(p(x\mid y) = p(x_1, \ldots, x_n \mid y)\)</span> (<span class="math notranslate nohighlight">\(n\)</span> is the
+document length), where <span class="math notranslate nohighlight">\(x_i\)</span> is the token at the <span class="math notranslate nohighlight">\(i\)</span>-th
+position in the document. Directly modeling the joint probability will
+require a huge number of parameters (and can only be learned if we have
+a huge corpus). Following our intuition, we can ignore the interaction
+among all words and assume that they are <strong>conditionally independt</strong>.
+This is the key assumption in Naive Bayes models:</p>
+<div class="math notranslate nohighlight" id="equation-notes-text-classification-2">
+<span class="eqno">(3.2.3)<a class="headerlink" href="#equation-notes-text-classification-2" title="Permalink to this equation">¶</a></span>\[p(x_1, \ldots, x_n \mid y) = \prod_{i=1}^n p(x_i\mid y) .\]</div>
+<p>Let’s think about the data generating process. To generate a review, we
+first flip a coin to decide its sentiment, then roll a <span class="math notranslate nohighlight">\(|V|\)</span>-sided
+die for <span class="math notranslate nohighlight">\(n\)</span> steps to decide the word at each position (<span class="math notranslate nohighlight">\(|V|\)</span>
+denotes the vocabulary size). Therefore,
+<span class="math notranslate nohighlight">\(p(x_1, \ldots, x_n \mid y)\)</span> is given by a multinomial
+distribution.</p>
+</div>
+<div class="section" id="maximum-likelihood-estimation">
+<h2><span class="section-number">3.3. </span>Maximum likelihood estimation<a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have specified the model, the next step is to estimate
+parameters. For probabilistic models, we can use maximum likelihood
+estimation (MLE), corresponding to the negative log-likelihood (NLL)
+loss.</p>
+<p>Our goal is to maximize the log-likelihood of the dataset
+<span class="math notranslate nohighlight">\(D = \{x^{(i)}, y^{(i)}\}_{i=1}^N\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-notes-text-classification-3">
+<span class="eqno">(3.3.1)<a class="headerlink" href="#equation-notes-text-classification-3" title="Permalink to this equation">¶</a></span>\[\log \prod_{i=1}^N p(x^{(i)}, y^{(i)})
+= \log \prod_{i=1}^N \prod_{j=1}^{L_i} p(x_j^{(i)}\mid y^{(i)}) p(y^{(i)}),\]</div>
+<p>where <span class="math notranslate nohighlight">\(L_i\)</span> is the length of the <span class="math notranslate nohighlight">\(i\)</span>-th example. We can plug
+in the probability mass function (pmf) of Bernoulli and multinomial
+distribution and carry out the optimization.</p>
+<p>In this case, we have a closed-form solution (and a very intuitive one).
+The conditionaly probability of each word given a label is simply the
+percentage of time it occurs in documents with that label:</p>
+<div class="math notranslate nohighlight" id="equation-notes-text-classification-4">
+<span class="eqno">(3.3.2)<a class="headerlink" href="#equation-notes-text-classification-4" title="Permalink to this equation">¶</a></span>\[p(x_j \mid y) = \frac{\text{count}(x_j, y)}{\sum_{x\in V} \text{count}(x, y)},\]</div>
+<p>where <span class="math notranslate nohighlight">\(V\)</span> is the vocabulary and <span class="math notranslate nohighlight">\(\text{count}(x_j, y)\)</span> is
+the count of word <span class="math notranslate nohighlight">\(x_j\)</span> in documents with label <span class="math notranslate nohighlight">\(y\)</span>. So we
+have re-discovered our intuitive method through the Naive Bayes model!</p>
+<div class="section" id="laplace-smoothing">
+<h3><span class="section-number">3.3.1. </span>Laplace smoothing<a class="headerlink" href="#laplace-smoothing" title="Permalink to this headline">¶</a></h3>
+<p>One potential problem of our estimator is that a word that doesn’t occur
+in the training set will have zero probability. For example, if none of
+the positive reviews contain the word “awwwwwwwesome”, any review
+containing that word will have zero probability given the positive
+label. This is undesirable because due to the sparsity of language it’s
+not uncommon to have unknown words at test time. Even if we ignore
+unknown words in the input, we will have problems with rare words (low
+frequency in the training set), because their estimated conditional
+probabilities might be off.</p>
+<p>To remedy this problem, we use a technique called “smoothing”, which add
+pseudocounts to the actual count of each word:</p>
+<div class="math notranslate nohighlight" id="equation-notes-text-classification-5">
+<span class="eqno">(3.3.3)<a class="headerlink" href="#equation-notes-text-classification-5" title="Permalink to this equation">¶</a></span>\[p(x_j \mid y) = \frac{\alpha + \text{count}(x_j, y)}{\alpha |V| + \sum_{x\in V}\text{count}(x, y)} .\]</div>
+<p>This means that even before we have seen any data, we believe that all
+words should occur <span class="math notranslate nohighlight">\(\alpha\)</span> times. For Laplace smoothing
+<span class="math notranslate nohighlight">\(\alpha=1\)</span>.</p>
+<p><strong>Question:</strong> what happens when we increase/decrease <span class="math notranslate nohighlight">\(\alpha\)</span>?</p>
+</div>
+</div>
+<div class="section" id="logistic-regression">
+<h2><span class="section-number">3.4. </span>Logistic regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">¶</a></h2>
+<p>You might have wondered in Naive Bayes modeling why did we take the
+trouble to rewrite <span class="math notranslate nohighlight">\(p(y\mid x)\)</span> using the Bayes’ rule instead of
+directy modeling the conditional distribution. After all, that’s the
+distribution we use for prediction. Also, we don’t have to make
+assumptions on how <span class="math notranslate nohighlight">\(x\)</span> is generated (e.g. conditional
+independence). In fact, models like Naive Bayes that models
+<span class="math notranslate nohighlight">\(p(x\mid y)\)</span> are called <strong>generative models</strong> and they usually
+assume a generative story of how the data is generated. Models that
+directly model <span class="math notranslate nohighlight">\(p(y\mid x)\)</span> are called <strong>discriminative models</strong>.
+Both approaches have merits. However, if you have lots of data,
+empirically discriminative models may be better since it makes less
+assumptions about the data distribution.</p>
+<p>How should we model <span class="math notranslate nohighlight">\(p(y\mid x)\)</span>? Similar to the Naive Bayes
+model, since <span class="math notranslate nohighlight">\(y\)</span> is binary, we can model it by a Bernoulli
+distribution: <span class="math notranslate nohighlight">\(p(y\mid x) = h(x)^y(1-h(x))^{1-y}\)</span>. Here
+<span class="math notranslate nohighlight">\(h(x)\)</span> is <span class="math notranslate nohighlight">\(p(y=1\mid x)\)</span>. Ideally, we would like <span class="math notranslate nohighlight">\(x\)</span>
+to enter the equation through a score <span class="math notranslate nohighlight">\(w\cdot \phi(x)\)</span> (think
+linear regression), where <span class="math notranslate nohighlight">\(w\)</span> is the <strong>weight vector</strong> we want to
+learn and <span class="math notranslate nohighlight">\(\phi\colon \mathcal{X} \rightarrow \mathbb{R}^d\)</span> is a
+<strong>feature extractor</strong> that maps a piece of text to a vector. Note that
+here we can ignore the bias term in <span class="math notranslate nohighlight">\(w\cdot\phi(x) + b\)</span>, assuming
+that a dimension of constant value 1 is incorporated in <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<p>To map the score to a probability, we use the <strong>logistic function</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">display</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$1/(1+e^{-w\cdot\phi(x)})$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$w\cdot\phi(x)$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<pre class="output literal-block">Text(0.5, 0, '$w\cdot\phi(x)$')</pre>
+<div class="figure align-default">
+<img alt="../_images/output_text_classification_e2cfc8_10_1.svg" src="../_images/output_text_classification_e2cfc8_10_1.svg" /></div>
+<p>Note that larger score corresponds to higher <span class="math notranslate nohighlight">\(p(y=1\mid x)\)</span>. This
+gives us the logistic regression model:</p>
+<div class="math notranslate nohighlight" id="equation-notes-text-classification-6">
+<span class="eqno">(3.4.1)<a class="headerlink" href="#equation-notes-text-classification-6" title="Permalink to this equation">¶</a></span>\[p(y=1\mid x) = \frac{1}{1+e^{-w\cdot\phi(x)}} .\]</div>
+<p>For multiclass classification, <span class="math notranslate nohighlight">\(p(y\mid x)\)</span> is modeled by a
+multinomial distribution and we transform the scores
+<span class="math notranslate nohighlight">\(w_k\cdot \phi(x)\)</span> (k:raw-latex:<cite>in `:raw-latex:</cite>mathcal{Y}`)
+using the <strong>softmax function</strong>:</p>
+<div class="math notranslate nohighlight" id="equation-notes-text-classification-7">
+<span class="eqno">(3.4.2)<a class="headerlink" href="#equation-notes-text-classification-7" title="Permalink to this equation">¶</a></span>\[p(y=k\mid x) = \frac{e^{w_k\cdot\phi(x)}}{\sum_{i\in\mathcal{Y}} e^{w_i\cdot\phi(x)}} .\]</div>
+<p>Similar to Naive Bayes, we can use MLE to estimate <span class="math notranslate nohighlight">\(w\)</span>. But for
+logistic regression we don’t have a closed-form solution (try it) and
+need to use (stochastic) gradient descent. The objective function is
+concave, so we can always reach a global optimal solution.</p>
+<p><strong>Exercise:</strong> Show that MLE for logistic regression is equivalent to
+minimizing the average logistic loss.</p>
+</div>
+<div class="section" id="bag-of-words-bow-representation">
+<h2><span class="section-number">3.5. </span>Bag-of-words (BoW) representation<a class="headerlink" href="#bag-of-words-bow-representation" title="Permalink to this headline">¶</a></h2>
+<p>We have ignored one question above in logistic regression: what is the
+feature extractor <span class="math notranslate nohighlight">\(\phi\)</span>? We need to represent the document as a
+vector that can work with our linear model.</p>
+<p>How are we going to represent a piece of text? If we want the
+representation the whole sequence it’s going to be challenging (an
+exponentially large set). Following our intuition, it may be sufficient
+to just consider individual words for our task. The BoW representation
+is a vector <span class="math notranslate nohighlight">\(x = (1, x_1, \ldots, x_d)\)</span> where
+<span class="math notranslate nohighlight">\(x_i \in \mathbb{N}\)</span>. Each coordinate corresponds to a unique word
+in the vocabulary, thus <span class="math notranslate nohighlight">\(d\)</span> is the vocabulary size here. Note that
+the first dimensition corresponds to the bias term. The value
+<span class="math notranslate nohighlight">\(x_i\)</span> is the count of the <span class="math notranslate nohighlight">\(i\)</span>-th word in the input text.
+It’s called a bag of words because we are throwing away the position
+information.</p>
+<p><strong>Example.</strong> To map a sequence of tokens to the BoW vector, first we
+need to build the vocabulary.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vocab</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">Vocab</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">count_tokens</span><span class="p">(</span><span class="n">pos_tokens</span> <span class="o">+</span> <span class="n">neg_tokens</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">19960</span>
+</pre></div>
+</div>
+<p>Convert an example to BoW vector representation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># map words to ints</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vocab</span><span class="p">(</span><span class="n">mini_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+<span class="c1"># convert to vector of counts</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">npx</span><span class="o">.</span><span class="n">one_hot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;feature vector size:&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># show counts</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;top word counts:&#39;</span><span class="p">)</span>
+<span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">10</span><span class="p">]]</span>
+<span class="nb">print</span><span class="p">([(</span><span class="n">vocab</span><span class="o">.</span><span class="n">idx_to_token</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">feature</span> <span class="n">vector</span> <span class="n">size</span><span class="p">:</span> <span class="p">(</span><span class="mi">19960</span><span class="p">,)</span>
+<span class="n">top</span> <span class="n">word</span> <span class="n">counts</span><span class="p">:</span>
+<span class="p">[(</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p><strong>Side note.</strong> Note that here the feature vector is different from the
+one we used for the Naive Bayes model. In <a class="reference internal" href="#sec-nb"><span class="std std-numref">Section 3.2</span></a>, our
+effective feature vector (we didn’t need to explicit represent it then)
+is a sequence of words in the input, thus its length varies across
+examples, whereas here the feature vector has a fixed dimension of the
+vocabulary size. One can show that the Naive Bayes model we described
+above corresponds to assuming a multinomial distribution of the count
+vector <span class="math notranslate nohighlight">\(\phi(x)\)</span>, thus it’s also called a Multinomial Naive Bayes
+model.</p>
+</div>
+<div class="section" id="feature-extractor">
+<span id="sec-feature-extractor"></span><h2><span class="section-number">3.6. </span>Feature extractor<a class="headerlink" href="#feature-extractor" title="Permalink to this headline">¶</a></h2>
+<p>Looking at the word counts in our BoW feature vector above, clearly, we
+don’t have very informative features. In addition, only considering
+single words (<strong>unigram</strong>) breaks compound nouns (e.g. “ice cream”) and
+proper nouns (e.g. “New York”). It’s also hard to represent negation
+(e.g. “not good at all”), which is important especially in sentiment
+classification. One easy fix is to consider an <strong>n-gram</strong> (<span class="math notranslate nohighlight">\(n\)</span>
+consecutive words in a document) as a single word. For text
+classification, bi-gram is commonly used.</p>
+<p>But what if we want to use even richer features, such as whether the
+suffix of a word contains repeated letters (e.g. “yayyyyy”). One
+advantage of using logistic regression instead of Naive Bayes is that it
+allows for rich features using the feature extractor <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<p>For example, we can define the following functions given an input
+<span class="math notranslate nohighlight">\(x\)</span> of <span class="math notranslate nohighlight">\(n\)</span> tokens with label <span class="math notranslate nohighlight">\(y\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-notes-text-classification-8">
+<span class="eqno">(3.6.1)<a class="headerlink" href="#equation-notes-text-classification-8" title="Permalink to this equation">¶</a></span>\[\begin{split}\phi_1(x) &amp;= \begin{cases}
+1 &amp; \text{$\exists x_i\in \{x_1,\ldots x_n\}$ such that $x_i=$&quot;happy&quot;} \\
+0 &amp; \text{otherwise}
+\end{cases} ,
+\\
+\phi_2(x) &amp;= \begin{cases}
+1 &amp; \text{$\exists x_i\in \{x_1,\ldots x_n\}$ such that $\text{suffix}(x_i, 4)=$&quot;yyyy&quot;} \\
+0 &amp; \text{otherwise}
+\end{cases} ,\end{split}\]</div>
+<p>so on and so forth.</p>
+<p><strong>Side note.</strong> In practice, we may have a huge number of features
+(e.g. all n-grams in a corpus). However, for NLP problems the features
+are often sparse, meaning that we only have a handful of non-zero
+features. Thus it’s common to represent the feature value as a string
+and hash it to integers (feature index),
+e.g. <span class="math notranslate nohighlight">\(\text{hash}(\text{&quot;w=happy&quot;}) = 1\)</span>. See
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.FeatureHasher.html#sklearn.feature_extraction.FeatureHasher">FeatureHasher</a>
+from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>.</p>
+</div>
+<div class="section" id="evaluation">
+<h2><span class="section-number">3.7. </span>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+<div class="section" id="additional-readings">
+<h2><span class="section-number">3.8. </span>Additional readings<a class="headerlink" href="#additional-readings" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Sida Wang and Christopher D. Manning. <a class="reference external" href="http://www.sidaw.xyz/pubs/wang2012simple.pdf">Baselines and Bigrams: Simple,
+Good Sentiment and Topic
+Classification.</a> ACL
+2012.</p></li>
+<li><p>Andrew Ng and Michael Jordan. <a class="reference external" href="https://ai.stanford.edu/~ang/papers/nips01-discriminativegenerative.pdf">On discriminative versus generative
+classifiers: A comparison of logistic regression and naive
+Bayes.</a>
+NeurIPS 2002.</p></li>
+<li><p>Michael Collins. <a class="reference external" href="http://www.cs.columbia.edu/~mcollins/loglinear.pdf">Notes on Log-linear
+models</a>.</p></li>
+</ul>
+</div>
+</div>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">3. Text classification</a><ul>
+<li><a class="reference internal" href="#an-intuitive-approach">3.1. An intuitive approach</a></li>
+<li><a class="reference internal" href="#naive-bayes-model">3.2. Naive Bayes model</a></li>
+<li><a class="reference internal" href="#maximum-likelihood-estimation">3.3. Maximum likelihood estimation</a><ul>
+<li><a class="reference internal" href="#laplace-smoothing">3.3.1. Laplace smoothing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#logistic-regression">3.4. Logistic regression</a></li>
+<li><a class="reference internal" href="#bag-of-words-bow-representation">3.5. Bag-of-words (BoW) representation</a></li>
+<li><a class="reference internal" href="#feature-extractor">3.6. Feature extractor</a></li>
+<li><a class="reference internal" href="#evaluation">3.7. Evaluation</a></li>
+<li><a class="reference internal" href="#additional-readings">3.8. Additional readings</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="basic_ml.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>2. Basic machine learning</div>
+         </div>
+     </a>
+     <a id="button-next" href="distributed_representation.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>4. Distributed word representations</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

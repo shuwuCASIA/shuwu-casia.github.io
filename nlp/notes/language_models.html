@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>5. Language models &#8212; Natural Language Processing 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/nyu-logo.jpg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. Sequence labeling" href="sequence_labeling.html" />
+    <link rel="prev" title="4. Distributed word representations" href="distributed_representation.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html">Lecture notes</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">5. </span>Language models</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/notes/language_models.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://www.gradescope.com/courses/148490">
+                  <i class="fas fa-book-open"></i>
+                  Gradescope
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://piazza.com/class/kcqpkn4c8uj4fz">
+                  <i class="fas fa-comments"></i>
+                  Piazza
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://newclasses.nyu.edu/portal/site/e0d2a062-6a1d-4eec-9f35-6ccce6b4358d">
+                  <i class="fas fa-school"></i>
+                  NYUClasses
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_ml.html">2. Basic machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_classification.html">3. Text classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributed_representation.html">4. Distributed word representations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5. Language models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_labeling.html">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_ml.html">2. Basic machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_classification.html">3. Text classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributed_representation.html">4. Distributed word representations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5. Language models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_labeling.html">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <div class="section" id="language-models">
+<h1><span class="section-number">5. </span>Language models<a class="headerlink" href="#language-models" title="Permalink to this headline">¶</a></h1>
+<p>So far we have been concerned with classification problems where the
+input is text and the output is a categorical label. Starting from this
+week, we will consider problems where the output is a sequence of
+symbols. Many NLP tasks fall in this category.</p>
+<p>Before going into sequence prediction, let’s consider the problem of
+density estimation, i.e. assigning a probability to a sequence of words.
+Why do we care about this problem? Well, for applcations where the
+output are sentences, e.g. speech recognition and machine translation,
+we want to measure how fluent the output sentences are; in other words,
+how likely that the sentences are generated by a native speaker of a
+certain language.</p>
+<p>A language model assigns a probability to any sequence of words. Let
+<span class="math notranslate nohighlight">\(x_1, \ldots, x_n\)</span> be a sequence of <span class="math notranslate nohighlight">\(n\)</span> tokens, how should
+we model <span class="math notranslate nohighlight">\(p(x_1, \ldots, x_n)\)</span>? We have already encountered a
+similar problem in text classification. If we assume that
+<span class="math notranslate nohighlight">\(x_i\)</span>’s are independent like in Naive Bayes models, then we have
+<span class="math notranslate nohighlight">\(p(x_1, \ldots, x_n) = \prod_{i=1}^np(x_i)\)</span>. Can we do better?
+Recall the chain rule of probability, we have</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-0">
+<span class="eqno">(5.1)<a class="headerlink" href="#equation-notes-language-models-0" title="Permalink to this equation">¶</a></span>\[p(x_1, \ldots, x_n) =  p(x_1) p(x_2\mid x_1) \cdots p(x_n\mid x_1, \ldots, x_{n-1}) \;.\]</div>
+<p>Now, we can model each conditional probability with a context of
+<span class="math notranslate nohighlight">\(m\)</span> words by a categorical distribution, and the MLE estimate of,
+say <span class="math notranslate nohighlight">\(p(\text{jumped} \mid \text{the brown fox})\)</span> is simply the
+count of “jumped” in our corpus divided by the count of the trigram “the
+brown fox”. The problem is that we will need a huge number of parameters
+for this model given that the number of conext increases exponentially
+with the context size. Due to the sparsity of language, we are unlikely
+to get enough data to estimate these parameters.</p>
+<div class="section" id="n-gram-language-models">
+<h2><span class="section-number">5.1. </span>N-gram language models<a class="headerlink" href="#n-gram-language-models" title="Permalink to this headline">¶</a></h2>
+<p>To simplify the model above, let’s use the Markov assumption: a token
+only depends on <span class="math notranslate nohighlight">\(k\)</span> previous tokens:</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-1">
+<span class="eqno">(5.1.1)<a class="headerlink" href="#equation-notes-language-models-1" title="Permalink to this equation">¶</a></span>\[p(x_1, \ldots, x_n) \approx \prod_{i=1}^n p(x_i\mid x_{i-k}, \ldots x_{i-1}) \;.\]</div>
+<p>Note that the Naive Bayes assumption corresponds to a unigram language
+model here. In general, a <span class="math notranslate nohighlight">\(n\)</span>-gram model assumes that each token
+depends on the previous <span class="math notranslate nohighlight">\(n-1\)</span> tokens.</p>
+<p>The MLE estimate of the conditional probabilies are:</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-2">
+<span class="eqno">(5.1.2)<a class="headerlink" href="#equation-notes-language-models-2" title="Permalink to this equation">¶</a></span>\[p_{\text{MLE}}(x_i\mid x_{i-k}, \ldots x_{i-1}) = \frac{\text{count}(x_{i-k}, \ldots, x_{i-1}, x_i)}{\sum_{w\in V}\text{count}(x_{i-k}, \ldots, x_{i-1}, w)}
+= \frac{\text{count}(x_{i-k}, \ldots, x_{i-1}, x_i)}{\text{count}(x_{i-k}, \ldots, x_{i-1})}
+\;.\]</div>
+<p>In words, the probability of a token following some context is simply
+the fraction of times we see that token following the context out of all
+tokens following the context in our corpus. Check out the <a class="reference external" href="https://books.google.com/ngrams">ngram
+counts</a> from Google Books.</p>
+<p><strong>Exercise.</strong> Derive the MLE estimate for n-gram language models. [Hint:
+Note that given a context, the conditional probabilities need to sum to
+one. You can use Langrange multiplier to solve the constrained
+optimization problem.]</p>
+<div class="section" id="backoff-and-interpolation">
+<h3><span class="section-number">5.1.1. </span>Backoff and interpolation<a class="headerlink" href="#backoff-and-interpolation" title="Permalink to this headline">¶</a></h3>
+<p>In practice, what context size should we use? Larger <span class="math notranslate nohighlight">\(n\)</span> helps us
+capture long-range dependency in language, but small <span class="math notranslate nohighlight">\(n\)</span> allows
+for more accurate estimation.</p>
+<p><strong>Backoff.</strong> One simple idea is to use larger <span class="math notranslate nohighlight">\(k\)</span> when we have
+more “evidence”. For example, use the maximum <span class="math notranslate nohighlight">\(n\)</span> where we have
+more than <span class="math notranslate nohighlight">\(\alpha\)</span> counts, and the minimum <span class="math notranslate nohighlight">\(n\)</span> we use is 1,
+i.e. unigram.</p>
+<p><strong>Interpolation.</strong> A better idea is to interpolate probabilities
+estimated from different n-grams instead of committing to one. For
+example,</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-3">
+<span class="eqno">(5.1.3)<a class="headerlink" href="#equation-notes-language-models-3" title="Permalink to this equation">¶</a></span>\[p(x_i\mid x_{i-1}, x_{i-2}) =
+\lambda_1 p(x_i) +
+\lambda_2 p(x_i\mid x_{i-1}) +
+\lambda_3 p(x_i\mid x_{i-1}, x_{i-2})
+\;.\]</div>
+<p>We can choose <span class="math notranslate nohighlight">\(\lambda_i\)</span>’s using cross validation.</p>
+</div>
+<div class="section" id="smoothing">
+<h3><span class="section-number">5.1.2. </span>Smoothing<a class="headerlink" href="#smoothing" title="Permalink to this headline">¶</a></h3>
+<p>Note that the above model would assign zero probability to any sequence
+containing a word that never occurs in the training corpus, which is
+obviously undersirable. So we would like to assign probabilities to
+unseen words as well.</p>
+<p>One such technique we have already seen is Laplace smoothing where we
+add one to each count. It works well for text classification where we
+only considered unigram probabilities. However, for longer context, many
+tokens are unlikely to occur. For example, given the context “I have
+just”, only some words (e.g. verbs) are likely to follow; even if we
+have access to infinite data, the probability of certain words are close
+to zero. Thus Laplace smoothing would assign too much probability mass
+to unseen words when the true occurences are sparse. One quick fix is to
+use a pseudocount of <span class="math notranslate nohighlight">\(\alpha\)</span> where <span class="math notranslate nohighlight">\(\alpha \lt 1\)</span>, but the
+optimal value is data dependent.</p>
+<p>Next, let’s consider a better solution. Instead of allocating a fixed
+amount of probability mass to the unseen words, we can estimate the
+probability of an unseen word by the probability of words that we’ve
+seen once, assuming that the frequencies of these words are similar. For
+example, suppose you have arrived on a new planet and want to estimate
+the probability of different species on this planet. So far, you have
+observed 3 tats, 4 gloins, 1 dido, and 1 bity. What is the chance that
+the next animal you encounter will be of an unseen species? We can
+estimate it by the probability of dido and bity which have occurred
+once, i.e. <span class="math notranslate nohighlight">\((1+1)/(3+4+1+1)=2/9\)</span>.</p>
+<div class="section" id="good-turing-smoothing">
+<h4><span class="section-number">5.1.2.1. </span>Good-Turing smoothing<a class="headerlink" href="#good-turing-smoothing" title="Permalink to this headline">¶</a></h4>
+<p>Let’s consider the problem of estimating the count of species (words in
+the case of language modeling), given observations of a subset of these
+species. Let <span class="math notranslate nohighlight">\(N_r\)</span> be the number of species that have occurred
+<span class="math notranslate nohighlight">\(r\)</span> times. For example,</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 39%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(r\)</span></p></th>
+<th class="head"><p>species</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(N_r\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>dido, bity, …</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>tike, wab, …</p></td>
+<td><p>15</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<p>We simulate the scenario with unseen species by cross validation,
+i.e. set aside a subset of objects as the held-out set. Now, consider
+<strong>leave-one-out</strong> cross validation: for a dataset of size <span class="math notranslate nohighlight">\(M\)</span>, we
+run <span class="math notranslate nohighlight">\(M\)</span> experiment where each time exactly one object is taken as
+the held-out set and the rest <span class="math notranslate nohighlight">\(M-1\)</span> objects form the training set.
+In the <span class="math notranslate nohighlight">\(M\)</span> held-out sets, how many objects never occur in their
+corresponding training set? Note that once we move the objects occurring
+only once in the training set to the held-out set, their counts in the
+training set would be zero. Thus the fraction of held-out objects that
+never occur in the training set is <span class="math notranslate nohighlight">\(\frac{N_1}{M}\)</span>. Similarly, the
+fraction of held-out objects that occur <span class="math notranslate nohighlight">\(k\)</span> times in the training
+set is <span class="math notranslate nohighlight">\(\frac{(k+1)N_{k+1}}{M}\)</span>. Therefore, we estimate the
+probability of unseen objects by</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-4">
+<span class="eqno">(5.1.4)<a class="headerlink" href="#equation-notes-language-models-4" title="Permalink to this equation">¶</a></span>\[p_0 = \frac{N_1}{M} \;,\]</div>
+<p>and the probability of objects that occur <span class="math notranslate nohighlight">\(k\)</span> times in the
+training set by</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-5">
+<span class="eqno">(5.1.5)<a class="headerlink" href="#equation-notes-language-models-5" title="Permalink to this equation">¶</a></span>\[p_k = \frac{(k+1)N_{k+1}}{MN_{k}} \;.\]</div>
+<p>We divide by <span class="math notranslate nohighlight">\(N_k\)</span> when computing <span class="math notranslate nohighlight">\(p_k\)</span> because it could be
+any one of the <span class="math notranslate nohighlight">\(N_k\)</span> species. Comparing <span class="math notranslate nohighlight">\(p_k\)</span> with the MLE
+estimate <span class="math notranslate nohighlight">\(\frac{k}{M}\)</span>, we see that Good-Turing smoothing uses an
+adjusted count <span class="math notranslate nohighlight">\(c_k = \frac{(k+1)N_{k+1}}{N_k}\)</span>. For text, usually
+we have <span class="math notranslate nohighlight">\(N_k \gt N_{k+1}\)</span> and <span class="math notranslate nohighlight">\(c_k \lt k\)</span>, i.e. the counts
+of observed words are discounted and some probability mass is allocated
+to the unseen words.</p>
+<p>In practice, Good-Turing estimation is not used directly for n-gram
+language models because it doesn’t combine higher-order models with
+lower-order ones, but the idea of using discounted counts is used in
+other smoothing techniques.</p>
+<p>TODO: demo</p>
+</div>
+<div class="section" id="kneser-ney-smoothing">
+<h4><span class="section-number">5.1.2.2. </span>Kneser-Ney smoothing<a class="headerlink" href="#kneser-ney-smoothing" title="Permalink to this headline">¶</a></h4>
+<p>Let’s now turn to Kneser-Ney smoothing, which is widely used for n-gram
+language models. There are two key ideas in Kneser-Ney smoothing.</p>
+<p>First, use absolute discounting. In Good-Turing smoothing, we use
+discounted counts for each n-gram. It turns out that in practice the
+count is often close to 0.75. So instead of computing the Good-Turing
+counts, let’s just subtract 0.75 or some constant. Take a bigram
+language model for example, we have</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-6">
+<span class="eqno">(5.1.6)<a class="headerlink" href="#equation-notes-language-models-6" title="Permalink to this equation">¶</a></span>\[p(x_i\mid x_{i-1}) = \frac{\max(\text{count}(x_{i-1}, x_i) - \delta, 0)}{\text{count}(x_{i-1})} \;,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta\)</span> is the discount.</p>
+<p>Second, consider versatility when interploating with lower-order models.
+Note that in interplation, lower-order models are crucial only when the
+higher-order context is rare in our training set. As a motivating
+example, consider the bigram “San Francisco”. Suppose “San Francisco” is
+a frequenty phrase in our corpus, then the word “Francisco” will have
+high unigram probability, however, it almost always occurs after “San”.
+In an interplated model, if “San” is in the context, then the bigram
+model should provide a good estimate; if “San” is not in the context and
+we backoff to the unigram model, the MLE estimate would assign large
+probability to “Francisco”, which is undersirable. Therefore, instead of
+using the unigram probability of “Francisco”, we compute the fraction of
+context followed by it:
+<span class="math notranslate nohighlight">\(\frac{\text{number of bigram types ends with &quot;Francisco&quot;}}{\text{total number of bigrams types}}\)</span>.
+This can be considered as the versatility of the word as it measures how
+many distinct context the word can follow (normalized by the total
+number of context). More generally, we have</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-7">
+<span class="eqno">(5.1.7)<a class="headerlink" href="#equation-notes-language-models-7" title="Permalink to this equation">¶</a></span>\[\beta(x_i) = \frac{|\{x\in V\colon \text{count}(x, x_i) &gt; 0\}|}
+{|\{x, x'\in V\colon \text{count}(x, x') &gt; 0\}|} \;.\]</div>
+<p>Note that (a) <span class="math notranslate nohighlight">\(\beta(w_i)\)</span> is not a probabilty distribution,
+although it is between 0 and 1; (b) we count <em>types</em>, or unique n-grams,
+and don’t use counts as in the MLE estimate.</p>
+<p>Now, putting absolute discount and versatility together, we have</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-8">
+<span class="eqno">(5.1.8)<a class="headerlink" href="#equation-notes-language-models-8" title="Permalink to this equation">¶</a></span>\[p_{\text{KN}}(x_i\mid x_{i-1})
+= \frac{\max(\text{count}(x_{i-1}, x_i) - \delta, 0)}{\text{count}(x_{i-1})}
++ \lambda(x_{i-1})\beta(x_i) \;,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda(x_{i-1})\)</span> is a normalization constant to make sure
+that <span class="math notranslate nohighlight">\(\sum_{x\in V} p_{\text{KN}}(x\mid x_{i-1}) = 1\)</span>.</p>
+<p><strong>Exercise:</strong> Show that <span class="math notranslate nohighlight">\(\lambda\)</span> depends on the context.</p>
+<p>For higher-order models, we can define it recursively as</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-9">
+<span class="eqno">(5.1.9)<a class="headerlink" href="#equation-notes-language-models-9" title="Permalink to this equation">¶</a></span>\[p_{\text{KN}}(x_i\mid x_{i-k}, \ldots, x_{i-1})
+= \frac{\max(\text{count}(x_{i-k}, \ldots, x_i) - \delta, 0)}{\text{count}(x_{i-k}, \ldots, x_{i-1})}
++ \lambda(x_{i-k}, \ldots, x_{i-1})
+p_{\text{KN}}(x_i\mid x_{i-k+1}, \ldots, x_{i-1}) \;.\]</div>
+</div>
+</div>
+</div>
+<div class="section" id="neural-language-models">
+<h2><span class="section-number">5.2. </span>Neural language models<a class="headerlink" href="#neural-language-models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="language-modeling-as-a-classification-task">
+<h3><span class="section-number">5.2.1. </span>Language modeling as a classification task<a class="headerlink" href="#language-modeling-as-a-classification-task" title="Permalink to this headline">¶</a></h3>
+<p>In n-gram language models, we model
+<span class="math notranslate nohighlight">\(p(x_i\mid x_{i-k}, \ldots, x_{i-1})\)</span> by a multinomial
+distribution. If we consider <span class="math notranslate nohighlight">\(x_i\)</span> as the label of the input
+context <span class="math notranslate nohighlight">\(x_{i-k}, \ldots, x_{i-1}\)</span>, this becomes a text
+classification problem and we can use logistic regression:</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-10">
+<span class="eqno">(5.2.1)<a class="headerlink" href="#equation-notes-language-models-10" title="Permalink to this equation">¶</a></span>\[p(x_i\mid x_{i-k}, \ldots, x_{i-1})
+= \frac{\exp\left [ w_i\cdot\phi(x_{i-k}, \ldots, x_{i-1}) \right ]}
+       {\sum_{j\in|V|}\exp\left [ w_j\cdot\phi(x_{i-k}, \ldots, x_{i-1}) \right ]}
+\;.\]</div>
+<p>The main task now is to design the feature extractor <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<p><strong>Exercise:</strong> Design a feature extractor. What would be useful features
+for predicting the next word?</p>
+</div>
+<div class="section" id="feed-forward-neural-networks">
+<h3><span class="section-number">5.2.2. </span>Feed-forward neural networks<a class="headerlink" href="#feed-forward-neural-networks" title="Permalink to this headline">¶</a></h3>
+<p>Before neural networks dominated NLP, a lot of effort in building NLP
+models goes into feature engineering, which is basically the exercise
+you went through above. The key idea in neural networks is to directly
+learn these features instead of manually designing them. We have already
+seen something similar in learned word embeddings: we don’t necessarily
+know what each dimension means, but we know that it would represent some
+useful information for predicting words in the context for example.</p>
+<p>Now, consider a general binary classification task with raw inputs
+<span class="math notranslate nohighlight">\(x=[x_1, \ldots, x_p]\)</span>. Instead of specifying features
+<span class="math notranslate nohighlight">\(\phi_1(x), \phi_2(x), \ldots\)</span>, let’s learn <span class="math notranslate nohighlight">\(k\)</span> intermediate
+features <span class="math notranslate nohighlight">\(h(x) = [h_1(x), \ldots, h_k(x)]\)</span>. In neural networks,
+<span class="math notranslate nohighlight">\(h_i\)</span>’s are called hidden units. Then we can make predictions
+based on these features using the score <span class="math notranslate nohighlight">\(w^Th(x)\)</span>. How should we
+parameterize <span class="math notranslate nohighlight">\(h_i\)</span>’s then? One option is to use a linear
+function that we’re already pretty familiar with:
+<span class="math notranslate nohighlight">\(h_i(x) = w_i^Tx\)</span>. However, the composition of linear functions is
+still linear, so we didn’t really gain anything from learning these
+intermediate features.</p>
+<p>The power from neural networks come from its non-linear activation
+function:</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-11">
+<span class="eqno">(5.2.2)<a class="headerlink" href="#equation-notes-language-models-11" title="Permalink to this equation">¶</a></span>\[h_i(x) = \sigma(w_i^Tx) \;,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is usually a non-linear, differentiable (for SGD)
+function. Here are some common activation functions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">display</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">fmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ReLU&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">legend</span><span class="o">.</span><span class="n">Legend</span> <span class="n">at</span> <span class="mh">0x7fbd1a5da160</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="../_images/output_language_models_0c4996_1_1.svg" src="../_images/output_language_models_0c4996_1_1.svg" /></div>
+<p>Now let’s replace our n-gram model with a feed-forward neural network.
+The input are <span class="math notranslate nohighlight">\(k\)</span> words in the context. Each word is mapped to a
+dense vector, which is then concatenated together to form a single
+vector representing the context. The last layer is a logistic function
+that predicts the next word.</p>
+<div class="figure align-default" id="id1">
+<img alt="../_images/fflm.pdf" src="../_images/fflm.pdf" />
+<p class="caption"><span class="caption-number">Fig. 5.2.1 </span><span class="caption-text">Feed-forward language model</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p><strong>Exercise:</strong> How can we use a BoW representation in feed-forward neural
+networks? What’s the advantage and disadvantage?</p>
+<div class="section" id="backpropogation">
+<h4><span class="section-number">5.2.2.1. </span>Backpropogation<a class="headerlink" href="#backpropogation" title="Permalink to this headline">¶</a></h4>
+<p>Neural network is just like any other model we have seen, so we can
+learn its parameters by minimizing the average loss using SGD. The main
+challenge here is that the objective function is now non-convex, which
+means that SGD may only lead us to a local optimum. However, in
+practice, we have found that SGD is quite effective for learning neural
+models.</p>
+<p>Here our loss function is negative log-likelihood. Let’s compute the
+partial derivative w.r.t. <span class="math notranslate nohighlight">\(W_{21}[ij]\)</span> using the chain rule.</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-12">
+<span class="eqno">(5.2.3)<a class="headerlink" href="#equation-notes-language-models-12" title="Permalink to this equation">¶</a></span>\[\frac{\partial \ell}{\partial W_{21}[ij]}
+= \frac{\partial \ell}{\partial s_1[j]}
+  \frac{\partial s_1[j]}{\partial W_{21}[ij]}
+\;,\]</div>
+<p>where <span class="math notranslate nohighlight">\(s_1[j] = W_{21}[\cdot j]^T e\)</span>. As an exercise, try to
+compute <span class="math notranslate nohighlight">\(\frac{\partial ell}{\partial W_{11}[ij]}\)</span>. You will see
+that it depends on <span class="math notranslate nohighlight">\(\frac{\partial \ell}{\partial W_{21}[ij]}\)</span>,
+which means that we can reuse previous results if we choose to compute
+the partial derivatives in a specific order!</p>
+<p>In general, we can think of the function to be optimized as a
+computation graph, where the nodes are intermediate results
+(e.g. <span class="math notranslate nohighlight">\(s_1\)</span>) and the edges are the mapping from the input node to
+the output node. Backpropogation computes partial derivatives in
+specific orders to save computation (think dynamic programming). It can
+be automatically done using modern frameworks such as Tensorflow,
+PyTorch, and MXNet.</p>
+</div>
+</div>
+<div class="section" id="recurrent-neural-networks-rnn">
+<span id="sec-rnn"></span><h3><span class="section-number">5.2.3. </span>Recurrent neural networks (RNN)<a class="headerlink" href="#recurrent-neural-networks-rnn" title="Permalink to this headline">¶</a></h3>
+<p>Feed-forward neural language model uses a fixed-length context. However,
+intuitively some words only require a short context to predict,
+e.g. functional words like “of”, while others require longer context,
+e.g. pronouns like “he” and “she”. So we would like to have a dynamic
+length of context and capture long-range context beyond five words
+(which is the typical length of context in n-gram models).</p>
+<p>Recurrent neural network is a model that captures arbitrarily long
+context. The key idea is to update the hidden units recurrently given
+new inputs:</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-13">
+<span class="eqno">(5.2.4)<a class="headerlink" href="#equation-notes-language-models-13" title="Permalink to this equation">¶</a></span>\[h_t = \sigma(\underbrace{W_{hh}h_{t-1}}_{\text{previous state}}+
+\underbrace{W_{ih}x_t}_{\text{new input}} + b_h)
+\;.\]</div>
+<p>Note that the definition of <span class="math notranslate nohighlight">\(h_t\)</span> is recurrent, thus it
+incorporates information of all inputs up to time step <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<div class="figure align-default" id="id2">
+<span id="fig-rnnlm"></span><img alt="../_images/rnn.pdf" src="../_images/rnn.pdf" />
+<p class="caption"><span class="caption-number">Fig. 5.2.2 </span><span class="caption-text">Recurrent language model</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>Note that we can obtain the probability distribution of the next word
+using a softmax transformation of the output in <a class="reference internal" href="#fig-rnnlm"><span class="std std-numref">Fig. 5.2.2</span></a>:</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-14">
+<span class="eqno">(5.2.5)<a class="headerlink" href="#equation-notes-language-models-14" title="Permalink to this equation">¶</a></span>\[p(\cdot\mid x_1,\ldots,x_{t-1}) = \text{softmax}(o_t) \;.\]</div>
+<div class="section" id="backpropogation-through-time">
+<h4><span class="section-number">5.2.3.1. </span>Backpropogation through time<a class="headerlink" href="#backpropogation-through-time" title="Permalink to this headline">¶</a></h4>
+<p>How do we do backpropogation on RNNs? If <span class="math notranslate nohighlight">\(h_t\)</span> is not recurrent,
+e.g. it only depends on the input <span class="math notranslate nohighlight">\(x_t\)</span>, then the procedure is the
+same as feed forward neural networks. The fact that <span class="math notranslate nohighlight">\(h_t\)</span> now
+depends on <span class="math notranslate nohighlight">\(h_{t-1}\)</span> and they depend on same parameters
+complicates the computation.</p>
+<p>Let’s focus on the partial derivative
+<span class="math notranslate nohighlight">\(\frac{\partial h_t}{\partial W_{hh}[ij]}\)</span>. (The rest can be
+easily computed, same as in feed forward neural networks.)</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-15">
+<span class="eqno">(5.2.6)<a class="headerlink" href="#equation-notes-language-models-15" title="Permalink to this equation">¶</a></span>\[\begin{split}\underbrace{\frac{\partial h_t}{\partial W_{hh}[ij]}}_{d_t} &amp;=
+\frac{\partial}{\partial W_{hh}[ij]} \sigma(
+    \underbrace{W_{hh}h_{t-1}+W_{ih}x_t}_{s}) \\
+&amp;= \frac{\partial \sigma}{\partial s} \frac{\partial s}{\partial W_{hh}[ij]} \\
+&amp;= \frac{\partial \sigma}{\partial s} \left (
+        h_{t-1} + W_{hh}\underbrace{\frac{\partial h_{t-1}}{\partial W_{hh}[ij]}}_{d_{t-1}}
+    \right )
+\;.\end{split}\]</div>
+<p>Now that we have written the derivative
+<span class="math notranslate nohighlight">\(d_t:=\frac{\partial h_t}{\partial W_{hh}[ij]}\)</span> in a recurrent
+form, we can easily compute it.</p>
+<p>However, there are several practical problems. If you expand the
+recurrent formula, you will see that it involves repreated
+multiplication of <span class="math notranslate nohighlight">\(W_{hh}\)</span>. Why is this bad? First, it’s expensive
+(both time and space). Second, with large powers of <span class="math notranslate nohighlight">\(W_{hh}\)</span>, the
+gradient <em>vanishes</em> if its eigenvalues are less than 1 and <em>explodes</em> if
+they are greater than 1. Two quick ways to fix the problmes are: First,
+truncate the backpropogation after <span class="math notranslate nohighlight">\(k\)</span> steps, i.e. we assume that
+<span class="math notranslate nohighlight">\(h_{t-k}\)</span> does not depend on previous states. This is usually
+achieved by <code class="docutils literal notranslate"><span class="pre">detach</span></code> in deep learning frameworks. Second, we might
+want to clip the gradient to avoid exploding gradient.</p>
+</div>
+<div class="section" id="gated-recurrent-neural-networks">
+<h4><span class="section-number">5.2.3.2. </span>Gated recurrent neural networks<a class="headerlink" href="#gated-recurrent-neural-networks" title="Permalink to this headline">¶</a></h4>
+<p>Now, let’s try to fix the gradient vanishing/exploding problem from a
+modeling perspective. Note that in RNN the information in previous
+states influence future states only through <span class="math notranslate nohighlight">\(W_{hh}\)</span>. The gradient
+explodes when an input has large impact on a distant output, i.e. there
+is long-range dependency. Similarly, the gradient may vanish when an
+input is irrelevant. Thus it would be desirable to have some mechanism
+to decide when to “memorize” a state and when to “forget” it. This is
+the key idea in gated RNNs.</p>
+<p>Here we describe one variant of RNN with gating, the <strong>long-short term
+memory (LSTM)</strong> architecture. Following our intuition, we would like
+additional memory to save useful information in the sequence. Let’s
+design a memory cell. It should update the memory with new information
+from the current time step when it’s important, and reset the memory
+when the information stored in it is no longer useful. Let’s use
+<span class="math notranslate nohighlight">\(\tilde{c}_t\)</span> to denote the new memory. Updating or resetting the
+memory can be controled by two gates: an input gate <span class="math notranslate nohighlight">\(i_t\)</span> and a
+forget gate <span class="math notranslate nohighlight">\(f_t\)</span>, both are vectors whose dimensions are the same
+as the memory cell. We compute the memory cell <span class="math notranslate nohighlight">\(c_t\)</span> by</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-16">
+<span class="eqno">(5.2.7)<a class="headerlink" href="#equation-notes-language-models-16" title="Permalink to this equation">¶</a></span>\[c_t = \underbrace{i_t \odot \tilde{c}_t}_{\text{update with new memory}} +
+    \underbrace{f_t \odot c_{t-1}}_{\text{reset old memory}}
+\;,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\odot\)</span> denotes elementwise multiplication. The new memory
+<span class="math notranslate nohighlight">\(\tilde{c}_t\)</span> incorporates information from <span class="math notranslate nohighlight">\(x_t\)</span> to the
+previous hidden state <span class="math notranslate nohighlight">\(h_{t-1}\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-17">
+<span class="eqno">(5.2.8)<a class="headerlink" href="#equation-notes-language-models-17" title="Permalink to this equation">¶</a></span>\[\tilde{c}_t = \tanh(W_{xc}x_t + W_{hc}h_{t-1} + b_c) \;.\]</div>
+<p>We can think of <span class="math notranslate nohighlight">\(i_t\)</span> and and <span class="math notranslate nohighlight">\(f_t\)</span> as deciding the
+proportion of information in <span class="math notranslate nohighlight">\(\tilde{c}_t\)</span> and <span class="math notranslate nohighlight">\(c_{t-1}\)</span> to
+incorporate and retain respectively (along each dimension), thus their
+value should be between 0 and 1. Further, we make the decision based on
+past information in the sequence. Thus, we define</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-18">
+<span class="eqno">(5.2.9)<a class="headerlink" href="#equation-notes-language-models-18" title="Permalink to this equation">¶</a></span>\[\begin{split}i_t &amp;= \text{sigmoid}(W_{xi}x_t + W_{hi}h_{t-1} + b_i) \;,\\
+f_t &amp;= \text{sigmoid}(W_{xf}x_t + W_{hf}h_{t-1} + b_f) \;.\end{split}\]</div>
+<p>Finally, we can define the current hidden state <span class="math notranslate nohighlight">\(h_t\)</span> based on the
+memory cell <span class="math notranslate nohighlight">\(c_t\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-19">
+<span class="eqno">(5.2.10)<a class="headerlink" href="#equation-notes-language-models-19" title="Permalink to this equation">¶</a></span>\[\begin{split}h_t &amp;= o_t \odot c_t \;\text{, where} \\
+o_t &amp;= \text{sigmoid}(W_{xo}x_t + W_{ho}h_{t-1} + b_o) \;.\end{split}\]</div>
+<p>Here <span class="math notranslate nohighlight">\(o_t\)</span> is the output gate controlling how much information to
+output (for prediction).</p>
+<p>Now, it may seem a bit redundant to use an additional memory cell. We
+should be able to directly apply the gating mechnism to the hidden
+states. Indeed, this is the key idea in another popular RNN variant,
+gated recurrent unit (GRU). You can read more about GRUs in [<a class="reference external" href="https://d2l.ai/chapter_recurrent-modern/gru.html">D2L
+9.1</a>].</p>
+</div>
+</div>
+</div>
+<div class="section" id="evaluation">
+<h2><span class="section-number">5.3. </span>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
+<p>Like word embeddings, language modeling is not an application by itself.
+It’s usually used in downstream tasks like machine translation and
+speech recognition. So an extrinsic evaluation of language models would
+be to apply them in downstream tasks and measure the improvement voer
+baseline language models. We mainly discuss intrinsic evaluation here.</p>
+<p>From an ML perspective, our goal is to minimize the expected loss (NLL
+in this case). By minimizing the average loss on the training data, we
+hope that the model will also have small loss on unseen test data. So we
+can evaluate language models by their <strong>held-out likelihood</strong>, i.e. the
+likelihood of the test data under the language model, which can be
+easily calculated as</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-20">
+<span class="eqno">(5.3.1)<a class="headerlink" href="#equation-notes-language-models-20" title="Permalink to this equation">¶</a></span>\[\ell({D}) = \sum_{i=1}^{|D|} \log p_\theta(x_i\mid x_{1:i-1}) \;,\]</div>
+<p>where <span class="math notranslate nohighlight">\({D}\)</span> is the held-out set represented as a long sequence of
+tokens, <span class="math notranslate nohighlight">\(\theta\)</span> denotes the parameters of the language model, and
+<span class="math notranslate nohighlight">\(x_{1:i-1}\)</span> denotes the <span class="math notranslate nohighlight">\(x_1, \ldots, x_{i-1}\)</span>.</p>
+<p>To evaluate language models, we often use the information-theoretic
+quantity, <strong>perplexity</strong>, which has a nice physical meaning in this
+context. Perplexity can be computed from the held-out likelihood:</p>
+<div class="math notranslate nohighlight" id="equation-notes-language-models-21">
+<span class="eqno">(5.3.2)<a class="headerlink" href="#equation-notes-language-models-21" title="Permalink to this equation">¶</a></span>\[\text{PPL}(D) = 2^{-\frac{\ell(D)}{|D|}} \;.\]</div>
+<p>Here the log-likelihood and PPL must use the same base. Note that the
+exponent is the average NLL loss on the held-out set. Lower perplexity
+corresponds to higher held-out likelihood, thus is desirable.</p>
+<p>In information theory, perplexity measures how well a distribution
+predicts a sample, and is defined as <span class="math notranslate nohighlight">\(2^{H(p)}\)</span> where <span class="math notranslate nohighlight">\(H\)</span> is
+the entropy and <span class="math notranslate nohighlight">\(p\)</span> is the distribution of the random variable.
+Entropy can be considered as the expected number of bits needed to
+encode the value of the random variable. In our case, we do not know the
+true distribution of text and can only estimate it by a language model.
+So we cannot compute <span class="math notranslate nohighlight">\(H(p)\)</span>, instead, what we are computing is the
+cross-entropy of <span class="math notranslate nohighlight">\(p\)</span> (the true distribution) and <span class="math notranslate nohighlight">\(p_\theta\)</span>
+(our estimate):
+<span class="math notranslate nohighlight">\(-\mathbb{E}_{X\sim p}\log p_\theta(X)\approx -\frac{1}{|D|}\sum_{x_i\in D}\log p_\theta(x_i)\)</span>.
+A low-perplexity model can encode the next word using fewer number of
+bits, i.e. it is better at compressing the text.</p>
+</div>
+<div class="section" id="additional-reading">
+<h2><span class="section-number">5.4. </span>Additional reading<a class="headerlink" href="#additional-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Stanley F. Chen and Joshua Goodman. <a class="reference external" href="http://u.cs.biu.ac.il/~yogo/courses/mt2013/papers/chen-goodman-99.pdf">An empirical study of smoothing
+techniques for language
+modeling.</a></p></li>
+<li><p>Urvashi Khandelwal, He He, Peng Qi and Dan Jurafsky. <a class="reference external" href="https://arxiv.org/pdf/1805.04623.pdf">Sharp Nearby,
+Fuzzy Far Away: How Neural Language Models Use
+Context.</a></p></li>
+<li><p>Andrej Karpathy. <a class="reference external" href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">The Unreasonable Effectiveness of Recurrent Neural
+Networks.</a></p></li>
+</ul>
+</div>
+</div>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">5. Language models</a><ul>
+<li><a class="reference internal" href="#n-gram-language-models">5.1. N-gram language models</a><ul>
+<li><a class="reference internal" href="#backoff-and-interpolation">5.1.1. Backoff and interpolation</a></li>
+<li><a class="reference internal" href="#smoothing">5.1.2. Smoothing</a><ul>
+<li><a class="reference internal" href="#good-turing-smoothing">5.1.2.1. Good-Turing smoothing</a></li>
+<li><a class="reference internal" href="#kneser-ney-smoothing">5.1.2.2. Kneser-Ney smoothing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#neural-language-models">5.2. Neural language models</a><ul>
+<li><a class="reference internal" href="#language-modeling-as-a-classification-task">5.2.1. Language modeling as a classification task</a></li>
+<li><a class="reference internal" href="#feed-forward-neural-networks">5.2.2. Feed-forward neural networks</a><ul>
+<li><a class="reference internal" href="#backpropogation">5.2.2.1. Backpropogation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recurrent-neural-networks-rnn">5.2.3. Recurrent neural networks (RNN)</a><ul>
+<li><a class="reference internal" href="#backpropogation-through-time">5.2.3.1. Backpropogation through time</a></li>
+<li><a class="reference internal" href="#gated-recurrent-neural-networks">5.2.3.2. Gated recurrent neural networks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#evaluation">5.3. Evaluation</a></li>
+<li><a class="reference internal" href="#additional-reading">5.4. Additional reading</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="distributed_representation.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>4. Distributed word representations</div>
+         </div>
+     </a>
+     <a id="button-next" href="sequence_labeling.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>6. Sequence labeling</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

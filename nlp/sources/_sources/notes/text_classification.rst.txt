@@ -1,0 +1,448 @@
+
+Text classification
+===================
+
+We will start our journey with a simple NLP problem, text
+classification. You might have already gone through the core techniques
+if you have taken an ML course, however, we hope to provide some new
+insights from the NLP perspective.
+
+Let’s consider the binary sentiment classification task. Our input is a
+document (e.g. a review), and we want to predict whether it is positive
+or negative.
+
+We will use the IMDB movie review dataset as our running example.
+
+.. code:: python
+
+    from d2l import mxnet as d2l
+    from mxnet import gluon, np, npx
+    import gluonnlp as nlp
+    npx.set_np()
+    train_dataset = nlp.data.IMDB(root='data/imdb', segment='train')
+
+An intuitive approach
+---------------------
+
+Let’s pretend for a second that we don’t know anything about ML or NLP.
+How should we approach this problem? Let’s take a look at the data to
+have a better sense of the problem.
+
+.. code:: python
+
+    print('# training examples:', len(train_dataset))
+    print(train_dataset[0])
+    print('labels:', set([d[1] for d in train_dataset]))
+
+
+.. parsed-literal::
+    :class: output
+
+    # training examples: 25000
+    ['Bromwell High is a cartoon comedy. It ran at the same time as some other programs about school life, such as "Teachers". My 35 years in the teaching profession lead me to believe that Bromwell High\'s satire is much closer to reality than is "Teachers". The scramble to survive financially, the insightful students who can see right through their pathetic teachers\' pomp, the pettiness of the whole situation, all remind me of the schools I knew and their students. When I saw the episode in which a student repeatedly tried to burn down the school, I immediately recalled ......... at .......... High. A classic line: INSPECTOR: I\'m here to sack one of your teachers. STUDENT: Welcome to Bromwell High. I expect that many adults of my age think that Bromwell High is far fetched. What a pity that it isn\'t!', 9]
+    labels: {1, 2, 3, 4, 7, 8, 9, 10}
+
+
+While the review itself can be quite complex, we don’t really need to
+understand everything in it. To separate positive and negative reviews,
+we might be able to just look at individual words. Intuitively, we
+expect to see more nice words in positive reviews such as “fantastic”
+and “wonderful”. Let’s test our intuition against the data.
+
+Before we start to play with the data, we need to **tokenize** the text,
+i.e. separating the string into a list of **tokens**. The definition of
+a token can be language- and task-dependent. One common choise is to
+split the string into words. For example, we can use a simple regex to
+tokenize English text, however, it doesn’t work for Chinese which
+doesn’t have word boundary markers such as spaces. Similarly, in German
+there is no spaces in compound nouns, which can get long. A more general
+solution is to discard the notion of words and tokenize by subwords
+strings, e.g. characters (n-grams) or byte pair encoding. For more
+information on tokenization, read [JM 2.4.2]. In most cases we can use
+existing tokenizers in text processing libraries such as NLTK or SpaCy.
+
+Let’s tokenize the data and map the ratings to binary labels. Also, for
+efficiency we randomly sample a subset.
+
+.. code:: python
+
+    tokenizer = nlp.data.SpacyTokenizer('en')
+    preprocess = lambda d : (tokenizer(d[0].lower()), 1 if int(d[1]) > 5 else 0)
+    
+    import random
+    mini_dataset = [preprocess(d) for d in random.choices(train_dataset, k=1000)]
+    print(mini_dataset[0][1], mini_dataset[0][0][:20])
+
+
+.. parsed-literal::
+    :class: output
+
+    0 ['in', '1993', ',', '"', 'the', 'visitors', '"', 'was', 'an', 'enormous', 'hit', 'in', 'france', '.', 'so', ',', 'the', 'sequence', 'was', 'inevitable']
+
+
+.. code:: python
+
+    import itertools
+    pos_tokens = list(itertools.chain.from_iterable([d[0] for d in mini_dataset if d[1] == 1]))
+    neg_tokens = list(itertools.chain.from_iterable([d[0] for d in mini_dataset if d[1] == 0]))
+    print(len(pos_tokens), len(neg_tokens))
+
+
+.. parsed-literal::
+    :class: output
+
+    134122 141254
+
+
+Now we can check the counts of a word in positive and negative examples.
+
+.. code:: python
+
+    token = 'wonderful'
+    print(pos_tokens.count(token))
+    print(neg_tokens.count(token))
+
+
+.. parsed-literal::
+    :class: output
+
+    49
+    13
+
+
+So a simple heuristic approach is to count the frequency of occurence of
+each word in positive and negative examples, and classifiy an example as
+positive if it contains more words of high-frequency in the positive
+examples. **The key takeaway** is that we can do a reasonable job
+classifying the text based on individual words without understanding its
+meaning.
+
+.. _sec_nb:
+
+Naive Bayes model
+-----------------
+
+
+Now, let’s take a more principled approach, following the key steps we
+talked about last time: design a model, specify a loss function, and
+minimize the average loss.
+
+Consider a probabilistic model for binary classification:
+
+.. math::
+
+
+   f_w(x) = \begin{cases} 
+   1 & \text{if $p_w(y\mid x) > 0.5$} \\
+   0 & \text{otherwise}
+   \end{cases} .
+
+How do we parameterize :math:`p_w(y\mid x)`? Recall the Bayes rule from
+probability:
+
+.. math::
+
+
+   p(y\mid x) = \frac{p(x\mid y) p(y)}{p(x)}
+   = \frac{p(x\mid y) p(y)}{\sum_{y\in\mathcal{Y}}p(x\mid y) p(y)} .
+
+Given that :math:`y` is binary, it’s reasonable to model it as a
+Bernoulli random variable. For more than two classes, we can use a
+categorical distribution.
+
+What about :math:`p(x\mid y)`? Note that it’s the joint probability of
+all words in the sentence :math:`x`:
+:math:`p(x\mid y) = p(x_1, \ldots, x_n \mid y)` (:math:`n` is the
+document length), where :math:`x_i` is the token at the :math:`i`-th
+position in the document. Directly modeling the joint probability will
+require a huge number of parameters (and can only be learned if we have
+a huge corpus). Following our intuition, we can ignore the interaction
+among all words and assume that they are **conditionally independt**.
+This is the key assumption in Naive Bayes models:
+
+.. math::
+
+
+   p(x_1, \ldots, x_n \mid y) = \prod_{i=1}^n p(x_i\mid y) .
+
+Let’s think about the data generating process. To generate a review, we
+first flip a coin to decide its sentiment, then roll a :math:`|V|`-sided
+die for :math:`n` steps to decide the word at each position (:math:`|V|`
+denotes the vocabulary size). Therefore,
+:math:`p(x_1, \ldots, x_n \mid y)` is given by a multinomial
+distribution.
+
+Maximum likelihood estimation
+-----------------------------
+
+Now that we have specified the model, the next step is to estimate
+parameters. For probabilistic models, we can use maximum likelihood
+estimation (MLE), corresponding to the negative log-likelihood (NLL)
+loss.
+
+Our goal is to maximize the log-likelihood of the dataset
+:math:`D = \{x^{(i)}, y^{(i)}\}_{i=1}^N`:
+
+.. math::
+
+
+   \log \prod_{i=1}^N p(x^{(i)}, y^{(i)})
+   = \log \prod_{i=1}^N \prod_{j=1}^{L_i} p(x_j^{(i)}\mid y^{(i)}) p(y^{(i)}),
+
+where :math:`L_i` is the length of the :math:`i`-th example. We can plug
+in the probability mass function (pmf) of Bernoulli and multinomial
+distribution and carry out the optimization.
+
+In this case, we have a closed-form solution (and a very intuitive one).
+The conditionaly probability of each word given a label is simply the
+percentage of time it occurs in documents with that label:
+
+.. math::
+
+
+   p(x_j \mid y) = \frac{\text{count}(x_j, y)}{\sum_{x\in V} \text{count}(x, y)},
+
+where :math:`V` is the vocabulary and :math:`\text{count}(x_j, y)` is
+the count of word :math:`x_j` in documents with label :math:`y`. So we
+have re-discovered our intuitive method through the Naive Bayes model!
+
+Laplace smoothing
+~~~~~~~~~~~~~~~~~
+
+One potential problem of our estimator is that a word that doesn’t occur
+in the training set will have zero probability. For example, if none of
+the positive reviews contain the word “awwwwwwwesome”, any review
+containing that word will have zero probability given the positive
+label. This is undesirable because due to the sparsity of language it’s
+not uncommon to have unknown words at test time. Even if we ignore
+unknown words in the input, we will have problems with rare words (low
+frequency in the training set), because their estimated conditional
+probabilities might be off.
+
+To remedy this problem, we use a technique called “smoothing”, which add
+pseudocounts to the actual count of each word:
+
+.. math::
+
+
+   p(x_j \mid y) = \frac{\alpha + \text{count}(x_j, y)}{\alpha |V| + \sum_{x\in V}\text{count}(x, y)} .
+
+This means that even before we have seen any data, we believe that all
+words should occur :math:`\alpha` times. For Laplace smoothing
+:math:`\alpha=1`.
+
+**Question:** what happens when we increase/decrease :math:`\alpha`?
+
+Logistic regression
+-------------------
+
+You might have wondered in Naive Bayes modeling why did we take the
+trouble to rewrite :math:`p(y\mid x)` using the Bayes’ rule instead of
+directy modeling the conditional distribution. After all, that’s the
+distribution we use for prediction. Also, we don’t have to make
+assumptions on how :math:`x` is generated (e.g. conditional
+independence). In fact, models like Naive Bayes that models
+:math:`p(x\mid y)` are called **generative models** and they usually
+assume a generative story of how the data is generated. Models that
+directly model :math:`p(y\mid x)` are called **discriminative models**.
+Both approaches have merits. However, if you have lots of data,
+empirically discriminative models may be better since it makes less
+assumptions about the data distribution.
+
+How should we model :math:`p(y\mid x)`? Similar to the Naive Bayes
+model, since :math:`y` is binary, we can model it by a Bernoulli
+distribution: :math:`p(y\mid x) = h(x)^y(1-h(x))^{1-y}`. Here
+:math:`h(x)` is :math:`p(y=1\mid x)`. Ideally, we would like :math:`x`
+to enter the equation through a score :math:`w\cdot \phi(x)` (think
+linear regression), where :math:`w` is the **weight vector** we want to
+learn and :math:`\phi\colon \mathcal{X} \rightarrow \mathbb{R}^d` is a
+**feature extractor** that maps a piece of text to a vector. Note that
+here we can ignore the bias term in :math:`w\cdot\phi(x) + b`, assuming
+that a dimension of constant value 1 is incorporated in :math:`\phi`.
+
+To map the score to a probability, we use the **logistic function**:
+
+.. code:: python
+
+    %matplotlib inline
+    from IPython import display
+    from matplotlib import pyplot as plt
+    
+    display.set_matplotlib_formats('svg')
+    x = np.arange(-10, 10, 0.01)
+    plt.plot(x, 1/(1+np.exp(-x)))
+    plt.ylabel('$1/(1+e^{-w\cdot\phi(x)})$')
+    plt.xlabel('$w\cdot\phi(x)$')
+
+
+
+
+.. parsed-literal::
+    :class: output
+
+    Text(0.5, 0, '$w\\cdot\\phi(x)$')
+
+
+
+
+.. figure:: output_text_classification_e2cfc8_10_1.svg
+
+
+Note that larger score corresponds to higher :math:`p(y=1\mid x)`. This
+gives us the logistic regression model:
+
+.. math::
+
+
+   p(y=1\mid x) = \frac{1}{1+e^{-w\cdot\phi(x)}} .
+
+For multiclass classification, :math:`p(y\mid x)` is modeled by a
+multinomial distribution and we transform the scores
+:math:`w_k\cdot \phi(x)` (k:raw-latex:`\in `:raw-latex:`\mathcal{Y}`)
+using the **softmax function**:
+
+.. math::
+
+
+   p(y=k\mid x) = \frac{e^{w_k\cdot\phi(x)}}{\sum_{i\in\mathcal{Y}} e^{w_i\cdot\phi(x)}} .
+
+Similar to Naive Bayes, we can use MLE to estimate :math:`w`. But for
+logistic regression we don’t have a closed-form solution (try it) and
+need to use (stochastic) gradient descent. The objective function is
+concave, so we can always reach a global optimal solution.
+
+**Exercise:** Show that MLE for logistic regression is equivalent to
+minimizing the average logistic loss.
+
+Bag-of-words (BoW) representation
+---------------------------------
+
+We have ignored one question above in logistic regression: what is the
+feature extractor :math:`\phi`? We need to represent the document as a
+vector that can work with our linear model.
+
+How are we going to represent a piece of text? If we want the
+representation the whole sequence it’s going to be challenging (an
+exponentially large set). Following our intuition, it may be sufficient
+to just consider individual words for our task. The BoW representation
+is a vector :math:`x = (1, x_1, \ldots, x_d)` where
+:math:`x_i \in \mathbb{N}`. Each coordinate corresponds to a unique word
+in the vocabulary, thus :math:`d` is the vocabulary size here. Note that
+the first dimensition corresponds to the bias term. The value
+:math:`x_i` is the count of the :math:`i`-th word in the input text.
+It’s called a bag of words because we are throwing away the position
+information.
+
+**Example.** To map a sequence of tokens to the BoW vector, first we
+need to build the vocabulary.
+
+.. code:: python
+
+    vocab = nlp.Vocab(nlp.data.count_tokens(pos_tokens + neg_tokens))
+    print(len(vocab))
+
+
+.. parsed-literal::
+    :class: output
+
+    19960
+
+
+Convert an example to BoW vector representation:
+
+.. code:: python
+
+    # map words to ints
+    x = np.array(vocab(mini_dataset[0][0]))
+    # convert to vector of counts
+    x = npx.one_hot(x, len(vocab)).sum(axis=0)
+    print('feature vector size:', x.shape)
+    # show counts
+    print('top word counts:')
+    ids = [int(i) for i in np.argsort(x)[::-1][:10]]
+    print([(vocab.idx_to_token[i], int(x[i])) for i in ids])
+
+
+.. parsed-literal::
+    :class: output
+
+    feature vector size: (19960,)
+    top word counts:
+    [('the', 25), (',', 13), ('.', 13), ('and', 11), ('in', 10), ('a', 9), ('of', 8), ('movie', 8), ('-', 7), ('is', 5)]
+
+
+**Side note.** Note that here the feature vector is different from the
+one we used for the Naive Bayes model. In :numref:`sec_nb`, our
+effective feature vector (we didn’t need to explicit represent it then)
+is a sequence of words in the input, thus its length varies across
+examples, whereas here the feature vector has a fixed dimension of the
+vocabulary size. One can show that the Naive Bayes model we described
+above corresponds to assuming a multinomial distribution of the count
+vector :math:`\phi(x)`, thus it’s also called a Multinomial Naive Bayes
+model.
+
+.. _sec_feature_extractor:
+
+Feature extractor
+-----------------
+
+
+Looking at the word counts in our BoW feature vector above, clearly, we
+don’t have very informative features. In addition, only considering
+single words (**unigram**) breaks compound nouns (e.g. “ice cream”) and
+proper nouns (e.g. “New York”). It’s also hard to represent negation
+(e.g. “not good at all”), which is important especially in sentiment
+classification. One easy fix is to consider an **n-gram** (:math:`n`
+consecutive words in a document) as a single word. For text
+classification, bi-gram is commonly used.
+
+But what if we want to use even richer features, such as whether the
+suffix of a word contains repeated letters (e.g. “yayyyyy”). One
+advantage of using logistic regression instead of Naive Bayes is that it
+allows for rich features using the feature extractor :math:`\phi`.
+
+For example, we can define the following functions given an input
+:math:`x` of :math:`n` tokens with label :math:`y`:
+
+.. math::
+
+
+   \phi_1(x) &= \begin{cases}
+   1 & \text{$\exists x_i\in \{x_1,\ldots x_n\}$ such that $x_i=$"happy"} \\
+   0 & \text{otherwise}
+   \end{cases} ,
+   \\
+   \phi_2(x) &= \begin{cases}
+   1 & \text{$\exists x_i\in \{x_1,\ldots x_n\}$ such that $\text{suffix}(x_i, 4)=$"yyyy"} \\
+   0 & \text{otherwise}
+   \end{cases} ,
+
+so on and so forth.
+
+**Side note.** In practice, we may have a huge number of features
+(e.g. all n-grams in a corpus). However, for NLP problems the features
+are often sparse, meaning that we only have a handful of non-zero
+features. Thus it’s common to represent the feature value as a string
+and hash it to integers (feature index),
+e.g. :math:`\text{hash}(\text{"w=happy"}) = 1`. See
+`FeatureHasher <https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.FeatureHasher.html#sklearn.feature_extraction.FeatureHasher>`__
+from ``sklearn``.
+
+Evaluation
+----------
+
+TODO
+
+Additional readings
+-------------------
+
+-  Sida Wang and Christopher D. Manning. `Baselines and Bigrams: Simple,
+   Good Sentiment and Topic
+   Classification. <http://www.sidaw.xyz/pubs/wang2012simple.pdf>`__ ACL
+   2012.
+-  Andrew Ng and Michael Jordan. `On discriminative versus generative
+   classifiers: A comparison of logistic regression and naive
+   Bayes. <https://ai.stanford.edu/~ang/papers/nips01-discriminativegenerative.pdf>`__
+   NeurIPS 2002.
+-  Michael Collins. `Notes on Log-linear
+   models <http://www.cs.columbia.edu/~mcollins/loglinear.pdf>`__.

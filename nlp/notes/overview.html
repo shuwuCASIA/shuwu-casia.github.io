@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>1. Overview &#8212; Natural Language Processing 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/nyu-logo.jpg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Basic machine learning" href="basic_ml.html" />
+    <link rel="prev" title="Lecture notes" href="index.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html">Lecture notes</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">1. </span>Overview</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/notes/overview.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://www.gradescope.com/courses/148490">
+                  <i class="fas fa-book-open"></i>
+                  Gradescope
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://piazza.com/class/kcqpkn4c8uj4fz">
+                  <i class="fas fa-comments"></i>
+                  Piazza
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://newclasses.nyu.edu/portal/site/e0d2a062-6a1d-4eec-9f35-6ccce6b4358d">
+                  <i class="fas fa-school"></i>
+                  NYUClasses
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_ml.html">2. Basic machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_classification.html">3. Text classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributed_representation.html">4. Distributed word representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language_models.html">5. Language models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_labeling.html">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_ml.html">2. Basic machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_classification.html">3. Text classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributed_representation.html">4. Distributed word representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language_models.html">5. Language models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_labeling.html">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <div class="section" id="overview">
+<h1><span class="section-number">1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>How do we enable machines to read and speak our languages? While we have
+not solved the problem, tremendous progress has been made in recent
+years.</p>
+<ul class="simple">
+<li><p>Google Translate supports 109 languages, document translation, and
+real-time translation.</p></li>
+<li><p>Question answering (by search)</p></li>
+<li><p>Virtual assistants such as Siri, Alexa, Google Home etc.</p></li>
+</ul>
+<div class="section" id="a-brief-history">
+<h2><span class="section-number">1.1. </span>A brief history<a class="headerlink" href="#a-brief-history" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="birth-with-ai">
+<h3><span class="section-number">1.1.1. </span>Birth with AI<a class="headerlink" href="#birth-with-ai" title="Permalink to this headline">¶</a></h3>
+<p>Early ideas of machine language understanding were developed in building
+translating machines.</p>
+<ul class="simple">
+<li><p>1930s: Early proposals in machine translation by Georges Artsrouni
+and Peter Troyanskii.</p></li>
+</ul>
+<p>The goal of NLP is to make machines understand human language, which is
+an integral part of AI since its birth.</p>
+<ul class="simple">
+<li><p>1950: Alan Turing proposed the famous Turing test as a criteria for
+intelligence, where an interrogator tries to distinguish between a
+computer and a real human through text-based conversation. Turing was
+optimistic that a machine will pass the Turing test by the end of the
+century and possess human thinking capability. We are obviously far
+from that. But a more interesting question is, even if a machine
+passes the Turing test, does it mean it has acquired human
+intelligence? One famous objection is the “Chinese room” thought
+experiment, where a “simulator” operates as if it knows Chinese but
+obviously does not have any knowlege about language.</p></li>
+<li><p>1954: Aside from the philosophical arguments, there is clear
+practical motivation for working on NLP. Machine translation (MT) is
+one such example. In fact, interests in building MT systems started
+even before AI. The Georgetown-IBM experiment is the first public
+demonstration of a MT system. It has six grammar rules and a
+vocabulary of size 250, and was able to translate more than 60
+sentences from Russian to English. The demonstration was widely
+covered and encouraged subsequent funding in MT.</p></li>
+<li><p>1964: ELIZA was the first chat bot that was able to attempt the
+Turing test. Unlike the IBM-Georgetown experiment that was meant to
+showcase the capability of machines, Elizabuilt was built by Joseph
+Weizenbaum to demonstrate the superficiality of human-machine
+communication. The bot was able to simulate a psychotherapist using
+simple pattern matching, mostly just slightly rephrasing the
+patients’ utterance. Nevertheless, many early users were convinced
+that it has human intelligence. This is one example of ethical issues
+arising with AI.</p></li>
+<li><p>1970: Terry Winograd’s SHRDLU is another successful demonstration of
+AI. It can interact with users in natural language and take actions
+in “blocks world”. The system demonstrated advanced language
+understanding skills in this simple world, e.g., grounding, question
+answering, semantic parsing, coreference resolution, clarification
+etc. Unfortunately, subsequent effort in scaling it up to more
+complex settings failed, which is a common weakness of earlier AI
+systems.</p></li>
+</ul>
+<p>In general, researchers and funding agencies were overly optimistic
+about the prospect of AI during the 50’s and 60’s: “Within the very near
+future—much less than twenty-five years—we shall have the technical
+capability of substituting machines for any and all human functions in
+organizations.” Research at that time was largely focused on AI-complete
+problems. In hindsight, it is evident that successes in the toy settings
+were not going to transfer to even slightly more complex scenarios, but
+most leading researchers at that time were convinced that AI would be
+solved very soon.</p>
+</div>
+<div class="section" id="disappointing-results">
+<h3><span class="section-number">1.1.2. </span>Disappointing results<a class="headerlink" href="#disappointing-results" title="Permalink to this headline">¶</a></h3>
+<p>However, progress was much slower than expected. Most early systems rely
+heavily on logical reasoning in “toy” settings (e.g., small sets of
+objects and words) and never scaled up to real systems.</p>
+<p>In 1966, the ALPAC report concluded that MT was more expensive, less
+accurate and slower than human translation, which led to a series
+funding cut in AI research. This is known as the first AI winter. It was
+hard to find funding for AI research in 70’s and research in MT was
+abandoned for almost a decade.</p>
+<p>The failure was due to several limitations:</p>
+<ul class="simple">
+<li><p>Limited computation. The hardware cannot handle the amount of
+computation required in terms of memory and speed.</p></li>
+<li><p>Combinatorial explosion. Most algorithms were based on logical
+reasoning thus were intractable given exponentially growing search
+spaces in complex problems.</p></li>
+<li><p>Underestimated complexity. Researchers quickly realized the profound
+difficulty in many problems, for example, word sense disambiguition
+in machine translation. There may not be a principled solution using
+logical reasoning.</p></li>
+</ul>
+</div>
+<div class="section" id="the-rise-of-statistical-methods">
+<h3><span class="section-number">1.1.3. </span>The rise of statistical methods<a class="headerlink" href="#the-rise-of-statistical-methods" title="Permalink to this headline">¶</a></h3>
+<p>In the late 1980s, there was a rise of empirical/statistical methods due
+to increased computation power and the lessening of the dominance of
+Chomskyan theories of linguistics.</p>
+<ul class="simple">
+<li><p>Notable progress in MT from IBM: For the first time, the translation
+models use only parallel corpora and neglect knowledge of
+linguistics. The IBM models form the basis of MT models until the
+rise of deep learning approaches.</p></li>
+<li><p>Statistical methods were widely adopted: perceptron, HMMs, SVMs etc.</p></li>
+<li><p>“Every time I fire a linguist, the performance of the speech
+recognizer goes up.”—Frederick Jelinek.</p></li>
+</ul>
+<p>Since 2011, neural networks / deep learning becomes the main driving
+force in AI. - In 2015, the <a class="reference external" href="https://www.mitpressjournals.org/doi/pdf/10.1162/COLI_a_00239">deep learning
+tsunami</a>
+hit NLP. - Powers commercial products: machine translation, chat bots,
+recommender systems etc.</p>
+</div>
+<div class="section" id="are-we-there-yet">
+<h3><span class="section-number">1.1.4. </span>Are we there yet?<a class="headerlink" href="#are-we-there-yet" title="Permalink to this headline">¶</a></h3>
+<p>The language understanding capability of current systems is still quite
+shallow.</p>
+<ul class="simple">
+<li><p>Chat bot dumb responses.</p></li>
+<li><p>Adversarial examples.</p></li>
+<li><p>Gibberish outputs in MT.</p></li>
+<li><p>Biases.</p></li>
+</ul>
+</div>
+<div class="section" id="the-tension-between-rationalism-and-empiricism">
+<h3><span class="section-number">1.1.5. </span>The tension between rationalism and empiricism<a class="headerlink" href="#the-tension-between-rationalism-and-empiricism" title="Permalink to this headline">¶</a></h3>
+<p>Since the beginning of NLP (and AI more broadly), there have been two
+philosophically different approaches. Rationalists argue that knowledge
+is gained through reasoning, thus data is not necessary. Empiricists
+claim that knowledge is gained from experience <em>a posteriori</em>. The
+dominant trend has swung back and forth between the two approaches. In
+NLP, the main argument focus on the importance of linguistic knowledge
+and machine learning (through data).</p>
+<p>We are currently in the empiricism era. However, it is important to keep
+in mind both perspectives in this course. The two approaches do not
+conflict each other and we may find a way to reconcile them. Experience
+is needed to test our reasoning and reasoning is needed in turn to
+generalize our experience.</p>
+</div>
+</div>
+<div class="section" id="challenges-in-nlp">
+<h2><span class="section-number">1.2. </span>Challenges in NLP<a class="headerlink" href="#challenges-in-nlp" title="Permalink to this headline">¶</a></h2>
+<p>Why is language hard? What are prominent features of NLP compared to
+other fields in AI?</p>
+<ul class="simple">
+<li><p><strong>Discreteness</strong>: Unlike images and speech, text is symbolic. A
+single word can carry lots of weight and decides the meaning of a
+sentence, sometimes in a rather nuanced way. This makes it difficult
+to define metrics and transformations for sentences. For example, we
+can interpolate two images or to blur an image through deterministic
+mappings, but corresponding operations for sentences cannot be easily
+formalized.</p></li>
+<li><p><strong>Compositionality</strong>: The discrete symbols can be composed in
+numerous ways to express different meanings. In addition,
+Compositionality happens at all levels of language, e.g., words,
+sentences, paragraphs, documents. Even in toy settings, we cannot
+expect to see all possible compositions (think the blocks world).
+This challenges the model to generalize from limited examples.</p></li>
+<li><p><strong>Sparsity</strong>: Language has a long tail distribution (e.g., <a class="reference external" href="https://en.wikipedia.org/wiki/Zipf%27s_law">Zipf’s
+law</a>). Similar to
+compositionality, the long tail distribution is observed at many
+levels, e.g., word frequency, number of speakers per language, number
+of utterances for a dialogue act etc. In most cases, it’s relatively
+easy to get the common patterns correct, but it’s hard to cover rare
+linguistic phenomena on the tail.</p></li>
+<li><p><strong>Ambiguity</strong>: The same word / sentence can be interpreted
+differently depending on the context, e.g., multi-sense word, PP
+attachment, sarcasm.</p></li>
+</ul>
+<p>We will see these problems coming up again and again in the rest of this
+course.</p>
+</div>
+<div class="section" id="course-overview">
+<h2><span class="section-number">1.3. </span>Course overview<a class="headerlink" href="#course-overview" title="Permalink to this headline">¶</a></h2>
+<p>We will start with the representation of text, where the goal is to
+represent strings as a “feature vector” that can be easily processed by
+machine learning models. We would like a representation that is both
+succinct, precise, and flexible.</p>
+<ul class="simple">
+<li><p>Representation of text</p>
+<ul>
+<li><p><strong>Symbolic representation</strong>. Text is represented as a set of
+objects or concepts, e.g. the bag-of-words representation. The
+symbolic representation is friendly to structures and logic,
+however, the concepts often need to be defined for specific
+domains.</p></li>
+<li><p><strong>Distributed representation</strong>. Text is represented as a list of
+components or properties, i.e. dense vectors or embeddings. The
+distributed representation is continuous and domain-independent,
+thus it is attractive to modern ML models. However, the components
+are often not interpretable and the lack of atomic concepts makes
+it hard to use for logical reasoning.</p></li>
+</ul>
+</li>
+</ul>
+<p>Many tasks in NLP are concerned with predicting structures, such as
+sequences, trees, and graphs.</p>
+<ul class="simple">
+<li><p>Predicting structures</p>
+<ul>
+<li><p>Modeling: how do we model interactions among substructures? For
+example, if we are prediction a tree, the label of one node will
+affect its children.</p></li>
+<li><p>Learning: how do we learn the parameters of the model from labeled
+/ unlabeled data? The common framework is to learn a scoring
+function such that correct structures are scored higher than the
+rest. However, we need to do this efficiently given an
+exponentially large set of possible structures.</p></li>
+<li><p>Inference: how do we compute the best structure efficiently given
+the combinatorial output space? This is a search problem and we
+will often resort to dynamic programming.</p></li>
+</ul>
+</li>
+</ul>
+<p>As we can see, the key challenge in answering these questions lies in
+the fact that we are dealing with an exponentially large output space.</p>
+<p>Modern approaches to NLP are largely based on neural networks, which
+enabled unified approaches for many applications in NLP that used to be
+relatively disconnected.</p>
+<ul class="simple">
+<li><p>Neural networks for NLP</p>
+<ul>
+<li><p>Encoder-decoder modeling for structured prediction and text
+generation. The encoder-decoder model (also called
+sequence-to-sequence model) is extremely general and has been
+applied to a wide range of tasks. The encoder takes the input
+(images, tables, text etc.) and produces an embedding (dense
+vector). For structured prediction, the simpliest decoder would be
+a recurrent neural network provided that the output structure can
+be “linearized”, i.e. convert to a sequence, which works
+surprisingly well even for trees.</p></li>
+<li><p>The paradigm of pre-training and then fine-tuning. The increasing
+amount of data and compute has proven to be extremely powerful. We
+can pre-train the model on tons of data by self-supervised
+learning (i.e. no annotation is needed), and only fine-tune the
+learned weights on the task we care about and obtain better
+results than learning from scratch.</p></li>
+</ul>
+</li>
+</ul>
+<p>Finally, we will briefly touch on discourse and grounding, which go
+beyond individual sentences.</p>
+<ul class="simple">
+<li><p>Discourse and grounding</p>
+<ul>
+<li><p>Discourse: what is the communication goal of the text? Discourse
+studies the <em>coherence</em> of a collection of sentences. Roughly
+speaking, a piece of text is coherent if we understand what it
+does after reading it; the text could be telling a story, putting
+forward an argument, or conversing about a topic.</p></li>
+<li><p>Grounding: how do we relate language to the world? Grounding
+establishes the connection between text and the perceptible world.
+At the philosophical level, one may argue that real understanding
+cannot be achieved by text alone without connecting it with the
+real world. Regardless of the philosphical arguments, grounding is
+very useful in task-oriented dialogue and human-robot interaction.
+More generally, the “world” here doesn’t have to be the real world
+that we can see and feel, it can be simply a set of objects of
+interet that can be referred to by language.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="additional-readings">
+<h2><span class="section-number">1.4. </span>Additional readings<a class="headerlink" href="#additional-readings" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Wikipedia. <a class="reference external" href="https://en.wikipedia.org/wiki/History_of_artificial_intelligence">History of artificial
+intelligence.</a></p></li>
+<li><p>Kenneth Church. <a class="reference external" href="http://languagelog.ldc.upenn.edu/myl/ldc/swung-too-far.pdf">A Pendulum Swung Too
+Far.</a></p></li>
+</ul>
+</div>
+</div>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">1. Overview</a><ul>
+<li><a class="reference internal" href="#a-brief-history">1.1. A brief history</a><ul>
+<li><a class="reference internal" href="#birth-with-ai">1.1.1. Birth with AI</a></li>
+<li><a class="reference internal" href="#disappointing-results">1.1.2. Disappointing results</a></li>
+<li><a class="reference internal" href="#the-rise-of-statistical-methods">1.1.3. The rise of statistical methods</a></li>
+<li><a class="reference internal" href="#are-we-there-yet">1.1.4. Are we there yet?</a></li>
+<li><a class="reference internal" href="#the-tension-between-rationalism-and-empiricism">1.1.5. The tension between rationalism and empiricism</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#challenges-in-nlp">1.2. Challenges in NLP</a></li>
+<li><a class="reference internal" href="#course-overview">1.3. Course overview</a></li>
+<li><a class="reference internal" href="#additional-readings">1.4. Additional readings</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>Lecture notes</div>
+         </div>
+     </a>
+     <a id="button-next" href="basic_ml.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>2. Basic machine learning</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

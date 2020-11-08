@@ -1,0 +1,109 @@
+
+Schedule
+========
+
+**Note**: Future schedule is subject to minor change. Please refer to
+Gradescope for HW due date.
+
++--------+--------------------------------+--------------+--------------+
+| Date   | Topics                         | Slides       | Refs         |
++========+================================+==============+==============+
+| 1. Sep | Overview: NLP tasks, basic ML  | `slides      |              |
+| 8      |                                | 1 <slid      |              |
+|        |                                | es/lec01/ove |              |
+|        |                                | rview_annota |              |
+|        |                                | ted.pdf>`__; |              |
+|        |                                | `slides      |              |
+|        |                                | 2 <sli       |              |
+|        |                                | des/lec01/ba |              |
+|        |                                | sic_ml_annot |              |
+|        |                                | ated.pdf>`__ |              |
++--------+--------------------------------+--------------+--------------+
+|        | **Representation of text**     |              |              |
++--------+--------------------------------+--------------+--------------+
+| 2. Sep | Text classification:           | `slides <sl  |              |
+| 15     | bag-of-words, naive Bayes      | ides/lec02/t |              |
+|        | classifier, logistic           | ext_classifi |              |
+|        | regression                     | cation_annot |              |
+|        |                                | ated.pdf>`__ |              |
++--------+--------------------------------+--------------+--------------+
+| 3. Sep | Distributed representation:    | `slides      |              |
+| 22     | vector space models, Brown     | <slides/lec0 |              |
+|        | clusters, neural word          | 3/distribute |              |
+|        | embeddings                     | d-representa |              |
+|        |                                | tion.pdf>`__ |              |
++--------+--------------------------------+--------------+--------------+
+|        | **Predicting sequences**       |              |              |
++--------+--------------------------------+--------------+--------------+
+| 4. Sep | Language models: n-gram LM,    | `slides      |              |
+| 29     | neural LM, perplexity          | <slides/lec0 |              |
+|        |                                | 4/language-m |              |
+|        |                                | odel.pdf>`__ |              |
++--------+--------------------------------+--------------+--------------+
+| 5. Oct | Sequence labeling: log-linear  | `slides <sl  |              |
+| 6      | models, decoding, POS tagging, | ides/lec05/s |              |
+|        | NER                            | equence-labe |              |
+|        |                                | ling.pdf>`__ |              |
++--------+--------------------------------+--------------+--------------+
+| 6. Oct | Unsupervised sequence          | `slides <    | `J&M         |
+| 13     | labeling: HMM, EM              | slides/lec06 | HMM <ht      |
+|        |                                | /hmm.pdf>`__ | tps://web.st |
+|        |                                |              | anford.edu/~ |
+|        |                                |              | jurafsky/slp |
+|        |                                |              | 3/A.pdf>`__; |
+|        |                                |              | `Collins     |
+|        |                                |              | EM           |
+|        |                                |              | <http://www. |
+|        |                                |              | cs.columbia. |
+|        |                                |              | edu/~mcollin |
+|        |                                |              | s/em.pdf>`__ |
++--------+--------------------------------+--------------+--------------+
+| 7. Oct | `Midterm                       |              |              |
+| 20     | topics <notes/midterm.html>`__ |              |              |
++--------+--------------------------------+--------------+--------------+
+|        | **Predicting trees**           |              |              |
++--------+--------------------------------+--------------+--------------+
+| 8. Oct | Context-free parsing: PCFG,    | `            | `Collins     |
+| 27     | CYK, neural parser             | slides <slid | PCFG <       |
+|        |                                | es/lec07/par | http://www.c |
+|        |                                | sing.pdf>`__ | s.columbia.e |
+|        |                                |              | du/~mcollins |
+|        |                                |              | /courses/nlp |
+|        |                                |              | 2011/notes/p |
+|        |                                |              | cfgs.pdf>`__ |
+|        |                                |              | `Eisner      |
+|        |                                |              | In           |
+|        |                                |              | side-Outside |
+|        |                                |              |  <http://www |
+|        |                                |              | .cs.jhu.edu/ |
+|        |                                |              | ~jason/465/r |
+|        |                                |              | eadings/ioba |
+|        |                                |              | sics.pdf>`__ |
++--------+--------------------------------+--------------+--------------+
+| 9. Nov | Semantic parsing: logical      |              |              |
+| 3      | semantics, learning from       |              |              |
+|        | logical forms / denotations    |              |              |
++--------+--------------------------------+--------------+--------------+
+|        | **Neural networks for NLP**    |              |              |
++--------+--------------------------------+--------------+--------------+
+| 10.    | Neural sequence modeling:      |              |              |
+| Nov 10 | seq2seq, attention, copy       |              |              |
+|        | mechanism                      |              |              |
++--------+--------------------------------+--------------+--------------+
+| 11.    | Self-supervised pre-training:  |              |              |
+| Nov 17 | contextualized word embedding, |              |              |
+|        | pre-training and fine-tuning   |              |              |
++--------+--------------------------------+--------------+--------------+
+|        | **Beyond individual            |              |              |
+|        | sentences**                    |              |              |
++--------+--------------------------------+--------------+--------------+
+| 12.    | Discourse and grounding:       |              |              |
+| Nov 24 | discourse relations, speech    |              |              |
+|        | acts, RL agents                |              |              |
++--------+--------------------------------+--------------+--------------+
+| 13.    | Summary and outlook:           |              |              |
+| Dec 1  |                                |              |              |
++--------+--------------------------------+--------------+--------------+
+| 14.    | Project presentations          |              |              |
+| Dec 8  |                                |              |              |
++--------+--------------------------------+--------------+--------------+

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>2. Basic machine learning &#8212; Natural Language Processing 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/nyu-logo.jpg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Text classification" href="text_classification.html" />
+    <link rel="prev" title="1. Overview" href="overview.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html">Lecture notes</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">2. </span>Basic machine learning</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/notes/basic_ml.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://www.gradescope.com/courses/148490">
+                  <i class="fas fa-book-open"></i>
+                  Gradescope
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://piazza.com/class/kcqpkn4c8uj4fz">
+                  <i class="fas fa-comments"></i>
+                  Piazza
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://newclasses.nyu.edu/portal/site/e0d2a062-6a1d-4eec-9f35-6ccce6b4358d">
+                  <i class="fas fa-school"></i>
+                  NYUClasses
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Basic machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_classification.html">3. Text classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributed_representation.html">4. Distributed word representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language_models.html">5. Language models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_labeling.html">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Basic machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_classification.html">3. Text classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributed_representation.html">4. Distributed word representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language_models.html">5. Language models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_labeling.html">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <div class="section" id="basic-machine-learning">
+<h1><span class="section-number">2. </span>Basic machine learning<a class="headerlink" href="#basic-machine-learning" title="Permalink to this headline">¶</a></h1>
+<p>Machine learning is the main driving force of the success in NLP these
+days. Instead of specifying rules to process text (e.g., translate
+between two specific language pairs), which is difficult to scale, the
+goal of ML is to automatically learn the “rules” from data.</p>
+<p>The success of ML depends on two things:</p>
+<ul class="simple">
+<li><p><strong>Availability of large amounts of data.</strong> Machine learning makes
+sense only if it is cheaper to obtain data than to write rules.
+Fortunately, there are plenty of text online, although sometimes we
+need to be smart about getting labels.</p>
+<ul>
+<li><p>Tasks where we can get labels for free: language modeling, news
+summarization etc.</p></li>
+<li><p>Tasks where we need to crowdsource labels: text entailment,
+reading comprehension etc.</p></li>
+<li><p>Tasks that require expert annotations: constituent parsing,
+semantic parsing etc.</p></li>
+</ul>
+</li>
+</ul>
+<p>A famous saying about ML is “garbage in, garbage out”: you only get
+results as good as your data. We should always keep in mind that there
+is noise and biases in the data and ML systems are not immune to them.</p>
+<ul class="simple">
+<li><p><strong>Generalization to unseen samples.</strong> We are often not interested in
+performing well on the collected data (the training set); after all
+it is easy to memorize all labels. Instead, we want the model to make
+predictions on <em>unseen</em> inputs (the test set). ML promises
+generalization to unseen examples <em>from the same distribution</em>. This
+is formalized in statistical learnign theory. In practice, however,
+the test examples (generated by end users) are rarely from the
+training data distribution. Therefore, we should be aware of the
+limit of learning.</p></li>
+</ul>
+<div class="section" id="modeling-learning-inference">
+<h2><span class="section-number">2.1. </span>Modeling, learning, inference<a class="headerlink" href="#modeling-learning-inference" title="Permalink to this headline">¶</a></h2>
+<p>The ML approach to any task consists of the following three components:
+modeling, learning, and inference.</p>
+<div class="section" id="modeling">
+<h3><span class="section-number">2.1.1. </span>Modeling<a class="headerlink" href="#modeling" title="Permalink to this headline">¶</a></h3>
+<p>The goal of modeling is to represent the task by a mathematical object
+that we can manipulate. Generally, for NLP problems, given an input
+space <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> and an output space <span class="math notranslate nohighlight">\(\mathcal{Y}\)</span>, the
+model is a function <span class="math notranslate nohighlight">\(f\colon \mathcal{X} \rightarrow \mathcal{Y}\)</span>.
+Take sentiment classification as an example: we have
+<span class="math notranslate nohighlight">\(\mathcal{X}=\{\text{sentences of interest}\}\)</span> and
+<span class="math notranslate nohighlight">\(\mathcal{Y}=\{\text{negative}, \text{positive}\}\)</span>.</p>
+<p>The modeling question here is what is <span class="math notranslate nohighlight">\(f\)</span>. One possible solution
+is to use a lookup table—we save the value of <span class="math notranslate nohighlight">\(y\in\mathcal{Y}\)</span>
+for every possible input. What is the problem with this model? Well, it
+has a huge size (number of parameters) and will be difficult to learn.
+Instead of taking the complete sentence as input, we might want to just
+consider individual words in it (i.e the bag-of-words model).</p>
+<p>Now, obviously the bag of words model breaks the sentence structure and
+we lose information in this process (it’s not possible to get back the
+exact sentence given individual words in it). However, the point of
+modeling is to capture the essential relations in a managable form, and
+anything else that is not modeled is considered as “noise”. In this
+course we will go through different modeling techniques for text,
+e.g. log linear models and neural networks.</p>
+</div>
+<div class="section" id="learning">
+<h3><span class="section-number">2.1.2. </span>Learning<a class="headerlink" href="#learning" title="Permalink to this headline">¶</a></h3>
+<p>Specifiying the model is often not enough because it may depend on
+unknown parameters. Learning allows us to estimate these parameters from
+data. Typically, learning consists of two steps: (a) specify a loss
+function (e.g. squared loss), and (b) minimize the average loss
+(i.e. empirical risk minimization). The optimization step (b) is often
+done by stochastic gradient descent.</p>
+<p>The key topic in most learning algorithms is <strong>generalization</strong>: If we
+minimize the loss on the training data, how do we know that the model
+will have low loss on the test data too? The situation we want to avoid
+is <strong>overfitting</strong>, where the model performs very well on the training
+data but poorly on the test data. To prevent overfitting, we often want
+to make our model family simple because a complex function is more
+likely to memorize the training examples (think a lookup table). There
+are many ways to restrict the model family depending on the specific
+model at hand.</p>
+</div>
+<div class="section" id="inference">
+<h3><span class="section-number">2.1.3. </span>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">¶</a></h3>
+<p>Given a model with learned parameters, we still need to execute the
+model on some input to obtain the output. This process is called
+inference (sometimes refered to as decoding or the argmax problem). It
+may seem trivial at first. In the sentiment classification example, we
+can simly compute the classifier score for each class and predict the
+highest-scoring one, which takes <span class="math notranslate nohighlight">\(O(\text{number of classes})\)</span>.
+However, inference becomes slightly more complex if our output space
+contains sequences or trees, because there are exponentially many
+sequences or trees and enumerating their scores is intractable. We will
+need dynamic programming or integer linear programming in these cases.
+In latent variable models, we might want to marginalize over the latent
+variables, which again can be intractable. The main point is that
+inference is often not as easy as taking the class with the maximum
+score.</p>
+</div>
+</div>
+<div class="section" id="loss-functions-and-optimization">
+<h2><span class="section-number">2.2. </span>Loss functions and optimization<a class="headerlink" href="#loss-functions-and-optimization" title="Permalink to this headline">¶</a></h2>
+<p>Below we briefly review the two key steps in learning: specifying the
+loss function and minimizing the average loss on the training set. The
+following text is meant to be a refresher only. For proper coverage of
+the topic, please refer to an introductory ML course
+(e.g. <a class="reference external" href="https://davidrosenberg.github.io/ml2019/#lectures">DS-GA.1003</a>).</p>
+<div class="section" id="loss-functions">
+<h3><span class="section-number">2.2.1. </span>Loss functions<a class="headerlink" href="#loss-functions" title="Permalink to this headline">¶</a></h3>
+<p>A loss function measures the goodness of a specific model prediction. It
+takes the input <span class="math notranslate nohighlight">\(x\)</span>, the gold label <span class="math notranslate nohighlight">\(y\)</span>, the model output
+<span class="math notranslate nohighlight">\(f_w(x)\)</span>, and produce a score for this prediction:</p>
+<div class="math notranslate nohighlight" id="equation-notes-basic-ml-0">
+<span class="eqno">(2.2.1)<a class="headerlink" href="#equation-notes-basic-ml-0" title="Permalink to this equation">¶</a></span>\[L(x, y, f_w(x)) ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(w\)</span> denotes the parameters of the model <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>Here are some common margin-based loss functions for binary
+classification. Recall that margin is the score for the correct class:
+<span class="math notranslate nohighlight">\(yf_w(x)\)</span>, and a large margin means that the prediction is more
+correct.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">display</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">_x</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">_x</span> <span class="ow">in</span> <span class="n">x</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;0-1 loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">x</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;hinge loss&quot;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;logistic loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$L(x, y, f_w(x))$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$yf_w(x)$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;$yf_w(x)$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="../_images/output_basic_ml_50252b_1_1.svg" src="../_images/output_basic_ml_50252b_1_1.svg" /></div>
+<p>The loss function tells us how good the prediciton for a specific input
+<span class="math notranslate nohighlight">\(x\)</span> is. Note that the input is a random variable following some
+(unknown) data distribution, thus the loss is also a random variable. To
+measure the performance of the model on the distribution, we estimate
+the expected loss (risk) by averaging over the training examples. This
+gives us the learning objective:</p>
+<div class="math notranslate nohighlight" id="equation-notes-basic-ml-1">
+<span class="eqno">(2.2.2)<a class="headerlink" href="#equation-notes-basic-ml-1" title="Permalink to this equation">¶</a></span>\[\min \frac{1}{n}\sum_{i=1}^n L(x^{(i)}, y^{(i)}, f_w) .\]</div>
+</div>
+<div class="section" id="gradient-descent">
+<h3><span class="section-number">2.2.2. </span>Gradient descent<a class="headerlink" href="#gradient-descent" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have a learning objective, the rest is an optimization
+problem. Stochastic gradient descent (SGD) is the most widely used
+optimization algorithm in ML. Below we briefly review the main ideas in
+SGD.</p>
+<p>Gradient is the direction where the objective increases fastest.
+Therefore, to minimize the objective, we want to move in the opposite
+direction of the gradient. Given an initial weight vector <span class="math notranslate nohighlight">\(w_0\)</span>,
+we iteratively update it by</p>
+<div class="math notranslate nohighlight" id="equation-notes-basic-ml-2">
+<span class="eqno">(2.2.3)<a class="headerlink" href="#equation-notes-basic-ml-2" title="Permalink to this equation">¶</a></span>\[w \leftarrow w - \eta \nabla_w F(w) ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\eta\)</span> is the step size and <span class="math notranslate nohighlight">\(F\)</span> is our minimization
+objective. The algorithm is best <a class="reference external" href="https://d2l.ai/chapter_optimization/gd.html#gradient-descent-in-one-dimension">visualized in
+1D</a>.
+GD is guaranteed to find the global minimum if <span class="math notranslate nohighlight">\(F\)</span> is convex.
+However, in practice it works well for non-convex functions such as
+neural networks.</p>
+<p>Unfortunately, GD can be quite slow for ML problems. Note that computing
+<span class="math notranslate nohighlight">\(\nabla_w F(w)\)</span> requires going through the whole training set,
+which may easily contain millions of examples. What is we just compute
+gradient on a single example? Intuitively, the single-example is noisy
+but should still provide us some useful information. After all, we want
+to reduce the loss on all examples. This is exactly the idea behind SGD.
+The algorithm is almost the same as GD except that in each iteration the
+gradient is estimated on a single example (or a minibatch of examples).
+Compared to GD, SGD allows more updates to the model within the same
+amount of time. Since each step we are following a noisy direction, it
+is important to choose the step size carefully. See illustration of <a class="reference external" href="https://d2l.ai/chapter_optimization/sgd.html#dynamic-learning-rate">the
+effect of different step
+sizes</a>.</p>
+</div>
+</div>
+<div class="section" id="summary">
+<h2><span class="section-number">2.3. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>We have provided a quick review of the basic recipe for building ML
+systems: design a model for the task, specify a loss function, minimize
+the average loss, and run inference given the learned model. In the rest
+of this course, we will see how to extend this framework to various
+structured prediction problems in NLP.</p>
+</div>
+</div>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">2. Basic machine learning</a><ul>
+<li><a class="reference internal" href="#modeling-learning-inference">2.1. Modeling, learning, inference</a><ul>
+<li><a class="reference internal" href="#modeling">2.1.1. Modeling</a></li>
+<li><a class="reference internal" href="#learning">2.1.2. Learning</a></li>
+<li><a class="reference internal" href="#inference">2.1.3. Inference</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#loss-functions-and-optimization">2.2. Loss functions and optimization</a><ul>
+<li><a class="reference internal" href="#loss-functions">2.2.1. Loss functions</a></li>
+<li><a class="reference internal" href="#gradient-descent">2.2.2. Gradient descent</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#summary">2.3. Summary</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="overview.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>1. Overview</div>
+         </div>
+     </a>
+     <a id="button-next" href="text_classification.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>3. Text classification</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

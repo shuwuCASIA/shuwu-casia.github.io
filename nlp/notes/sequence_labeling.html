@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>6. Sequence labeling &#8212; Natural Language Processing 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/nyu-logo.jpg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="5. Language models" href="language_models.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html">Lecture notes</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">6. </span>Sequence labeling</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/notes/sequence_labeling.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://www.gradescope.com/courses/148490">
+                  <i class="fas fa-book-open"></i>
+                  Gradescope
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://piazza.com/class/kcqpkn4c8uj4fz">
+                  <i class="fas fa-comments"></i>
+                  Piazza
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://newclasses.nyu.edu/portal/site/e0d2a062-6a1d-4eec-9f35-6ccce6b4358d">
+                  <i class="fas fa-school"></i>
+                  NYUClasses
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_ml.html">2. Basic machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_classification.html">3. Text classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributed_representation.html">4. Distributed word representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language_models.html">5. Language models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_ml.html">2. Basic machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_classification.html">3. Text classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributed_representation.html">4. Distributed word representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language_models.html">5. Language models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <div class="section" id="sequence-labeling">
+<h1><span class="section-number">6. </span>Sequence labeling<a class="headerlink" href="#sequence-labeling" title="Permalink to this headline">¶</a></h1>
+<p>We have seen that language models estimate the probability of a
+sequence. Unlike text classification, we are not predicting any labels
+so it’s an example of unsupervised learning. This week we will look at
+supervised learning with sequences. In many NLP tasks, we want to
+produce a sequence <em>conditioned</em> on another sequence. Sequence labeling
+is perhaps the simplest form of a sequence-to-sequence task. Here our
+goal is to predict a label to each token in the input sequence.</p>
+<p>Let’s use <strong>part-of-speech tagging</strong> as a running example. The input a
+sequence of tokens (in a sentence), and we want to tag each token by its
+grammatical category such as nouns and verbs. For example,</p>
+<p>Language/<code class="docutils literal notranslate"><span class="pre">NOUN</span></code>  is/<code class="docutils literal notranslate"><span class="pre">VERB</span></code>  fun/<code class="docutils literal notranslate"><span class="pre">ADJ</span></code>  ./<code class="docutils literal notranslate"><span class="pre">PUNCT</span></code></p>
+<p>A first thought might be to simply build a word-to-tag dictionary.
+However, many words can be assigned multiple tags depending on the
+context. In the above example, “fun” can be either a noun (as in “have
+fun”) or an adjective (as in “a fun evening”). Therefore, the model must
+take context into consideration.</p>
+<div class="section" id="a-multiclass-classification-approach">
+<span id="sec-tag-classification"></span><h2><span class="section-number">6.1. </span>A multiclass classification approach<a class="headerlink" href="#a-multiclass-classification-approach" title="Permalink to this headline">¶</a></h2>
+<p>Our second try is to formulate this as a classification problem which we
+already know how to solve. Let
+<span class="math notranslate nohighlight">\(x=(x_1, \ldots, x_m) \in\mathcal{X}^m\)</span> be the input sequence of
+tokens, and <span class="math notranslate nohighlight">\(y=(y_1, \ldots, y_m) \in \mathcal{Y}^m\)</span> be the tag
+sequence. We want a multiclass classifier <span class="math notranslate nohighlight">\(f\)</span> such that:</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-0">
+<span class="eqno">(6.1.1)<a class="headerlink" href="#equation-notes-sequence-labeling-0" title="Permalink to this equation">¶</a></span>\[f(x, i) = y_i \;.\]</div>
+<p>If we choose <span class="math notranslate nohighlight">\(f\)</span> to be the multinomial logistic regression model,
+we have</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-1">
+<span class="eqno">(6.1.2)<a class="headerlink" href="#equation-notes-sequence-labeling-1" title="Permalink to this equation">¶</a></span>\[\begin{split}f(x, i) &amp;= \arg\max_{k\in\mathcal{Y}} p(k\mid \phi(x,i)) \\
+&amp;= \arg\max_{k\in\mathcal{Y}} \frac{\exp\left [ w_k\cdot\phi(x,i) \right ]}
+{\sum_{k'\in\mathcal{Y}}  \exp\left [ w_{k'}\cdot\phi(x,i) \right ] }
+\;.\end{split}\]</div>
+<p>Now, what should be the features <span class="math notranslate nohighlight">\(\phi(x, i)\)</span>? We can design
+feature extractors similar to what we have used for text classifcation
+in <a class="reference internal" href="text_classification.html#sec-feature-extractor"><span class="std std-numref">Section 3.6</span></a>. For example,</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-2">
+<span class="eqno">(6.1.3)<a class="headerlink" href="#equation-notes-sequence-labeling-2" title="Permalink to this equation">¶</a></span>\[\begin{split}\phi_1(x, i) &amp;= \begin{cases}
+1 &amp; \text{$x_{i-1}=$&quot;a&quot; and $x_i=$&quot;fun&quot; and $x_{i+1}=$&quot;evening&quot;} \\
+0 &amp; \text{otherwise}
+\end{cases} \;,
+\\
+\phi_2(x, i) &amp;= \begin{cases}
+1 &amp; \text{$x_{i-1}=$&quot;have&quot; and $x_i=$&quot;fun&quot;} \\
+0 &amp; \text{otherwise}
+\end{cases} \;.\end{split}\]</div>
+<p>It’s easy to see that this will give us a huge number of features,
+specifically, we will have <span class="math notranslate nohighlight">\(p\times|\mathcal{Y}|\)</span> features. In
+addition, the feature/weight vectors will be very sparse, e.g. the above
+two features are only relevant for the word “fun”.</p>
+<p>To simplify our problem, we need to make a conceptual change and think
+of the classifier as a scoring function for the compatibility of an
+input and a label. Instead of extracting features from <span class="math notranslate nohighlight">\(x\)</span>, we
+design features for <span class="math notranslate nohighlight">\((x,i,y)\)</span> that suggests how “compatible” are
+the input and a specific label. A good model should assign the highest
+score to the gold label <span class="math notranslate nohighlight">\(y_i\)</span>:
+<span class="math notranslate nohighlight">\(w\cdot\phi(x,i,y_i) \ge w\cdot\phi(x,i,y')\)</span> for all
+<span class="math notranslate nohighlight">\(y'\neq y_i\)</span>. Note that now we only need to deal with one weight
+vector <span class="math notranslate nohighlight">\(w\)</span> instead of <span class="math notranslate nohighlight">\(|\mathcal{Y}|\)</span> vectors. Now, if we
+take the original feature vector <span class="math notranslate nohighlight">\(\phi\)</span>, copy it
+<span class="math notranslate nohighlight">\(|\mathcal{Y}|\)</span> times, and concatenate them, where the
+<span class="math notranslate nohighlight">\(k\)</span>-th copy corresponds to <span class="math notranslate nohighlight">\(\phi(x,i,k)\)</span>, then these two
+formulations are equivalent.</p>
+<p>We have not gained anything yet except that it’s clearner to use only
+one weight vector because most computation will be parallel to the
+binary case. The advantage comes in feature extraction. Consider the
+trigram feature, e.g. <span class="math notranslate nohighlight">\(\phi_1\)</span>. We don’t want to design a feature
+for all possible combinations of <span class="math notranslate nohighlight">\(x_{i-1}, x_i, x_{i+1}, y\)</span>,
+because if the tuple doesn’t occur in our training data, we cannot
+estimate its weight. Instead, we “read off” the features from our
+training data. For example,</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-3">
+<span class="eqno">(6.1.4)<a class="headerlink" href="#equation-notes-sequence-labeling-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\phi_1(x, i, y) &amp;= \begin{cases}
+1 &amp; \text{$x_{i-1}=$&quot;&lt;start&gt;&quot; and $x_i=$&quot;language&quot; and $x_{i+1}=$&quot;is&quot; and $y_i=$&quot;NOUN&quot;} \\
+0 &amp; \text{otherwise}
+\end{cases} \;,
+\\
+\phi_2(x, i, y) &amp;= \begin{cases}
+1 &amp; \text{$x_{i-1}=$&quot;language&quot; and $x_i=$&quot;is&quot; and $x_{i+1}=$&quot;fun&quot; and $y_i=$&quot;VERB&quot;} \\
+0 &amp; \text{otherwise}
+\end{cases} \;.\end{split}\]</div>
+<p>Now that we have a feature vector, we can run gradient descent to
+estimate the parameters of our multinomial logistic regression model.
+How well would this work? Let’s consider the word “fun”. With the
+neighbors, we have better prediction on whether it’s a noun or an
+adjective. However, we only see so many phrases containing “fun” in our
+training data. What if at test time we see “fun book” which never
+appears in the training set? However, as long as we know that “book” is
+a noun, then “fun” is much more likely to be an adjective appearing
+before a noun. In general, in addition to neighboring input tokens, we
+often need to consider dependence in the output sequence as well, which
+is the topic of interest in structured prediction.</p>
+</div>
+<div class="section" id="structrured-prediction">
+<h2><span class="section-number">6.2. </span>Structrured prediction<a class="headerlink" href="#structrured-prediction" title="Permalink to this headline">¶</a></h2>
+<p>In the multiclass classification approach, we decompose the sequence
+labeling problem to independent classification problems. Now, let’s
+directly tackle the prediction problem where the input is
+<span class="math notranslate nohighlight">\(x\in\mathcal{X}^m\)</span> and the output is <span class="math notranslate nohighlight">\(y\in\mathcal{Y}^m\)</span>.
+This is called structured prediction because the output is structured,
+e.g. a sequence in our case.</p>
+<div class="section" id="conditional-random-fields">
+<h3><span class="section-number">6.2.1. </span>Conditional random fields<a class="headerlink" href="#conditional-random-fields" title="Permalink to this headline">¶</a></h3>
+<p>We can easily apply the idea of the compatibility score for structured
+prediciton: the feature vector now depends on the entire output sequence
+<span class="math notranslate nohighlight">\(y\)</span>. Let’s use <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span> to denote the global feature
+vector that depends on <span class="math notranslate nohighlight">\(y\)</span>. We extend multinomial logistic
+regression to structured prediction:</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-4">
+<span class="eqno">(6.2.1)<a class="headerlink" href="#equation-notes-sequence-labeling-4" title="Permalink to this equation">¶</a></span>\[\begin{split}f(x) &amp;= \arg\max_{y\in\mathcal{Y}^m} p(y\mid x) \\
+&amp;= \arg\max_{y\in\mathcal{Y}^m} \frac{\exp\left [ w\cdot\Phi(x,y) \right ]}
+{\sum_{y'\in\mathcal{Y}^m}  \exp\left [ w\cdot\Phi(x,y') \right ] } \\
+&amp;= \arg\max_{y\in\mathcal{Y}^m} \frac{\exp\left [ w\cdot\Phi(x,y) \right ]}
+{Z(w)}
+\;,\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z(w)\)</span> is the normalizer.</p>
+<p>The next natural question is how to define <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span>. We want it
+to capture dependencies among the outputs. So what if we design features
+depending on the entire sequence of <span class="math notranslate nohighlight">\(y\)</span>? There are two problems
+here. First, we won’t have enough data to estimate the parameters as we
+probably only see the exact sequence once in our training set. Second,
+at inference time we will need to solve the argmax problem, whose
+complexity grows exponentially with the sequence length. Therefore, for
+both learning and inference, we would like to have <em>decomposable</em>
+feature vectors.</p>
+<p>Let’s design the global feature vector <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span> such that it
+can be computed from <em>local</em> feature vectors that depend on <span class="math notranslate nohighlight">\(y_i\)</span>
+and its neighbors. For each feature <span class="math notranslate nohighlight">\(\Phi_j\)</span>, we have</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-5">
+<span class="eqno">(6.2.2)<a class="headerlink" href="#equation-notes-sequence-labeling-5" title="Permalink to this equation">¶</a></span>\[\Phi_j(x,y) = \sum_{i=1}^{m} \phi_j(x, i, y_i, y_{i-1}) \;.\]</div>
+<p>We can then create features in the same way as we did for tag
+classification, e.g.</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-6">
+<span class="eqno">(6.2.3)<a class="headerlink" href="#equation-notes-sequence-labeling-6" title="Permalink to this equation">¶</a></span>\[\begin{split}\phi_1(x, i, y_i, y_{i-1}) &amp;= \begin{cases}
+1 &amp; \text{$x_{i-1}=$&quot;language&quot; and $x_i=$&quot;is&quot; and $x_{i+1}=$&quot;fun&quot; and $y_i=$&quot;VERB&quot; and $y_{i-1}=$&quot;NOUN&quot;} \\
+0 &amp; \text{otherwise}
+\end{cases} \;,\end{split}\]</div>
+<p>Using the local feature vectors, our model can be written as</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-7">
+<span class="eqno">(6.2.4)<a class="headerlink" href="#equation-notes-sequence-labeling-7" title="Permalink to this equation">¶</a></span>\[p(y\mid x) = \frac{1}{Z(w)}\prod_{i=1}^m \psi(y_i, y_{i-1}\mid x, w)
+\;,\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-8">
+<span class="eqno">(6.2.5)<a class="headerlink" href="#equation-notes-sequence-labeling-8" title="Permalink to this equation">¶</a></span>\[\psi(y_i, y_{i-1}\mid x, w) = \exp\left [
+        w \cdot \phi(x,i,y_i,y_{i-1})
+    \right ]
+\;.\]</div>
+<p>This is one example of <strong>conditional random fields (CRF)</strong>, specifically
+a chain-structured CRF. The name comes from graphical models: CRF is a
+Markov random field (MRF) conditioned on observed variables (input
+<span class="math notranslate nohighlight">\(X\)</span>). Using terms in graphical models, <span class="math notranslate nohighlight">\(Z(w)\)</span> is the
+potential function, <span class="math notranslate nohighlight">\(\psi\)</span> is the potential function or the factor
+for each clique <span class="math notranslate nohighlight">\(y_i, y_{i-1}\)</span>. Thus we have interaction for
+adjacent variables on the chain.</p>
+</div>
+<div class="section" id="inference-the-viterbi-algorithm">
+<h3><span class="section-number">6.2.2. </span>Inference: the Viterbi algorithm<a class="headerlink" href="#inference-the-viterbi-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Now, suppose we have a learned model (i.e. known <span class="math notranslate nohighlight">\(w\)</span>). To tag a
+sentence, we need to find the sequence that maximizes
+<span class="math notranslate nohighlight">\(p(y\mid x; w)\)</span>. This process of finding the argmax output is also
+called <strong>decoding</strong>. Note that</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-9">
+<span class="eqno">(6.2.6)<a class="headerlink" href="#equation-notes-sequence-labeling-9" title="Permalink to this equation">¶</a></span>\[\begin{split}\arg\max_{y\in\mathcal{Y}^m} p(y\mid x;w) &amp;= \arg\max_{y\in\mathcal{Y}^m}
+    \frac{\exp\left [ w\cdot\Phi(x,y) \right ]}
+        {Z(w)} \\
+&amp;= \arg\max_{y\in\mathcal{Y}^m} \exp\left [ w\cdot\Phi(x,y) \right ] \\
+&amp;= \arg\max_{y\in\mathcal{Y}^m} w\cdot\sum_{i=1}^{m} \phi(x, i, y_i, y_{i-1}) \\
+&amp;= \arg\max_{y\in\mathcal{Y}^m} \sum_{i=1}^{m} w\cdot\phi(x, i, y_i, y_{i-1})
+\;.\end{split}\]</div>
+<p>Let’s first consider how to compute the max score (without finding the
+corresponding paths). Note that the local score of <span class="math notranslate nohighlight">\(y_i\)</span> only
+depends on the previous label <span class="math notranslate nohighlight">\(y_{i-1}\)</span>. If we know the score of
+all sequences of length <span class="math notranslate nohighlight">\(i-1\)</span>, then it is easy to compute the
+score of a sequence of length <span class="math notranslate nohighlight">\(i\)</span>. Specifically, let
+<span class="math notranslate nohighlight">\(s(j, t)\)</span> be the score of a sequence of length <span class="math notranslate nohighlight">\(j\)</span> ending
+with the tag <span class="math notranslate nohighlight">\(y_j=t\in\mathcal{Y}\)</span>. Then</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-10">
+<span class="eqno">(6.2.7)<a class="headerlink" href="#equation-notes-sequence-labeling-10" title="Permalink to this equation">¶</a></span>\[s(j+1, t') = \sum_{t\in\mathcal{Y}} s(j, t) +
+    \underbrace{w\cdot\phi(x, j+1, t', t)}_{y_j=t, y_{j+1}=t'} \;.\]</div>
+<p>Thus the maximum score for a sequence of length <span class="math notranslate nohighlight">\(j+1\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-11">
+<span class="eqno">(6.2.8)<a class="headerlink" href="#equation-notes-sequence-labeling-11" title="Permalink to this equation">¶</a></span>\[\max_{t'\in\mathcal{Y}} s(j+1, t') \;.\]</div>
+<p>Let’s augment a <span class="math notranslate nohighlight">\(\texttt{STOP}\)</span> symbol to our sequence, then the
+maximum score of all possible sequences in <span class="math notranslate nohighlight">\(\mathcal{Y}^m\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-12">
+<span class="eqno">(6.2.9)<a class="headerlink" href="#equation-notes-sequence-labeling-12" title="Permalink to this equation">¶</a></span>\[\max s(m+1, \texttt{STOP}) \;.\]</div>
+<p>We can compute the scores <span class="math notranslate nohighlight">\(s(j, t)\)</span> on a lattice as shown in
+<a class="reference internal" href="#fig-viterbi"><span class="std std-numref">Fig. 6.2.1</span></a>. Each column corresponds to a position in the
+sequence and each row corresponds to a tag. A sequence can be
+represented by a path connecting the nodes. Each node saves the score of
+all paths ending at that node, i.e. <span class="math notranslate nohighlight">\(s(j, t)\)</span>. It’s easy to trace
+the sequence achieving the maximum score by saving an additional
+backpointer at each node:</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-13">
+<span class="eqno">(6.2.10)<a class="headerlink" href="#equation-notes-sequence-labeling-13" title="Permalink to this equation">¶</a></span>\[\text{backpointer}(j, t) = \arg\max_{t'\in\mathcal{Y}} s(j-1, t') + w\cdot\phi(x, j, t, t') \;.\]</div>
+<div class="figure align-default" id="id1">
+<span id="fig-viterbi"></span><img alt="../_images/viterbi.pdf" src="../_images/viterbi.pdf" />
+<p class="caption"><span class="caption-number">Fig. 6.2.1 </span><span class="caption-text">An example of Viterbi decoding</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>This is called the Viterbi algorithm. It is essentially dynamic
+programming and has a polynomial running time of
+<span class="math notranslate nohighlight">\(O(m|\mathcal{Y}|^2)\)</span>.</p>
+</div>
+<div class="section" id="learning-the-forward-backward-algorithm">
+<h3><span class="section-number">6.2.3. </span>Learning: the forward-backward algorithm<a class="headerlink" href="#learning-the-forward-backward-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Same as in logistic regression, we do MLE to find the parameters. The
+log-likelihood of a dataset <span class="math notranslate nohighlight">\(\{(x^{(i)}, y^{(i)})\}_{i=1}^N\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-14">
+<span class="eqno">(6.2.11)<a class="headerlink" href="#equation-notes-sequence-labeling-14" title="Permalink to this equation">¶</a></span>\[\ell(w) = \sum_{i=1}^N \log p(y^{(i)}\mid x^{(i)})
+\;.\]</div>
+<p>In practice, it’s important to use regularziation to prevent
+overfitting, so let’s also add <span class="math notranslate nohighlight">\(\ell_2\)</span> regularization to our
+objective.</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-15">
+<span class="eqno">(6.2.12)<a class="headerlink" href="#equation-notes-sequence-labeling-15" title="Permalink to this equation">¶</a></span>\[\ell(w) = \sum_{i=1}^N \log p(y^{(i)}\mid x^{(i)}) - \lambda \|w\|^2_2
+\;,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is a hyperparameter controlling the strenght of
+regularization.</p>
+<p>Let’s plug in our log-linear model:</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-16">
+<span class="eqno">(6.2.13)<a class="headerlink" href="#equation-notes-sequence-labeling-16" title="Permalink to this equation">¶</a></span>\[\begin{split}\ell(w) &amp;= \sum_{i=1}^N \log
+        \frac{\exp\left [ w\cdot\Phi(x,y) \right ]}
+            {Z(w)}
+    - \lambda \|w\|^2_2 \\
+&amp;= \sum_{i=1}^N
+        w\cdot\Phi(x,y) -
+        \log Z(w)
+    - \lambda \|w\|^2_2\end{split}\]</div>
+<p>Take derivative w.r.t. <span class="math notranslate nohighlight">\(w_k\)</span> (note that
+<span class="math notranslate nohighlight">\(Z(w) = \sum_{u\in\mathcal{Y}^m} \exp\left [ w\cdot\Phi(x,u) \right ]\)</span>):</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-17">
+<span class="eqno">(6.2.14)<a class="headerlink" href="#equation-notes-sequence-labeling-17" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{\partial}{\partial w_k}\ell(w) &amp;= \sum_{i=1}^N
+    \Phi_k(x,y) -
+    \frac{\sum_{u\in\mathcal{Y}^m} \exp\left [ w\cdot\Phi(x,u) \right ] \Phi_k(x,u)}
+        {Z(w)}
+    - 2\lambda w_k \\
+&amp;= \sum_{i=1}^N \Phi_k(x,y) -
+   \sum_{i=1}^N \underbrace{ \sum_{u\in\mathcal{Y}^m} p(u\mid x; w) \Phi_k(x, u) }_{\text{feature expectation}}
+    - 2\lambda w_k\end{split}\]</div>
+<p><strong>Side note:</strong> If we ignore the regularization term, at the optimal
+solution (gradient is zero) we have</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-18">
+<span class="eqno">(6.2.15)<a class="headerlink" href="#equation-notes-sequence-labeling-18" title="Permalink to this equation">¶</a></span>\[\begin{split}\sum_{i=1}^N \Phi_k(x,y) &amp;= \sum_{i=1}^N \sum_{u\in\mathcal{Y}^m} p(u\mid x; w) \Phi_k(x, u) \\
+\frac{1}{N}\sum_{i=1}^N \Phi_k(x,y) &amp;= \mathbb{E}\left [ \Phi_k(x, u) \right ]
+\;,\end{split}\]</div>
+<p>which means that the expected feature value taken over
+<span class="math notranslate nohighlight">\(p(y\mid x;w)\)</span> is equal to the average feature value of the
+observed data.</p>
+<p>Let’s now focus on computing the feature expectation.</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-19">
+<span class="eqno">(6.2.16)<a class="headerlink" href="#equation-notes-sequence-labeling-19" title="Permalink to this equation">¶</a></span>\[\begin{split}&amp; \sum_{u\in\mathcal{Y}^m} p(u\mid x; w) \Phi_k(x, u) \\
+&amp;= \sum_{u\in\mathcal{Y}^m} p(u\mid x; w) \sum_{j=1}^m \phi_k(x, j, u_{j}, u_{j-1}) \\
+&amp;= \sum_{i=1}^m \sum_{a,b\in\mathcal{Y}} \sum_{u\in\mathcal{Y}^m\colon\\ u_{j-1}=a, u_j=b}
+    p(u\mid x; w) \phi_k(x, j, u_{j}, u_{j-1}) \\
+&amp;= \sum_{i=1}^m \sum_{a,b\in\mathcal{Y}}
+    \underbrace{p(u_{j-1}=a, u_j=b \mid x; w)}_{\text{tag bigram marginal probability}}
+    \phi_k(x, j, u_{j}, u_{j-1})
+\;.\end{split}\]</div>
+<p>Note that the two sums and <span class="math notranslate nohighlight">\(\phi_k\)</span> are easy to compute. So our
+main task is to compute the marginal probability. We need to sum over
+all prefix up to <span class="math notranslate nohighlight">\(u_{j-1}\)</span> and all suffix after <span class="math notranslate nohighlight">\(u_{j}\)</span>,
+where <span class="math notranslate nohighlight">\(u_{j-1}=a\)</span> and <span class="math notranslate nohighlight">\(u_j=b\)</span>.</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-20">
+<span class="eqno">(6.2.17)<a class="headerlink" href="#equation-notes-sequence-labeling-20" title="Permalink to this equation">¶</a></span>\[p(u_{j-1}=a, u_j=b \mid x; w) = \frac{1}{Z(w)}
+    \underbrace{\sum_{u_{1:j-1}\in\mathcal{Y}^{j-1}}}_{\text{prefix}}
+    \underbrace{\sum_{u_{j+1:m}\in\mathcal{Y}^{m-j}}}_{\text{suffix}}
+    \prod_{i=1}^m \exp\left [ w\cdot\phi_k(x,j,b,a) \right ]\]</div>
+<p>Ignoring the normalizer <span class="math notranslate nohighlight">\(Z(w)\)</span> for now, the sum can be computed in
+a way very similar to the viterbi algorithm. Suppose we know the score
+of all prefix of length <span class="math notranslate nohighlight">\(j-1\)</span> ending at the tag <span class="math notranslate nohighlight">\(a\)</span>,
+<span class="math notranslate nohighlight">\(\alpha(j-1, a)\)</span>, as well as the score of all suffix of length
+<span class="math notranslate nohighlight">\(m-j\)</span> starting from the tag <span class="math notranslate nohighlight">\(b\)</span>, <span class="math notranslate nohighlight">\(\beta(m-j, b)\)</span>, we
+can easily compute</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-21">
+<span class="eqno">(6.2.18)<a class="headerlink" href="#equation-notes-sequence-labeling-21" title="Permalink to this equation">¶</a></span>\[\begin{split}&amp; \sum_{u_{1:j-1}\in\mathcal{Y}^{j-1}} \sum_{u_{j+1:m}\in\mathcal{Y}^{m-j}}
+    \prod_{i=1}^m \exp\left [ w\cdot\phi_k(x,j,b,a) \right ] \\
+&amp;= \alpha(j-1, a) \times \exp\left [ w\cdot\phi_k(x,j,b,a) \right ] \times \beta(m-j, b)
+\;.\end{split}\]</div>
+<p>How do we compute <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>? Note that
+<span class="math notranslate nohighlight">\(\alpha(j, t)\)</span> is exactly <span class="math notranslate nohighlight">\(\exp s(j, t)\)</span> which we computed
+in the Viterbi algorithm when finding the maximum score, and
+<span class="math notranslate nohighlight">\(\beta(j, t)\)</span> can be computed similarly <em>backward</em> on the lattice.
+The final missing piece is <span class="math notranslate nohighlight">\(Z(w)\)</span>, but this is just
+<span class="math notranslate nohighlight">\(\alpha(m+1, \texttt{STOP})\)</span>. Once we have the forward scores and
+the backward scores, which can be computed in
+<span class="math notranslate nohighlight">\(O(m|\mathcal{Y}|^2)\)</span>, the gradient can be computed easily.</p>
+<p><strong>Backpropogation.</strong> Note that the lattice can also be viewed as a
+computation graph. In the forward pass, each node computes the forward
+score by summing outputs from previous nodes and the local score. In the
+backward pass, each node receives gradient from nodes in the subsequent
+position. This is basically what forward-backward is doing. In modern
+machine learning framworks, this is done through backpropogation (auto
+differentiation), so we just need to implement the forward pass.</p>
+</div>
+</div>
+<div class="section" id="neural-sequence-labeling">
+<h2><span class="section-number">6.3. </span>Neural sequence labeling<a class="headerlink" href="#neural-sequence-labeling" title="Permalink to this headline">¶</a></h2>
+<p>Now, let’s think about how to use neural networks for sequence labeling.
+The core ideas are pretty much the same, and we just need to replace
+handcrafted features with embeddings from neural networks.</p>
+<div class="section" id="the-classification-approach-bidirectional-rnn">
+<h3><span class="section-number">6.3.1. </span>The classification approach: bidirectional RNN<a class="headerlink" href="#the-classification-approach-bidirectional-rnn" title="Permalink to this headline">¶</a></h3>
+<p>We can easily use neural networks in the classification approach where
+each tag is predicted independently as in
+<a class="reference internal" href="#sec-tag-classification"><span class="std std-numref">Section 6.1</span></a>. The first thought is to use a RNN
+(<a class="reference internal" href="language_models.html#sec-rnn"><span class="std std-numref">Section 5.2.3</span></a>) and take the hidden state at each position to be
+the features used for classification. However, <span class="math notranslate nohighlight">\(h_i\)</span> only
+summarizes information in <span class="math notranslate nohighlight">\(x_{1:i-1}\)</span>. For sequence labeling,
+ideally we want to use the entire sequence for classification. The
+solution is to use a bidirectional RNN (<a class="reference internal" href="#fig-birnn"><span class="std std-numref">Fig. 6.3.1</span></a>). One RNN
+runs forward from <span class="math notranslate nohighlight">\(x_1\)</span> to <span class="math notranslate nohighlight">\(x_m\)</span> and produces
+<span class="math notranslate nohighlight">\(\overrightarrow{h}_{1:m}\)</span>, and the other runs backward from
+<span class="math notranslate nohighlight">\(x_m\)</span> to <span class="math notranslate nohighlight">\(x_1\)</span> and produces <span class="math notranslate nohighlight">\(\overleftarrow{h}_{1:m}\)</span>.
+We then concatenate the two hidden states:
+<span class="math notranslate nohighlight">\(h_i=[\overrightarrow{h}_{1:m}; \overleftarrow{h}_{1:m}]\)</span>, and
+compute the score <span class="math notranslate nohighlight">\(\psi(y_i)=\exp\left [ Wh+b \right ]\)</span>.</p>
+<div class="figure align-default" id="id2">
+<span id="fig-birnn"></span><img alt="../_images/birnn.pdf" src="../_images/birnn.pdf" />
+<p class="caption"><span class="caption-number">Fig. 6.3.1 </span><span class="caption-text">Bidirectional RNN</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>Compared to feature-based classification, with RNNs it’s easier to
+incorporate more context in the input sentence. However, we are still
+prediction the tags independently. One way to add dependence among
+output tags is to add the previously predicted tag <span class="math notranslate nohighlight">\(y_{i-1}\)</span> as an
+additional input when computing <span class="math notranslate nohighlight">\(\overrightarrow{h}_i\)</span>, which
+allows us to model <span class="math notranslate nohighlight">\(p(y_i\mid x, y_{1:i-1})\)</span>. However, one problem
+here is that during training, we always condition on the ground truth
+tags <span class="math notranslate nohighlight">\(y_{1:i-1}\)</span>, whereas at inference time we condition on the
+predicted tags <span class="math notranslate nohighlight">\(\hat{y}_{1:i-1}\)</span>, so the distribution of the
+conditioning variables will change at test time. This is called the
+<strong>exposure bias</strong> problem, which we will encounter again in neural
+sequence generation.</p>
+<p>One solution is to use a CRF in the last layer where</p>
+<div class="math notranslate nohighlight" id="equation-notes-sequence-labeling-22">
+<span class="eqno">(6.3.1)<a class="headerlink" href="#equation-notes-sequence-labeling-22" title="Permalink to this equation">¶</a></span>\[\psi(y_i,y_{i-1}) = \exp\left [
+        \underbrace{w_{y_i,y_{i-1}}\cdot h_i}_{\text{tag bigram score}} +
+        \underbrace{w_{y_i}\cdot h_i}_{\text{tag unigram score}} +
+        \underbrace{b_{y_i,y_{i-1}}}_{\text{bias term}}
+    \right ]
+\;.\]</div>
+<p>Note that the only difference compared to the classic CRF is that we are
+now using the hidden states <span class="math notranslate nohighlight">\(h_i\)</span> as feature as opposed to
+manually defined local feature vector <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<p>Training the RNN-CRF model is easy using modern deep learning frameworks
+powerd by auto differentiation. We just need to implement the forward
+pass to compute <span class="math notranslate nohighlight">\(p(y\mid x)\)</span>. At inference time, the sequence with
+the highest likelihood can be found by Viterbi decoding.</p>
+</div>
+</div>
+<div class="section" id="applications">
+<h2><span class="section-number">6.4. </span>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
+<p><strong>Named entity recognition (NER).</strong> An important task in information
+extraction is to extract named entities in the text. For example, in
+news articles, we are interested in people (John), locations (New York
+City), organization (NYU), date (September 10th) etc. In other domains
+such as biomedical articles, we might want to extract protein names and
+cell types. Here’s one example:</p>
+<p><span class="math notranslate nohighlight">\(\underbrace{\text{New York City}}_{\text{location}}\)</span>, often
+abbreviated as <span class="math notranslate nohighlight">\(\underbrace{\text{NYC}}_{\text{location}}\)</span>, is the
+most populous city in the
+<span class="math notranslate nohighlight">\(\underbrace{\text{United States}}_{\text{location}}\)</span>, with an
+estimated <span class="math notranslate nohighlight">\(\underbrace{\text{2019}}_{\text{year}}\)</span> population of
+<span class="math notranslate nohighlight">\(\underbrace{\text{8,336,817}}_{\text{number}}\)</span>.</p>
+<p>Note that this is not immediately a sequence labeling problem since we
+are extracting spans from the input text. The standard approach to
+convert this to a sequence labeling problem is to use the <strong>BIO
+notation</strong>. The first token in a span is labeled as <code class="docutils literal notranslate"><span class="pre">B-&lt;tag&gt;</span></code> where
+<code class="docutils literal notranslate"><span class="pre">&lt;tag&gt;</span></code> is the label of the span. Other tokens in the span are labeled
+as <code class="docutils literal notranslate"><span class="pre">I-&lt;tag&gt;</span></code> and tokens outside any span are labeled as <code class="docutils literal notranslate"><span class="pre">O</span></code>. For
+example,</p>
+<p>… the/<code class="docutils literal notranslate"><span class="pre">O</span></code>   most/<code class="docutils literal notranslate"><span class="pre">O</span></code>  populous/<code class="docutils literal notranslate"><span class="pre">O</span></code>  city/<code class="docutils literal notranslate"><span class="pre">O</span></code>  in/<code class="docutils literal notranslate"><span class="pre">O</span></code>
+ the/<code class="docutils literal notranslate"><span class="pre">O</span></code>  United/<code class="docutils literal notranslate"><span class="pre">B-location</span></code>  States/<code class="docutils literal notranslate"><span class="pre">I-location</span></code>, …</p>
+<p>The BIO labeling scheme can be used whenever we want to extract spans
+from the text, e.g. noun phrase chunking and slot prediction in
+task-oriented dialogue.</p>
+<p><strong>Chinese word segmentation.</strong> As we mentioned previously, in many
+writing systems words are not separated by white spaces and one example
+is Chinese. A naive approach is to use a dictionary and greedily
+separate words that occur in the dictionary. However, there are often
+multiple ways to segment a sentence if we only require each token is a
+valid word. For example,</p>
+<p>研究/study   生命/life   的/’s   起源/origin</p>
+<p>研究生/graduate student   命/life   的/’s   起源/origin</p>
+<p>Therefore, the problem is often solved as a supervised sequence labeling
+problem. We can label each character by either <code class="docutils literal notranslate"><span class="pre">START</span></code> (beginning of a
+word) or <code class="docutils literal notranslate"><span class="pre">NONSTART</span></code>.</p>
+<p>Finally, the input doesn’t have to be sequence of words. For example, in
+handwritten digit recognition, the input are sequences of images.</p>
+</div>
+<div class="section" id="additional-reading">
+<h2><span class="section-number">6.5. </span>Additional reading<a class="headerlink" href="#additional-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Sam Wiseman and Alexander M. Rush. <a class="reference external" href="https://arxiv.org/pdf/1606.02960.pdf">Sequence-to-Sequence Learning as
+Beam-Search Optimization.</a></p></li>
+<li><p>Mike Collins. <a class="reference external" href="http://www.cs.columbia.edu/~mcollins/crf.pdf">Notes on log-linear models, MEMMs, and
+CRFs.</a></p></li>
+</ul>
+</div>
+</div>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">6. Sequence labeling</a><ul>
+<li><a class="reference internal" href="#a-multiclass-classification-approach">6.1. A multiclass classification approach</a></li>
+<li><a class="reference internal" href="#structrured-prediction">6.2. Structrured prediction</a><ul>
+<li><a class="reference internal" href="#conditional-random-fields">6.2.1. Conditional random fields</a></li>
+<li><a class="reference internal" href="#inference-the-viterbi-algorithm">6.2.2. Inference: the Viterbi algorithm</a></li>
+<li><a class="reference internal" href="#learning-the-forward-backward-algorithm">6.2.3. Learning: the forward-backward algorithm</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#neural-sequence-labeling">6.3. Neural sequence labeling</a><ul>
+<li><a class="reference internal" href="#the-classification-approach-bidirectional-rnn">6.3.1. The classification approach: bidirectional RNN</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#applications">6.4. Applications</a></li>
+<li><a class="reference internal" href="#additional-reading">6.5. Additional reading</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="language_models.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>5. Language models</div>
+         </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

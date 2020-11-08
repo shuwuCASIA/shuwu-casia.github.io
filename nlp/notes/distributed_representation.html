@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>4. Distributed word representations &#8212; Natural Language Processing 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/nyu-logo.jpg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Language models" href="language_models.html" />
+    <link rel="prev" title="3. Text classification" href="text_classification.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html">Lecture notes</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">4. </span>Distributed word representations</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/notes/distributed_representation.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+          
+              <a  class="mdl-navigation__link" href="https://www.gradescope.com/courses/148490">
+                  <i class="fas fa-book-open"></i>
+                  Gradescope
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://piazza.com/class/kcqpkn4c8uj4fz">
+                  <i class="fas fa-comments"></i>
+                  Piazza
+              </a>
+          
+              <a  class="mdl-navigation__link" href="https://newclasses.nyu.edu/portal/site/e0d2a062-6a1d-4eec-9f35-6ccce6b4358d">
+                  <i class="fas fa-school"></i>
+                  NYUClasses
+              </a>
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_ml.html">2. Basic machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_classification.html">3. Text classification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. Distributed word representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language_models.html">5. Language models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_labeling.html">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <span class="title-text">
+                  Natural Language Processing
+              </span>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html">Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../coursework.html">Coursework</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lecture notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_ml.html">2. Basic machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text_classification.html">3. Text classification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. Distributed word representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language_models.html">5. Language models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_labeling.html">6. Sequence labeling</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <div class="section" id="distributed-word-representations">
+<h1><span class="section-number">4. </span>Distributed word representations<a class="headerlink" href="#distributed-word-representations" title="Permalink to this headline">¶</a></h1>
+<p>In the last lecture, we used the bag-of-words representation for text
+classification, where each word is represented by a single feature, and
+a sentence is represented as a collection of words. More generally, this
+is a symbolic representation since each feature (symbol) carries complex
+meaning. On the other hand, the connectionist argues that the meaning of
+a concept is <em>distributed</em> across multiple units, e.g. a vector in a
+metric space. In this lecture, we will study distributed representation
+of words, which has been hugely successful when combined with deep
+learning.</p>
+<div class="section" id="vector-space-models">
+<h2><span class="section-number">4.1. </span>Vector-space models<a class="headerlink" href="#vector-space-models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="document-representation">
+<h3><span class="section-number">4.1.1. </span>Document representation<a class="headerlink" href="#document-representation" title="Permalink to this headline">¶</a></h3>
+<p>Let’s start with a familiar setting: we have a set of documents
+(e.g. movie reviews), now instead of classifying them, we would like to
+find out which ones are closer. From the last lecture, we already have a
+(sparse) vector representation for documents.</p>
+<p>Let’s load the movie reviews.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mxnet</span> <span class="kn">import</span> <span class="n">gluon</span>
+<span class="kn">import</span> <span class="nn">gluonnlp</span> <span class="k">as</span> <span class="nn">nlp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+
+
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">IMDB</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;data/imdb&#39;</span><span class="p">,</span> <span class="n">segment</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+<span class="c1"># remove label</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_dataset</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This gives us a document-term matrix <span class="math notranslate nohighlight">\(A\)</span> of size
+<span class="math notranslate nohighlight">\(|D| \times |V|\)</span>, where <span class="math notranslate nohighlight">\(|D|\)</span> is the number of documents and
+<span class="math notranslate nohighlight">\(|V|\)</span> is the vocabulary size. Each row is a vector representation
+of a document. Each entry <span class="math notranslate nohighlight">\(A_{ij}\)</span> is the count of word <span class="math notranslate nohighlight">\(i\)</span>
+in document <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>Now, given two vectors <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>,
+we can compute their <strong>Euclidean distance</strong>:</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-0">
+<span class="eqno">(4.1.1)<a class="headerlink" href="#equation-notes-distributed-representation-0" title="Permalink to this equation">¶</a></span>\[d(a, b) = \|a-b\| = \sqrt{\sum_{i=1}^d (a_i - b_i)^2} .\]</div>
+<p>But there is one problem. If we repeat each sentence in a document, the
+distance between this repetitive document and the original document will
+be large, in which case <span class="math notranslate nohighlight">\(a_i = 2b_i\)</span>. Ideally, we would want them
+to have zero distance as they contain the same content. Therefore,
+<strong>cosine similarity</strong> is better in this case since it measures the angle
+between two vectors:</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-1">
+<span class="eqno">(4.1.2)<a class="headerlink" href="#equation-notes-distributed-representation-1" title="Permalink to this equation">¶</a></span>\[s(a,b) = \frac{a\cdot b}{\|a\|\|b\|} .\]</div>
+<p>It ranges from -1 ot 1 and a larger value means more similar vectors.</p>
+<p>Let’s see how well it works.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">pairwise_distances</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">dist</span> <span class="o">=</span> <span class="n">pairwise_distances</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:],</span> <span class="n">A</span><span class="p">[:</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># Show the first review</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get the most similar review</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dist</span><span class="o">*-</span><span class="mf">1.</span><span class="p">)]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dist</span><span class="o">*-</span><span class="mf">1.</span><span class="p">)</span><span class="o">*-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">2410</span><span class="p">,</span> <span class="mi">12100</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">2409</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">I</span> <span class="n">liked</span> <span class="n">the</span> <span class="n">film</span><span class="o">.</span> <span class="n">Some</span> <span class="n">of</span> <span class="n">the</span> <span class="n">action</span> <span class="n">scenes</span> <span class="n">were</span> <span class="n">very</span> <span class="n">interesting</span><span class="p">,</span> <span class="n">tense</span> <span class="ow">and</span> <span class="n">well</span> <span class="n">done</span><span class="o">.</span> <span class="n">I</span> <span class="n">especially</span> <span class="n">liked</span> <span class="n">the</span> <span class="n">opening</span> <span class="n">scene</span> <span class="n">which</span> <span class="n">had</span> <span class="n">a</span> <span class="n">semi</span> <span class="n">truck</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span> <span class="n">A</span> <span class="n">very</span> <span class="n">tense</span> <span class="n">action</span> <span class="n">scene</span> <span class="n">that</span> <span class="n">seemed</span> <span class="n">well</span> <span class="n">done</span><span class="o">.&lt;</span><span class="n">br</span> <span class="o">/&gt;&lt;</span><span class="n">br</span> <span class="o">/&gt;</span><span class="n">Some</span> <span class="n">of</span> <span class="n">the</span> <span class="n">transitional</span> <span class="n">scenes</span> <span class="n">were</span> <span class="n">filmed</span> <span class="ow">in</span> <span class="n">interesting</span> <span class="n">ways</span> <span class="n">such</span> <span class="k">as</span> <span class="n">time</span> <span class="n">lapse</span> <span class="n">photography</span><span class="p">,</span> <span class="n">unusual</span> <span class="n">colors</span><span class="p">,</span> <span class="ow">or</span> <span class="n">interesting</span> <span class="n">angles</span><span class="o">.</span> <span class="n">Also</span> <span class="n">the</span> <span class="n">film</span> <span class="ow">is</span> <span class="n">funny</span> <span class="ow">is</span> <span class="n">several</span> <span class="n">parts</span><span class="o">.</span> <span class="n">I</span> <span class="n">also</span> <span class="n">liked</span> <span class="n">how</span> <span class="n">the</span> <span class="n">evil</span> <span class="n">guy</span> <span class="n">was</span> <span class="n">portrayed</span> <span class="n">too</span><span class="o">.</span> <span class="n">I</span><span class="s1">&#39;d give the film an 8 out of 10.</span>
+
+<span class="n">Brian</span> <span class="n">De</span> <span class="n">Palma</span><span class="s1">&#39;s undeniable virtuosity can&#39;</span><span class="n">t</span> <span class="n">really</span> <span class="n">camouflage</span> <span class="n">the</span> <span class="n">fact</span> <span class="n">that</span> <span class="n">his</span> <span class="n">plot</span> <span class="n">here</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">thinly</span> <span class="n">disguised</span> <span class="s2">&quot;Psycho&quot;</span> <span class="n">carbon</span> <span class="n">copy</span><span class="p">,</span> <span class="n">but</span> <span class="n">he</span> <span class="n">does</span> <span class="n">provide</span> <span class="n">a</span> <span class="n">genuinely</span> <span class="n">terrifying</span> <span class="n">climax</span><span class="o">.</span> <span class="n">His</span> <span class="s2">&quot;Blow Out&quot;</span><span class="p">,</span> <span class="n">made</span> <span class="n">the</span> <span class="nb">next</span> <span class="n">year</span><span class="p">,</span> <span class="n">was</span> <span class="n">an</span> <span class="n">improvement</span><span class="o">.</span>
+
+<span class="mf">0.3787042674034069</span>
+</pre></div>
+</div>
+<p>One potential problem is that common words that occur in most documents
+(e.g. “and”, “movie”, “watch”) may contribute to the similarity scores,
+but they are not representative enough for the specific document. We
+expect a representative word to occur frequently in a small set of
+documents (e.g. review talking about action movies), but rarely in other
+documents. The key idea in <strong>term frequency-inverse document frequency
+(tfidf)</strong> is to <em>reweight</em> the frequency of each word in a document
+(term frequency) by its inverse document frequency (idf):</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-2">
+<span class="eqno">(4.1.3)<a class="headerlink" href="#equation-notes-distributed-representation-2" title="Permalink to this equation">¶</a></span>\[\text{idf}(w) = \log \frac{\text{count(documents)}}{\text{count(documents containing $w$)}} .\]</div>
+<p>In practice, we might want to use smoothing similar to the Naive Bayes
+case.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+
+<span class="c1"># min_df: ignore words that occur in less than 100 documents</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">min_df</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">dist</span> <span class="o">=</span> <span class="n">pairwise_distances</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:],</span> <span class="n">A</span><span class="p">[:</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get the most similar review</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dist</span><span class="o">*-</span><span class="mf">1.</span><span class="p">)]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dist</span><span class="o">*-</span><span class="mf">1.</span><span class="p">)</span><span class="o">*-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span>(2410, 2467)
+(2409, 1)
+I liked the film. Some of the action scenes were very interesting, tense and well done. I especially liked the opening scene which had a semi truck in it. A very tense action scene that seemed well done.&lt;br /&gt;&lt;br /&gt;Some of the transitional scenes were filmed in interesting ways such as time lapse photography, unusual colors, or interesting angles. Also the film is funny is several parts. I also liked how the evil guy was portrayed too. I&#39;d give the film an 8 out of 10.
+
+I thought this movie would be dumb, but I really liked it. People I know hate it because Spirit was the only horse that talked. Well, so what? The songs were good, and the horses didn&#39;t need to talk to seem human. I wouldn&#39;t care to own the movie, and I would love to see it again. 8/10
+
+0.7099216663746952
+</pre></div>
+</div>
+</div>
+<div class="section" id="word-representation">
+<h3><span class="section-number">4.1.2. </span>Word representation<a class="headerlink" href="#word-representation" title="Permalink to this headline">¶</a></h3>
+<p>Our goal is to represent a word in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>, such that words
+similar in meaming are also closer according to some distance metric.
+How should we go about this problem?</p>
+<p><em>You shall know a word by the company it keeps.</em> (Firth, 1957)</p>
+<p>Now, what counts as a “company”? Words, sentence, or document? If we
+consider documents as the context of the word, then we can simply
+transpose our document-term matrix <span class="math notranslate nohighlight">\(A\)</span> such that each row is a
+word vector. Similarly, we can reweight the counts and compute the
+similarity between any two word vectors.</p>
+<p>Simple tfidf word vectors:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">idx_to_vocab</span> <span class="o">=</span> <span class="p">{</span><span class="n">idx</span><span class="p">:</span> <span class="n">word</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">vocabulary_</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">id_</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">vocabulary_</span><span class="p">[</span><span class="s2">&quot;love&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">id_</span><span class="p">)</span>
+
+<span class="n">dist</span> <span class="o">=</span> <span class="n">pairwise_distances</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">)[</span><span class="n">id_</span><span class="p">]</span>
+<span class="n">sorted_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sorted_ids</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">idx_to_vocab</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">2467</span><span class="p">,</span> <span class="mi">2410</span><span class="p">)</span>
+<span class="mi">1306</span>
+<span class="n">love</span> <span class="mf">0.0</span>
+<span class="n">divine</span> <span class="mf">0.7613966100116246</span>
+<span class="ow">and</span> <span class="mf">0.7619050887822465</span>
+<span class="n">it</span> <span class="mf">0.7631304834278211</span>
+<span class="n">this</span> <span class="mf">0.768818947134142</span>
+</pre></div>
+</div>
+<p>Obviously it doesn’t work very well since (a) our dataset is quite small
+and (b) document as context for words is probably too coarse. Here, what
+“similarity” really means is that two words tend to occur in the same
+document. Depending on what kind of similarity we want to capture, we
+can design the matrix differently and the same approach still works. For
+example, a word-by-word matrix where each entry is the frequency of two
+words occuring in the same sentence, a song-by-note matrix where each
+entry is the frequency of a note in a song, a person-by-product matrix
+where each entry is the frequency of a person buying a specific product.</p>
+</div>
+<div class="section" id="latent-semantic-analysis">
+<h3><span class="section-number">4.1.3. </span>Latent semantic analysis<a class="headerlink" href="#latent-semantic-analysis" title="Permalink to this headline">¶</a></h3>
+<p>You might have already noticed that our matrix <span class="math notranslate nohighlight">\(A\)</span> is quite sparse
+and the word vectors might live in a subspace. It would be nice to have
+a lower-dimensional, dense representation, which is more efficient to
+work with.</p>
+<p>Recall <strong>singular value decomposition (SVD)</strong> from linear algebra. Given
+a <span class="math notranslate nohighlight">\(m\times n\)</span> matrix <span class="math notranslate nohighlight">\(A\)</span>, we want to factorize it into</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-3">
+<span class="eqno">(4.1.4)<a class="headerlink" href="#equation-notes-distributed-representation-3" title="Permalink to this equation">¶</a></span>\[A_{m\times n} = U_{m\times m}\Sigma_{m\times n}V^T_{n\times n} ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> are orthogonal matrices and <span class="math notranslate nohighlight">\(\Sigma\)</span>
+is a diagonal matrix (with trailing zero vectors).</p>
+<p>Let’s unpack this equation to understand what it is doing. Note that</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-4">
+<span class="eqno">(4.1.5)<a class="headerlink" href="#equation-notes-distributed-representation-4" title="Permalink to this equation">¶</a></span>\[AV = U\Sigma V^TV = U\Sigma\]</div>
+<p>The columns of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> corresponds to orthogonal basis
+in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> and <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> respectively. Consider
+<span class="math notranslate nohighlight">\(A\)</span> as our term-document matrix where each row is a word vector
+and each column is a document vector. Let’s rewrite the matrices in
+terms of column vectors, assuming <span class="math notranslate nohighlight">\(m &gt; n\)</span> (more words than
+documents).</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-5">
+<span class="eqno">(4.1.6)<a class="headerlink" href="#equation-notes-distributed-representation-5" title="Permalink to this equation">¶</a></span>\[\begin{split}\underbrace{
+\begin{bmatrix}
+d_1 &amp; \ldots &amp; d_n
+\end{bmatrix}
+}_{\text{document vectors}}
+\underbrace{
+\begin{bmatrix}
+v_1 &amp; \ldots &amp; v_n
+\end{bmatrix}
+}_{\text{word space basis}}
+=
+\underbrace{
+\begin{bmatrix}
+u_1 &amp; \ldots &amp; u_m
+\end{bmatrix}
+}_{\text{document space basis}}
+\underbrace{
+\begin{bmatrix}
+ \sigma_1 &amp; &amp; &amp;\\
+ &amp; \ddots &amp; &amp;\\
+ &amp;&amp; \sigma_n &amp; \\
+ &amp;&amp;  &amp; 0\\
+\end{bmatrix}
+}_{\text{singular values}}
+\;.\end{split}\]</div>
+<p>For <span class="math notranslate nohighlight">\(v_i\)</span> and <span class="math notranslate nohighlight">\(u_i\)</span>, we have</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-6">
+<span class="eqno">(4.1.7)<a class="headerlink" href="#equation-notes-distributed-representation-6" title="Permalink to this equation">¶</a></span>\[\begin{bmatrix}
+d_1 &amp; \ldots &amp; d_n
+\end{bmatrix}
+v_i
+=\sigma_i u_i
+\;.\]</div>
+<p>Clearly, <span class="math notranslate nohighlight">\(u_i\)</span> is a linear combination of document vectors, scaled
+by <span class="math notranslate nohighlight">\(\sigma_i\)</span>. This means that it represents a document cluster,
+e.g. good reviews for action movies. The sigular value <span class="math notranslate nohighlight">\(\sigma_i\)</span>
+represents the significance of this cluster in the dataset. Similarly,
+since <span class="math notranslate nohighlight">\(u_i^T A = \sigma_i v_i^T\)</span>, we see that <span class="math notranslate nohighlight">\(v_i^T\)</span>
+corresponds to a word cluster.</p>
+<p>Now, let’s rewrite <span class="math notranslate nohighlight">\(A\)</span> in terms of its row vectors, or word
+vectors:</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-7">
+<span class="eqno">(4.1.8)<a class="headerlink" href="#equation-notes-distributed-representation-7" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+w_1 \\
+\vdots \\
+w_m
+\end{bmatrix}
+v_i
+=\sigma_i u_i
+\;.\end{split}\]</div>
+<p>Since <span class="math notranslate nohighlight">\(w_j^Tv_i = \sigma_i u_{ij}\)</span>, <span class="math notranslate nohighlight">\(u_{ij}\)</span> is the
+projection of <span class="math notranslate nohighlight">\(w_j\)</span> on <span class="math notranslate nohighlight">\(v_i\)</span>, the <span class="math notranslate nohighlight">\(i\)</span>-th word
+clusters, scaled by <span class="math notranslate nohighlight">\(\sigma_i\)</span>. Thus the entire <span class="math notranslate nohighlight">\(j\)</span>-th row
+of <span class="math notranslate nohighlight">\(U\)</span> corresponds to the projection of <span class="math notranslate nohighlight">\(w_j\)</span> on all word
+clusters, i.e. the new word vector in a space spanned by the document
+clusters.</p>
+<p>In sum, the columns of <span class="math notranslate nohighlight">\(U\)</span> corresponds to document clusters and
+the rows of <span class="math notranslate nohighlight">\(U\)</span> corresponds to the new word vectors. This is a
+beautiful decomposition that captures the hidden relation between
+document and words. In practice, however, we do not get the meaning of a
+word/document cluster for free, a person will have to look at the result
+and assign it a category (e.g. complaints or critiques for some movie
+genre in our example).</p>
+<p>We have not talked about dimensionality reduction. But this is really
+simple given the decomposition. Note that the sigular values corresponds
+to the importance of each dimension for the new word vectors, we can
+simply take the top <span class="math notranslate nohighlight">\(k\)</span> of those, also called truncated SVD.</p>
+<p>TODO: demo</p>
+</div>
+<div class="section" id="summary">
+<h3><span class="section-number">4.1.4. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h3>
+<p>Vector space model is a very general framework for learning the
+represention of two sets of related objects.</p>
+<ol class="arabic simple">
+<li><p>Design the row and column for the matrix, e.g. term-document,
+person-product.</p></li>
+<li><p>[Optional] Reweight the raw counts, e.g. tfidf reweighting.</p></li>
+<li><p>[Optional] Reduce dimensionality by SVD.</p></li>
+<li><p>Compute similarity between vectors using a distance metric,
+e.g. cosine distance.</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="learning-word-embeddings">
+<h2><span class="section-number">4.2. </span>Learning word embeddings<a class="headerlink" href="#learning-word-embeddings" title="Permalink to this headline">¶</a></h2>
+<p>Our goal is to find word vectors such that words similar in meaning are
+also close to each other according to some distance metric. Let’s think
+about how for formalize this as a learning problem, i.e. specifying the
+learning objective and the model. The most useful takeaway from the
+vector space model is that similar words tend to occur in the same
+context. The key idea in learning word embeddings is to design
+self-supervised learning objectives that would result in vectors of this
+property (intuitively).</p>
+<div class="section" id="the-skip-gram-model">
+<h3><span class="section-number">4.2.1. </span>The skip-gram model<a class="headerlink" href="#the-skip-gram-model" title="Permalink to this headline">¶</a></h3>
+<p>The task is to predict neighbors of a word given the word itself.
+Specifically, let <span class="math notranslate nohighlight">\((w_{i-k}, \ldots, w_i, \ldots, w_{i+k})\)</span> be a
+window around word <span class="math notranslate nohighlight">\(w_i\)</span>. We assume that each of the word in the
+window is generated independently conditioned on <span class="math notranslate nohighlight">\(w_i\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-8">
+<span class="eqno">(4.2.1)<a class="headerlink" href="#equation-notes-distributed-representation-8" title="Permalink to this equation">¶</a></span>\[p(w_{i-k}, \ldots, w_{i-1}, w_{i+1}, \ldots, w_{i+k} \mid w_i) =
+\prod_{j=i-k}^{i-1}p(w_j\mid w_i) \;.\]</div>
+<p>This is similar to the Naive Bayes model, except that it’s now
+conditioned on a word. We parameterize the conditional distribution by</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-9">
+<span class="eqno">(4.2.2)<a class="headerlink" href="#equation-notes-distributed-representation-9" title="Permalink to this equation">¶</a></span>\[p(w_j\mid w_i; f_c, f_w) = \frac{\exp\left [ f_c(w_j)^Tf_w(w_i)\right ]}
+{\sum_{k=1}^{|V|}\exp\left [f_c(w_k)^Tf_w(w_i)\right ]} \;,\]</div>
+<p>where <span class="math notranslate nohighlight">\(f_c\)</span> is a dictionary that maps a word in the context to a
+vector, and <span class="math notranslate nohighlight">\(f_w\)</span> maps the center word to a vector. Note that the
+same word will have different vector representations depending on
+whether it is in the context or at the center. We can then estimate the
+parameters/embeddings by MLE using SGD.</p>
+<p>The word embeddings are given by <span class="math notranslate nohighlight">\(f_w\)</span>. Note that the objective
+encourages the embedding of a word to have large dot product with the
+embedding of it neighboring words (i.e. a small angle) Thus if two words
+tend to occur in similar context, they will have similar embeddings.</p>
+</div>
+<div class="section" id="the-continuous-bag-of-words-model-cbow">
+<h3><span class="section-number">4.2.2. </span>The continuous-bag-of-words model (CBOW)<a class="headerlink" href="#the-continuous-bag-of-words-model-cbow" title="Permalink to this headline">¶</a></h3>
+<p>The task is very similar to that of the skip-gram model. Given a window
+of words, <span class="math notranslate nohighlight">\((w_{i-k}, \ldots, w_i, \ldots, w_{i+k})\)</span>, instead of
+predicting the context words from the center word, we can also predict
+the center word from the context words.</p>
+<p>CBOW uses the following model</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-10">
+<span class="eqno">(4.2.3)<a class="headerlink" href="#equation-notes-distributed-representation-10" title="Permalink to this equation">¶</a></span>\[p(w_i \mid w_{i-k}, \ldots, w_{i-1}, w_{i+1}, \ldots, w_{i+k})
+= \frac{\exp\left [
+    f_w(w_i)^T \sum_{j=1,j\neq i}^{k} (f_c(w_{i-j}) + f_c(w_{i+j})
+    \right ]}
+{\sum_{t=1}^{|V|} \exp\left [
+    f_w(w_t)^T \sum_{j=1,j\neq i}^{k} (f_c(w_{i-j}) + f_c(w_{i+j})
+    \right ]}
+\;,\]</div>
+<p>where the context is represented as a sum of embeddings of individual
+word in the window (hence the name continuous bag of words). Similar to
+skip-gram, we use MLE to learn the parameters/embeddings.</p>
+</div>
+<div class="section" id="properties-of-word-embeddings">
+<h3><span class="section-number">4.2.3. </span>Properties of word embeddings<a class="headerlink" href="#properties-of-word-embeddings" title="Permalink to this headline">¶</a></h3>
+<p>Recall that we can give physical meanings to each dimension of the word
+vectors obtained from SVD on the term-document matrix. What about the
+skip-gram/CBOW embeddings? Unfortunately we don’t have a good answer
+(see related work in <a class="reference internal" href="#reading"><span class="std std-numref">Section 4.5</span></a>).</p>
+<p>Emprically, we have found that word embeddings are useful for finding
+similar words and solving word analogy problems.</p>
+<p>Let’s try it out using the GloVe embeddings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">glove_6b50d</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;glove&#39;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s1">&#39;glove.6B.50d&#39;</span><span class="p">)</span>
+<span class="n">vocab</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">Vocab</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">glove_6b50d</span><span class="o">.</span><span class="n">idx_to_token</span><span class="p">))</span>
+<span class="n">vocab</span><span class="o">.</span><span class="n">set_embedding</span><span class="p">(</span><span class="n">glove_6b50d</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Find similar words:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mxnet</span> <span class="kn">import</span> <span class="n">nd</span>
+
+<span class="k">def</span> <span class="nf">norm_vecs_by_row</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="n">nd</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nd</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1E-10</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">get_knn</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+    <span class="n">word_vec</span> <span class="o">=</span> <span class="n">vocab</span><span class="o">.</span><span class="n">embedding</span><span class="p">[</span><span class="n">word</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">vocab_vecs</span> <span class="o">=</span> <span class="n">norm_vecs_by_row</span><span class="p">(</span><span class="n">vocab</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">idx_to_vec</span><span class="p">)</span>
+    <span class="n">dot_prod</span> <span class="o">=</span> <span class="n">nd</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vocab_vecs</span><span class="p">,</span> <span class="n">word_vec</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">nd</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">dot_prod</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span> <span class="p">)),</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ret_typ</span><span class="o">=</span><span class="s1">&#39;indices&#39;</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">asscalar</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span>
+    <span class="c1"># Remove unknown and input tokens.</span>
+    <span class="k">return</span> <span class="n">vocab</span><span class="o">.</span><span class="n">to_tokens</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+<span class="n">get_knn</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;movie&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;movies&#39;</span><span class="p">,</span> <span class="s1">&#39;film&#39;</span><span class="p">,</span> <span class="s1">&#39;films&#39;</span><span class="p">,</span> <span class="s1">&#39;comedy&#39;</span><span class="p">,</span> <span class="s1">&#39;hollywood&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Word analogy problems have the form a : b :: c : d, e.g. man : woman ::
+king : queen. We assume that such relations can be obtained through
+addition in the vector space, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f_w</span><span class="p">(</span><span class="n">man</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_w</span><span class="p">(</span><span class="n">woman</span><span class="p">)</span> \<span class="n">approx</span> <span class="n">f_w</span><span class="p">(</span><span class="n">king</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_w</span><span class="p">(</span><span class="n">queen</span><span class="p">)</span> \<span class="p">;</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Thus, given a, b, c, we can find d by finding the word whose embedding
+is closest to <span class="math notranslate nohighlight">\(f_w(b) - f_w(a) + f_w(c)\)</span>, with some distance
+metric.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_top_k_by_analogy</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">,</span> <span class="n">word3</span><span class="p">):</span>
+    <span class="n">word_vecs</span> <span class="o">=</span> <span class="n">vocab</span><span class="o">.</span><span class="n">embedding</span><span class="p">[</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">,</span> <span class="n">word3</span><span class="p">]</span>
+    <span class="n">word_diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">word_vecs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">word_vecs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">word_vecs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">vocab_vecs</span> <span class="o">=</span> <span class="n">norm_vecs_by_row</span><span class="p">(</span><span class="n">vocab</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">idx_to_vec</span><span class="p">)</span>
+    <span class="n">dot_prod</span> <span class="o">=</span> <span class="n">nd</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vocab_vecs</span><span class="p">,</span> <span class="n">word_diff</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">nd</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">dot_prod</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span> <span class="p">)),</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">ret_typ</span><span class="o">=</span><span class="s1">&#39;indices&#39;</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">asscalar</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">vocab</span><span class="o">.</span><span class="n">to_tokens</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+
+<span class="n">get_top_k_by_analogy</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;man&#39;</span><span class="p">,</span> <span class="s1">&#39;woman&#39;</span><span class="p">,</span> <span class="s1">&#39;son&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;daughter&#39;</span><span class="p">,</span> <span class="s1">&#39;mother&#39;</span><span class="p">,</span> <span class="s1">&#39;wife&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3><span class="section-number">4.2.4. </span>Summary<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>These models are quite similar to the vector space models in the sense
+that they connect a word to its context. Again, this is a general
+framework where we are free to choose other contexts. For example, we
+can learn product embedding by predicting which products are commonly
+bought together.</p>
+</div>
+</div>
+<div class="section" id="brown-clusters">
+<h2><span class="section-number">4.3. </span>Brown clusters<a class="headerlink" href="#brown-clusters" title="Permalink to this headline">¶</a></h2>
+<p>Both the vector space model and the neural word embeddings do not
+provide explicit clusters of words (although we can cluster the obtained
+vectors). Now let’s take a different approach and think how we can
+directly index the words. Much like how we organize books in the
+library, e.g. science -&gt; computer science -&gt; artificial intelligence -&gt;
+natural language processing -&gt; introduction to natural language
+processing, if we cluster words hierarchically and form a tree, we can
+use the path to each word to represent its meaning. Similar words will
+have similar paths (i.e. shared ancestors on the tree). Here are some
+example <a class="reference external" href="http://www.cs.cmu.edu/~ark/TweetNLP/cluster_viewer.html">word clusters on
+Twitter</a>.</p>
+<p>How do we hierarchically cluster words (or any other objects)? Let’s
+start build the clusters bottom up. We start with a set of words, each
+in its own cluster, then we iteratively merge the two closest clusters,
+until only one cluster is left (i.e. the root). Note that this algorithm
+requires a distance metric. We measure the distance between two clusters
+by the expected PMI of pairs of words from different clusters. Let
+<span class="math notranslate nohighlight">\(C_i\)</span> and <span class="math notranslate nohighlight">\(C_j\)</span> be two clusters of words, their similarity
+is defined by</p>
+<div class="math notranslate nohighlight" id="equation-notes-distributed-representation-11">
+<span class="eqno">(4.3.1)<a class="headerlink" href="#equation-notes-distributed-representation-11" title="Permalink to this equation">¶</a></span>\[s(C_i, C_j) = \sum_{w_1\in C_i}\sum_{w_2\in C_j} p(w_1, w_2)
+\underbrace{\log\frac{p(w_1, w_2)}{p(w_1)p(w_2)}}_{\text{pointwise mutual information}}
+\;,\]</div>
+<p>where <span class="math notranslate nohighlight">\(p(w_1, w_2)\)</span> is the probability of the bigram
+“<span class="math notranslate nohighlight">\(w_1 w_2\)</span>”, and <span class="math notranslate nohighlight">\(p(w_1)\)</span> and <span class="math notranslate nohighlight">\(p(w_2)\)</span> are unigram
+probabilities. Both can be estimated by counts.</p>
+<p><strong>Exercise:</strong> How would you cluster the words using a top-down approach?</p>
+</div>
+<div class="section" id="evaluation">
+<h2><span class="section-number">4.4. </span>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Intrinsic evaluation</strong> measures whether two words closer in meaning
+are indeed closer in the vector space. We can use word similarity datset
+such as <a class="reference external" href="https://www.aclweb.org/anthology/J15-4004/">SimLex-999</a> with
+human annotated similarity scores.</p>
+<p><strong>Extrinsic evaluation</strong> measures the effect of word vectors on
+downstream tasks. For example, we can replace the BoW representation
+with an average of word embeddings for text classification using
+logistic regression, and evaluate which embeddings yields better
+classification accuracy.</p>
+</div>
+<div class="section" id="additional-readings">
+<span id="reading"></span><h2><span class="section-number">4.5. </span>Additional readings<a class="headerlink" href="#additional-readings" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Stanford Encyclopedia of Philosophy. <a class="reference external" href="https://plato.stanford.edu/entries/connectionism/#ConRep">Connectionism
+representation.</a></p></li>
+<li><p>Jeffrey Pennington, Richard Socher and Christopher D. Manning.
+<a class="reference external" href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe: Global Vectors for Word
+Representation.</a> EMNLP
+2014.</p></li>
+<li><p>Omer Levy and Yoav Goldberg. <a class="reference external" href="https://papers.nips.cc/paper/5477-neural-word-embedding-as-implicit-matrix-factorization">Neural Word Embedding as Implicit
+Matrix
+Factorization.</a>
+NeurIPS 2014.</p></li>
+</ul>
+</div>
+</div>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">4. Distributed word representations</a><ul>
+<li><a class="reference internal" href="#vector-space-models">4.1. Vector-space models</a><ul>
+<li><a class="reference internal" href="#document-representation">4.1.1. Document representation</a></li>
+<li><a class="reference internal" href="#word-representation">4.1.2. Word representation</a></li>
+<li><a class="reference internal" href="#latent-semantic-analysis">4.1.3. Latent semantic analysis</a></li>
+<li><a class="reference internal" href="#summary">4.1.4. Summary</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#learning-word-embeddings">4.2. Learning word embeddings</a><ul>
+<li><a class="reference internal" href="#the-skip-gram-model">4.2.1. The skip-gram model</a></li>
+<li><a class="reference internal" href="#the-continuous-bag-of-words-model-cbow">4.2.2. The continuous-bag-of-words model (CBOW)</a></li>
+<li><a class="reference internal" href="#properties-of-word-embeddings">4.2.3. Properties of word embeddings</a></li>
+<li><a class="reference internal" href="#id1">4.2.4. Summary</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#brown-clusters">4.3. Brown clusters</a></li>
+<li><a class="reference internal" href="#evaluation">4.4. Evaluation</a></li>
+<li><a class="reference internal" href="#additional-readings">4.5. Additional readings</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="text_classification.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>3. Text classification</div>
+         </div>
+     </a>
+     <a id="button-next" href="language_models.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>5. Language models</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>
