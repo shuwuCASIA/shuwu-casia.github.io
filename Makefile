@@ -5,9 +5,9 @@ all: website publication.html docs/cv/cv.pdf
 website:
 	git clone https://github.com/hhexiy/website
 
-publication.html: website/pub_data.py website/generate_pubs.py
+publication.html: website-data/pub_data.py website-data/generate_pubs.py
 	set -e;\
-	cd website;\
+	cd website-data;\
 	python generate_pubs.py > publication.html;\
 	cp publication.html ..;
 
