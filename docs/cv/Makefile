@@ -4,5 +4,5 @@ cv-full.pdf: cv-full.tex conference.tex
 	pdflatex cv-full.tex
 
 pub:
-	cd ../../website; python generate_cv_pubs.py
-	cp ../../website/*.tex . 
+	cd ../../website-data; python generate_cv_pubs.py
+	cp ../../website-data/*.tex . 
