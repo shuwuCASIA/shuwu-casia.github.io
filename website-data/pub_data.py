@@ -19,6 +19,7 @@ pubs.append({
     'venue': 'naacl',
     'type': 'conference',
     'pdf': 'https://arxiv.org/pdf/2112.08608.pdf',
+    'code': 'https://github.com/nyu-mll/quality',
   })
 
 pubs.append({
@@ -28,6 +29,7 @@ pubs.append({
     'year': '2022',
     'venue': 'naacl',
     'type': 'conference',
+    'pdf': 'https://arxiv.org/abs/2204.11117',
   })
 
 
@@ -40,6 +42,7 @@ pubs.append({
     'type': 'conference',
     'pdf': 'https://arxiv.org/abs/2111.04193',
     'code': 'https://github.com/vishakhpk/mil-creative-captioning',
+    'demo': 'https://www.youtube.com/watch?v=JX30YecV2VU',
   })
 
 pubs.append({
@@ -50,6 +53,7 @@ pubs.append({
     'venue': 'acl',
     'type': 'conference',
     'pdf': 'https://arxiv.org/abs/2110.07814',
+    'code': 'https://github.com/yandachen/In-context-Tuning',
   })
 
 pubs.append({
@@ -59,7 +63,7 @@ pubs.append({
     'year': '2021',
     'venue': 'nips',
     'type': 'conference',
-    'pdf': '',
+    'pdf': 'https://proceedings.neurips.cc/paper/2021/file/972cda1e62b72640cb7ac702714a115f-Paper.pdf',
     'code': 'https://github.com/technion-cs-nlp/irm-for-nli'
   })
 
