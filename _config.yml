@@ -83,7 +83,7 @@ author:
   name             : "He He"
   avatar           : "profile.png"
   bio              : "Assistant Professor at NYU"
-  location         : 
+  location         : "605, 60 5th Ave"
   employer         :
   googlescholar    : "https://scholar.google.com/citations?hl=en&user=K-isjagAAAAJ&view_op=list_works&sortby=pubdate"
   email            : "hhe@nyu.edu"
@@ -147,6 +147,7 @@ exclude:
 keep_files:
   - .git
   - .svn
+  - nlp
 encoding: "utf-8"
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 

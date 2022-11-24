@@ -1,13 +1,103 @@
 pubs = []
 
 pubs.append({
-    'bib': 'pang2021amortized',
-    'title': "Amortized Noisy Channel Neural Machine Translation",
-    'author': ('richard', 'me', 'cho'),
-    'year': '2021',
+    'bib': 'pang2022reward',
+    'title': "Reward Gaming in Conditional Text Generation",
+    'author': ('richard', 'vishakh', 'Thibault Sellam', 'Ankur P Parikh','me'),
+    'year': '2022',
     'venue': 'arxiv',
     'type': 'arxiv',
-    'index': '2112.08670',
+    'index': '2211.08714',
+    'pdf': 'https://arxiv.org/abs/2211.08714',
+  })
+
+pubs.append({
+    'bib': 'joshi2022all',
+    'title': "Are All Spurious Features in Natural Language Alike? An Analysis through a Causal Lens",
+    'author': ('nitish', 'Xiang Pan', 'me'),
+    'year': '2022',
+    'venue': 'emnlp',
+    'type': 'conference',
+    'pdf': 'https://arxiv.org/pdf/2210.14011.pdf',
+    'code': 'https://github.com/joshinh/spurious-correlations-nlp',
+  })
+
+
+pubs.append({
+    'bib': 'chakrabarty2022help',
+    'title': "Help me write a poem: Instruction Tuning as a Vehicle for Collaborative Poetry Writing",
+    'author': ('Tuhin Chakrabarty', 'vishakh', 'me'),
+    'year': '2022',
+    'venue': 'emnlp',
+    'type': 'conference',
+    'pdf': 'https://arxiv.org/pdf/2210.13669.pdf',
+    'code': 'https://github.com/vishakhpk/creative-instructions',
+    'project': 'https://copoet-emnlp.github.io',
+  })
+
+
+pubs.append({
+    'bib': 'saparov2022language',
+    'title': "Language Models are Greedy Reasoners: A Systematic Formal Analysis of Chain-of-Thought",
+    'author': ('abu', 'me'),
+    'year': '2022',
+    'venue': 'arxiv',
+    'type': 'arxiv',
+    'index': '2210.01240',
+    'pdf': 'https://arxiv.org/abs/2210.01240',
+    'code': 'http://github.com/asaparov/prontoqa',
+  })
+
+pubs.append({
+    'bib': 'wang2022improving',
+    'title': "Improving Faithfulness by Augmenting Negative Summaries from Fake Documents",
+    'author': ('Tianshu Wang', 'faisal', 'esin', 'me'),
+    'year': '2022',
+    'venue': 'emnlp',
+    'type': 'conference',
+    'pdf': '',
+    'code': 'https://github.com/COFE2022/CoFE',
+  })
+
+pubs.append({
+    'bib': 'chen2022relation',
+    'title': "On the Relation between Sensitivity and Accuracy in In-context Learning",
+    'author': ('yanda', 'Chen Zhao', 'Zhou Yu', 'kathy', 'me'),
+    'year': '2022',
+    'venue': 'arxiv',
+    'type': 'arxiv',
+    'index': '2209.07661',
+    'pdf': 'https://arxiv.org/abs/2209.07661',
+  })
+
+pubs.append({
+    'bib': 'tian2022seqpate',
+    'title': "SeqPATE: Differentially Private Text Generation via Knowledge Distillation",
+    'author': ('Zhiliang Tian', 'Yingxiu Zhao', 'Ziyue Huang', 'Yu-Xiang Wang', 'Nevin Zhang', 'me'),
+    'year': '2022',
+    'venue': 'nips',
+    'type': 'conference',
+    'pdf': 'https://openreview.net/pdf?id=ZG5Bi1N4V0U',
+  })
+
+pubs.append({
+    'bib': 'puli2022nuisances',
+    'title': "Nuisances via Negativa: Adjusting for Spurious Correlations via Data Augmentation",
+    'author': ('Aahlad Puli', 'nitish', 'me', 'Rajesh Ranganath'),
+    'year': '2022',
+    'venue': 'arxiv',
+    'type': 'arxiv',
+    'index': '2210.01302',
+    'pdf': 'https://arxiv.org/abs/2210.01302',
+  })
+
+pubs.append({
+    'bib': 'pang2022amortized',
+    'title': "Amortized Noisy Channel Neural Machine Translation",
+    'author': ('richard', 'me', 'cho'),
+    'year': '2022',
+    'venue': 'inlg',
+    'type': 'conference',
     'pdf': 'https://arxiv.org/abs/2112.08670',
   })
 
@@ -308,7 +398,7 @@ pubs.append({
     'ws': 'adaptive',
     'type': 'workshop',
     'pdf': 'http://arxiv.org/abs/1602.02181',
-    'poster': 'aia-poster-nipsws2015.pdf',
+    'poster': 'docs/presentation/aia-poster-nipsws2015.pdf',
   })
 
 pubs.append({
@@ -338,7 +428,7 @@ pubs.append({
     'venue': 'emnlp',
     'type': 'conference',
     'pdf': 'docs/papers/2015_simtrans_rewrite.pdf',
-    'slides': 'docs/papers/emnlp15_slides.pdf',
+    'slides': 'docs/presentation/emnlp15_slides.pdf',
     'code': 'code/rewriter.tgz',
   })
 
@@ -382,7 +472,6 @@ pubs.append({
     'venue': 'slt',
     'type': 'conference',
     'pdf': 'docs/papers/paper-slt.pdf',
-    'poster': 'docs/presentation/tsl-poster-3.pdf',
   })
 
 pubs.append({
@@ -417,7 +506,7 @@ pubs.append({
     'type': 'conference',
     'pdf': 'docs/papers/depFeat.pdf',
     'slides': 'docs/presentation/depFeat_slides.pdf',
-    'talk': 'docs/presentation/depFeat_screencast.mp5',
+    'talk': 'docs/presentation/depFeat_screencast.mp4',
   })
 
 pubs.append({
