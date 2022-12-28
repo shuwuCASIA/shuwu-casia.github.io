@@ -8,8 +8,8 @@ permalink: /teaching/
 
 ## Courses
 - CSCI-GA.2590 Natural Language Processing
-  [[fall20]({% link /nlp/2020/index.html %})]
-  [[fall21]({% link /nlp/2021/index.html %})]
+  [[fall20](https://nyu-cs2590.github.io/fall2020/)]
+  [[fall21](https://nyu-cs2590.github.io/fall2021/)]
 - DS-GA.1003 Machine Learning
   [spring20]
   [[spring21](https://nyu-ds1003.github.io/spring2021)]
