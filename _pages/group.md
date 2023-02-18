@@ -10,6 +10,7 @@ permalink: /group/
 - [Nitish Joshi](https://joshinh.github.io/)
 - [Nicholas Lourie](https://www.semanticscholar.org/author/Nicholas-Lourie/35219984) (co-advised with Kyunghyun Cho)
 - [Trieu Trinh](https://scholar.google.com/citations?user=PEjJU54AAAAJ&hl=en)
+- [Yanda Chen](https://yandachen.github.io) (co-advised with Kathleen McKeown and Zhou Yu)
 
 ## Post-docs
 - [Chen Zhao](http://www.chenz.umiacs.io) (co-advised with Kyunghyun Cho)
@@ -20,7 +21,6 @@ permalink: /group/
 
 ## Visitors and collaborators
 - [Saranya Venkatraman](https://scholar.google.com/citations?user=qrvxwt4AAAAJ&hl=en)
-- [Yanda Chen](https://yandachen.github.io)
 - [Javier Rando](https://javirandor.github.io)
 
 ## Alumni
