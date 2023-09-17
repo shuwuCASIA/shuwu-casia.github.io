@@ -7,11 +7,12 @@ permalink: /teaching/
 {% include base_path %}
 
 ## Courses
+- DS-GA.1011 Natural Language Processing with Representation Learning
+  [[fall23](https://nyu-cs2590.github.io/fall2023/)]
 - CSCI-GA.2590 Natural Language Processing
   [[fall20](https://nyu-cs2590.github.io/fall2020/)]
   [[fall21](https://nyu-cs2590.github.io/fall2021/)]
   [[spring23](https://nyu-cs2590.github.io/spring2023/)]
-  [[fall23](https://nyu-cs2590.github.io/fall2023/)]
 - DS-GA.1003 Machine Learning
   [spring20]
   [[spring21](https://nyu-ds1003.github.io/spring2021)]
