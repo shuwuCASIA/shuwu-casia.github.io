@@ -9,7 +9,6 @@ source "https://rubygems.org"
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
 ruby '2.7.6'
-gem install bundler -v 2.4.22
 
 gem "github-pages", group: :jekyll_plugins
 
