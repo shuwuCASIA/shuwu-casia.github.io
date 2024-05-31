@@ -7,10 +7,10 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "He He"
+title                    : "Shu Wu"
 title_separator          : "-"
-name                     : &name "He He"
-description              : &description "Assistant Professor at NYU"
+name                     : &name "Shu Wu"
+description              : &description "Assistant Professor at CASIA"
 url                      : https://shuwucasia.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "shuwuCASIA/shuwucasia.github.io"
@@ -80,13 +80,13 @@ analytics:
 
 # Site Author
 author:
-  name             : "He He"
+  name             : "Shu Wu"
   avatar           : "profile.png"
-  bio              : "Assistant Professor at NYU"
-  location         : "605, 60 5th Ave"
+  bio              : "Assistant Professor at CASIA"
+  location         : "Beijing Haidian District Zhongguancun East Road No. 95 intelligent building"
   employer         :
-  googlescholar    : "https://scholar.google.com/citations?hl=en&user=K-isjagAAAAJ&view_op=list_works&sortby=pubdate"
-  email            : "hhe@nyu.edu"
+  googlescholar    : "https://scholar.google.com/citations?user=qVge6YYAAAAJ&hl=en"
+  email            : "shu.wu@nlpr.ia.ac.cn"
   uri              :
   bitbucket        :
   codepen          :
@@ -107,7 +107,7 @@ author:
   stackoverflow    : 
   steam            :
   tumblr           :
-  twitter          : "hhexiy"
+  twitter          : "ShuWu"
   vine             :
   weibo            :
   xing             :
