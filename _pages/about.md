@@ -8,6 +8,14 @@ redirect_from:
   - /about.html
 ---
 
+I am currently an Associated Professor in the Center for Research on Intelligent Perception and Computing [(CRIPAC)](http://www.cripac.ia.ac.cn/) , National Laboratory of Pattern Recognition [(NLPR)](http://www.nlpr.ia.ac.cn/), [Institute of Automation, Chinese Academy of Sciences](http://www.ia.cas.cn/).
+
+My research interests include data mining, big data, and network data analytics. I am a senior member of IEEE, ACM and CCF.
+
+
+
+
+
 I want to build intelligent systems that can communicate with humans effectively and enable individuals to achieve their goals. Today's systems are often opaque, brittle, and difficult to control, which limits their usefulness in human-centered applications.
 To make them our trustworthy collaborators, my research aims to (i) understand the computational foundation of generalization in novel scenarios, and (ii) build interactive systems that align with user's goals.
 

@@ -66,9 +66,14 @@ og_image                 :  # Open Graph/Twitter default site image
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
-  type                   : # Person or Organization (defaults to Person)
-  name                   : # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+  type                   : Organization # Person or Organization (defaults to Person)
+  name                   : UCAS Homepage # If the user or organization name differs from the site's name
+  links: "http://people.ucas.ac.cn/~shuwu" # An array of links to social media profiles
+social:
+  type                   : Organization # Person or Organization (defaults to Person)
+  name                   : GitHub # If the user or organization name differs from the site's name
+  links: "https://github.com/CRIPAC-DIG"
+
 
 
 # Analytics
@@ -87,9 +92,9 @@ author:
   employer         :
   googlescholar    : "https://scholar.google.com/citations?user=qVge6YYAAAAJ&hl=en"
   email            : "shu.wu@nlpr.ia.ac.cn"
-  uri              :
+  uri              : 
   bitbucket        :
-  codepen          :
+  codepen          : 
   dribbble         :
   flickr           :
   facebook         :
