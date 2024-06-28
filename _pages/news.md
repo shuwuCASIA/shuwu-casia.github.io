@@ -6,9 +6,9 @@ redirect_from:
   - /
 ---
 ---
-{% include base_path %}
+<!-- {% include base_path %}
 
-{% include news.html %}
+{% include news.html %} -->
 
 <!-- ## PhD students
 - [Yuanzhe (Richard) Pang](https://yzpang.github.io) (co-advised with Kyunghyun Cho)
