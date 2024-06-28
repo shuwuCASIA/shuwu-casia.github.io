@@ -1,8 +1,12 @@
 ---
 layout: archive
-title: "Group"
-permalink: /group/
+title: "News"
+permalink: /news/
 ---
+---
+<!-- {% include base_path %}
+
+{% include talks.html %} -->
 
 ## PhD students
 - [Yuanzhe (Richard) Pang](https://yzpang.github.io) (co-advised with Kyunghyun Cho)
