@@ -4,11 +4,11 @@ title: "News"
 permalink: /news/
 ---
 ---
-<!-- {% include base_path %}
+{% include base_path %}
 
-{% include talks.html %} -->
+{% include news.html %}
 
-## PhD students
+<!-- ## PhD students
 - [Yuanzhe (Richard) Pang](https://yzpang.github.io) (co-advised with Kyunghyun Cho)
 - [Vishakh Padmakumar](https://vishakhpk.github.io)
 - [Nitish Joshi](https://joshinh.github.io/)
@@ -33,4 +33,4 @@ permalink: /news/
 - [Johnny Ma](http://johnnyma.info) (MS 2022, now data scientist at HBOMax)
 - [Chen Zhao](http://www.chenz.umiacs.io) (Postdoc 2023, co-advised with Kyunghyun Cho, now assistant professor at NYU Shanghai)
 - [Xiang Pan](https://xiangpan.netlify.app) (MS 2023, now PhD student at NYU)
-- [Javier Rando](https://javirandor.github.io) (Visiting student 2023, now PhD student at ETH)
+- [Javier Rando](https://javirandor.github.io) (Visiting student 2023, now PhD student at ETH) -->
