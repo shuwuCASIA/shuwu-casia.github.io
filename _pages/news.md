@@ -2,7 +2,7 @@
 layout: archive
 title: "News"
 permalink: /news/
-redirect_from: 
+redirect_to: 
   - /
 ---
 ---
