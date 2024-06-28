@@ -2,7 +2,8 @@
 layout: archive
 title: "News"
 permalink: /news/
-alias: [/, /news/news.html]
+redirect_from: 
+  - /
 ---
 ---
 {% include base_path %}
