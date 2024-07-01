@@ -3,7 +3,7 @@ layout: archive
 title: "News"
 permalink: /news/
 redirect_to: 
-  - /
+  - /#all-news
 ---
 ---
 <!-- {% include base_path %}

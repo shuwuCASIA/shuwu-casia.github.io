@@ -12,3 +12,8 @@ I am currently an Associated Professor in the Center for Research on Intelligent
 
 My research interests include data mining, big data, recommendation systems, pervasive computing, and network data analytics. I am a senior member of IEEE, ACM and CCF.
 
+
+## News
+{: #all-news}
+
+This is the news.
